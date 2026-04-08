@@ -217,20 +217,22 @@
 #mk-global-header-system .mobile-nav-indent{padding-left:26px !important}
 
 /* ── STICKY CONTACT BAR ── */
-/* FIX 4: z-index 1200 (LOWER than header 1300) */
 #mk-global-header-system .sticky-contact-bar{
-  position:fixed;left:50%;z-index:1200;
+  position:fixed;left:50%;
   transform:translateX(-50%);
   opacity:1;visibility:visible;pointer-events:auto;
-  transition:opacity .30s ease, transform .36s cubic-bezier(.22,.8,.24,1), visibility 0s linear 0s
+  transition:opacity .30s ease, transform .36s cubic-bezier(.22,.8,.24,1), visibility 0s linear 0s, top .32s cubic-bezier(.22,.8,.24,1), bottom .32s cubic-bezier(.22,.8,.24,1), width .32s ease
 }
+/* Top position: OVER the header (z-index higher) */
 #mk-global-header-system .sticky-contact-bar.is-top{
-  top:var(--mk-header-h);
-  padding-top:24px;
+  z-index:1400;
+  top:10px;
   bottom:auto;
-  width:min(calc(100% - 16px), var(--mk-container))
+  width:min(calc(100% - 32px), var(--mk-container))
 }
+/* Bottom position: BELOW the header (z-index lower) */
 #mk-global-header-system .sticky-contact-bar.is-bottom{
+  z-index:1200;
   top:auto;bottom:var(--mk-sticky-gap);
   width:min(calc(100% - 16px), 820px)
 }
