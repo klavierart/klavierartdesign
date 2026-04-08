@@ -337,6 +337,7 @@
     <div class="ka-map" data-role="map"></div>
     <div class="ka-additional-info"><ul><li>Unverbindlich</li><li>Inkl. Verpackung</li></ul></div>
     <div class="ka-navigation-buttons">
+      <button type="button" class="ka-reset-btn" data-action="prev-step" data-target-step="1">Zur&#252;ck</button>
       <button type="button" class="ka-reset-btn" data-action="reset">Zur&#252;cksetzen</button>
       <button type="button" class="ka-next-btn" data-action="next-step" data-target-step="3">Weiter zur Anfrage</button>
     </div>
@@ -968,7 +969,6 @@
         if (isWithin4Workdays(dateVal)) {
           q('#ka-schnellservice').checked = true;
           state.schnellservice = true;
-          restrictDatePicker();
           container.classList.add('ka-disabled');
           if (note) {
             note.textContent = 'Schnellservice wird automatisch aktiviert f\u00fcr Termine innerhalb von 4 Werktagen.';
@@ -1085,7 +1085,13 @@
 
         var fromAddr = q('#ka-from-address').value || state.fromAddress || '-';
         var toAddr = q('#ka-to-address').value || state.toAddress || '-';
-        var dateVal = datePicker ? datePicker.input.value : (q('#ka-desired-date').value || '');
+        var dateVal = '';
+        if (datePicker && datePicker.selectedDates && datePicker.selectedDates.length > 0) {
+          var d = datePicker.selectedDates[0];
+          dateVal = ('0' + d.getDate()).slice(-2) + '.' + ('0' + (d.getMonth()+1)).slice(-2) + '.' + d.getFullYear();
+        } else {
+          dateVal = q('#ka-desired-date').value || '';
+        }
         var dateDisplay = dateVal || 'Nicht angegeben';
         var notesVal = q('#ka-additional-notes').value.trim() || 'Keine';
 
