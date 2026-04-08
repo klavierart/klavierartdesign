@@ -342,7 +342,7 @@
       <div class="ka-form-group"><label for="ka-name">Name *</label><input type="text" id="ka-name" class="ka-name"><div class="ka-error-text"></div></div>
       <div class="ka-form-group"><label for="ka-email">E-Mail *</label><input type="email" id="ka-email" class="ka-email"><div class="ka-error-text"></div></div>
       <div class="ka-form-group"><label for="ka-phone">Telefon *</label><input type="tel" id="ka-phone" class="ka-phone"><div class="ka-error-text"></div></div>
-      <div class="ka-form-group"><label for="ka-desired-date">Transportdatum</label><input type="date" id="ka-desired-date"><div class="ka-error-text"></div><small class="ka-date-note" data-role="date-note">Samstags finden keine Transporte statt</small></div>
+      <div class="ka-form-group"><label for="ka-desired-date" data-role="date-label">Transportdatum</label><input type="date" id="ka-desired-date"><div class="ka-error-text"></div><small class="ka-date-note" data-role="date-note">Wochenende (Sa/So) ist nicht verf&#252;gbar</small></div>
     </div>
     <div class="ka-form-group" style="margin-bottom:0">
       <label for="ka-additional-notes">Anmerkungen (optional)</label>
@@ -465,6 +465,7 @@
         if (phoneField) phoneField.value = '';
         var dateField = q('#ka-desired-date');
         if (dateField) dateField.value = '';
+        releaseDatePicker();
         var notesField = q('#ka-additional-notes');
         if (notesField) notesField.value = '';
         var agbField = q('#ka-agb-checkbox');
@@ -737,19 +738,16 @@
           var dateInput = q('#ka-desired-date');
           if (schnellActive) {
             if (!dateInput.value) {
-              setFieldError(dateInput, 'Bei Schnellservice ist ein Transportdatum erforderlich (innerhalb von 4 Werktagen)');
+              setFieldError(dateInput, 'Bei Schnellservice ist ein Transportdatum erforderlich (innerhalb von 4 Werktagen, Mo\u2013Fr)');
               valid = false;
             } else {
-              var selDate = new Date(dateInput.value);
-              var today = new Date();
-              today.setHours(0, 0, 0, 0);
-              var diffDays = Math.ceil((selDate - today) / (1000 * 60 * 60 * 24));
-              if (selDate.getDay() === 6) {
+              var selDay = new Date(dateInput.value).getDay();
+              if (selDay === 0 || selDay === 6) {
                 dateInput.value = '';
-                setFieldError(dateInput, 'Samstag ist nicht m\u00f6glich. Bitte w\u00e4hlen Sie einen Werktag.');
+                setFieldError(dateInput, 'Wochenende ist nicht m\u00f6glich. Bitte w\u00e4hlen Sie einen Werktag (Mo\u2013Fr).');
                 valid = false;
-              } else if (diffDays < 0 || diffDays > 4) {
-                setFieldError(dateInput, 'Schnellservice: Bitte w\u00e4hlen Sie ein Datum innerhalb der n\u00e4chsten 4 Werktage');
+              } else if (!isWithin4Workdays(dateInput.value)) {
+                setFieldError(dateInput, 'Schnellservice: Bitte w\u00e4hlen Sie ein Datum innerhalb der n\u00e4chsten 4 Werktage (Mo\u2013Fr)');
                 valid = false;
               }
             }
@@ -931,6 +929,22 @@
         initKlavierArtAutocomplete();
       }
 
+      function isWithin4Workdays(dateVal) {
+        var selected = new Date(dateVal);
+        selected.setHours(0, 0, 0, 0);
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+        var current = new Date(today);
+        var workdays = 0;
+        while (current < selected) {
+          current.setDate(current.getDate() + 1);
+          if (current.getDay() !== 0 && current.getDay() !== 6) {
+            workdays++;
+          }
+        }
+        return workdays >= 0 && workdays <= 4 && selected > today;
+      }
+
       function checkSchnellserviceDate() {
         var dateInput = q('#ka-desired-date');
         var container = qData('schnellservice-container');
@@ -940,49 +954,108 @@
 
         var dateVal = dateInput.value;
         if (!dateVal) {
-          container.classList.remove('ka-disabled');
-          if (note) note.style.display = 'none';
+          if (!state.schnellservice) {
+            container.classList.remove('ka-disabled');
+            if (note) note.style.display = 'none';
+          }
           return;
         }
 
-        var selected = new Date(dateVal);
-        var today = new Date();
-        today.setHours(0, 0, 0, 0);
-        var diff = Math.ceil((selected - today) / (1000 * 60 * 60 * 24));
-
-        if (diff <= 4 && diff >= 0) {
+        if (isWithin4Workdays(dateVal)) {
           q('#ka-schnellservice').checked = true;
           state.schnellservice = true;
+          restrictDatePicker();
           container.classList.add('ka-disabled');
           if (note) {
-            note.textContent = 'Schnellservice wird automatisch aktiviert für Termine innerhalb von 4 Werktagen.';
+            note.textContent = 'Schnellservice wird automatisch aktiviert f\u00fcr Termine innerhalb von 4 Werktagen.';
             note.style.display = 'block';
           }
+          updatePrice();
         } else {
           container.classList.remove('ka-disabled');
           if (note) note.style.display = 'none';
         }
       }
 
-      function checkSaturdayDate() {
+      function checkWeekendDate() {
         var dateInput = q('#ka-desired-date');
         var note = qData('date-note');
         if (!dateInput || !note) return;
 
         var dateVal = dateInput.value;
         if (!dateVal) {
-          note.textContent = 'Samstags finden keine Transporte statt';
+          note.textContent = 'Wochenende (Sa/So) ist nicht verf\u00fcgbar';
           note.style.color = '#8a8f96';
           return;
         }
 
         var day = new Date(dateVal).getDay();
-        if (day === 6) {
+        if (day === 0 || day === 6) {
           dateInput.value = '';
-          note.textContent = 'Samstag ist nicht m\u00f6glich. Bitte w\u00e4hlen Sie einen Werktag (Mo\u2013Fr).';
+          note.textContent = 'Wochenende ist nicht m\u00f6glich. Bitte w\u00e4hlen Sie einen Werktag (Mo\u2013Fr).';
           note.style.color = '#c0392b';
         } else {
-          note.textContent = 'Samstags finden keine Transporte statt';
+          note.textContent = 'Wochenende (Sa/So) ist nicht verf\u00fcgbar';
+          note.style.color = '#8a8f96';
+        }
+      }
+
+      function getNextWorkday(date) {
+        var d = new Date(date);
+        d.setDate(d.getDate() + 1);
+        while (d.getDay() === 0 || d.getDay() === 6) {
+          d.setDate(d.getDate() + 1);
+        }
+        return d;
+      }
+
+      function formatDate(d) {
+        var y = d.getFullYear();
+        var m = ('0' + (d.getMonth() + 1)).slice(-2);
+        var day = ('0' + d.getDate()).slice(-2);
+        return y + '-' + m + '-' + day;
+      }
+
+      function restrictDatePicker() {
+        var dateInput = q('#ka-desired-date');
+        var label = qData('date-label');
+        var note = qData('date-note');
+        if (!dateInput) return;
+
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+        var minDate = getNextWorkday(today);
+        var current = new Date(minDate);
+        var count = 1;
+        while (count < 4) {
+          current.setDate(current.getDate() + 1);
+          if (current.getDay() !== 0 && current.getDay() !== 6) {
+            count++;
+          }
+        }
+
+        dateInput.min = formatDate(minDate);
+        dateInput.max = formatDate(current);
+
+        if (label) label.textContent = 'Transportdatum (innerhalb 4 Werktage, Mo\u2013Fr) *';
+        if (note) {
+          note.textContent = 'Bitte w\u00e4hlen Sie einen Werktag innerhalb der n\u00e4chsten 4 Werktage';
+          note.style.color = '#e09900';
+        }
+      }
+
+      function releaseDatePicker() {
+        var dateInput = q('#ka-desired-date');
+        var label = qData('date-label');
+        var note = qData('date-note');
+        if (!dateInput) return;
+
+        dateInput.min = '';
+        dateInput.max = '';
+
+        if (label) label.textContent = 'Transportdatum';
+        if (note) {
+          note.textContent = 'Wochenende (Sa/So) ist nicht verf\u00fcgbar';
           note.style.color = '#8a8f96';
         }
       }
@@ -1130,12 +1203,17 @@
 
           if (id === 'ka-schnellservice') {
             state.schnellservice = e.target.checked;
+            if (e.target.checked) {
+              restrictDatePicker();
+            } else {
+              releaseDatePicker();
+            }
             updatePrice();
           }
 
           if (id === 'ka-desired-date') {
+            checkWeekendDate();
             checkSchnellserviceDate();
-            checkSaturdayDate();
           }
         });
 
