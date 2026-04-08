@@ -1,0 +1,1047 @@
+<style nowprocket>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+.krc2-wrap { width: 100%; max-width: 1600px; margin-inline: auto; padding: 15px; display: flow-root; }
+.krc2-wrap > :first-child { margin-top: 0 !important }
+.krc2-wrap > :last-child  { margin-bottom: 0 !important }
+</style>
+<div class="ka-rechner-page" id="kostenrechner-tool" style="padding-top:0;padding-bottom:0;background:#ffffff">
+<div class="krc2-wrap">
+<div id="ka-transport-kalkulator" class="ka-transport-kalkulator">
+  <style>
+    #ka-transport-kalkulator,
+    #ka-transport-kalkulator *{box-sizing:border-box}
+    #ka-transport-kalkulator{
+      max-width:860px;margin:0 auto;background:#fff;border-radius:12px;
+      box-shadow:0 2px 24px rgba(0,0,0,.07);padding:28px 32px;
+      font-family:'Plus Jakarta Sans',Arial,sans-serif;font-size:14px;
+      position:relative;z-index:1;color:#1a1f36
+    }
+    #ka-transport-kalkulator h2{
+      font-family:'Oswald',Arial,sans-serif;font-size:20px;text-align:center;
+      margin:0 0 24px;text-transform:uppercase;letter-spacing:.04em;color:#1a1f36
+    }
+    #ka-transport-kalkulator h3{
+      font-family:'Oswald',Arial,sans-serif;font-size:15px;text-transform:uppercase;
+      letter-spacing:.04em;color:#1a1f36;margin:0 0 12px
+    }
+    #ka-transport-kalkulator .ka-progress-bar{
+      display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px
+    }
+    #ka-transport-kalkulator .ka-progress-step{
+      display:flex;align-items:center;gap:8px;padding:8px 18px;
+      border-radius:999px;background:#f0f0ee;color:#8a8f96;
+      font-family:'Oswald',Arial,sans-serif;font-size:12px;letter-spacing:.06em;
+      text-transform:uppercase;white-space:nowrap;transition:all .25s;
+      border:1px solid transparent;margin:0 4px
+    }
+    #ka-transport-kalkulator .ka-progress-step.ka-active{
+      background:#1a1f36;color:#fff;border-color:#1a1f36
+    }
+    #ka-transport-kalkulator .ka-progress-step.ka-completed{
+      background:#e09900;color:#fff;border-color:#e09900
+    }
+    #ka-transport-kalkulator .ka-form-step{display:none}
+    #ka-transport-kalkulator .ka-form-step.ka-active{display:block}
+    #ka-transport-kalkulator label{
+      font-size:13px;color:#4a5060;margin-bottom:6px;font-weight:600;display:block
+    }
+    #ka-transport-kalkulator input[type="text"],
+    #ka-transport-kalkulator input[type="email"],
+    #ka-transport-kalkulator input[type="tel"],
+    #ka-transport-kalkulator input[type="date"],
+    #ka-transport-kalkulator input[type="number"],
+    #ka-transport-kalkulator select,
+    #ka-transport-kalkulator textarea{
+      width:100%;padding:10px 12px;border:1.5px solid #d8dae0;border-radius:8px;
+      font-size:14px;font-family:inherit;background:#fafaf8;color:#1a1f36;
+      outline:none;transition:border-color .2s,box-shadow .2s
+    }
+    #ka-transport-kalkulator input:focus,
+    #ka-transport-kalkulator select:focus,
+    #ka-transport-kalkulator textarea:focus{
+      border-color:#e09900;box-shadow:0 0 0 3px rgba(224,153,0,.12)
+    }
+    #ka-transport-kalkulator textarea{min-height:80px;resize:vertical}
+    #ka-transport-kalkulator input::placeholder,
+    #ka-transport-kalkulator textarea::placeholder{color:#a0a4ab}
+    #ka-transport-kalkulator .ka-form-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px
+    }
+    #ka-transport-kalkulator .ka-form-group{display:flex;flex-direction:column;margin-bottom:0}
+    #ka-transport-kalkulator .ka-check-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    #ka-transport-kalkulator .ka-instrument-grid{gap:10px;margin-bottom:4px}
+    #ka-transport-kalkulator .ka-check-container{
+      position:relative;cursor:pointer;user-select:none;
+      border:1.5px solid #d8dae0;border-radius:10px;padding:14px 14px 14px 38px;
+      background:#fafaf8;font-size:14px;font-weight:600;color:#1a1f36;
+      display:flex;align-items:center;transition:all .2s;margin-bottom:0
+    }
+    #ka-transport-kalkulator .ka-check-container:hover{border-color:#e09900;background:#fffbf2}
+    #ka-transport-kalkulator .ka-check-container input{position:absolute;opacity:0;cursor:pointer;height:0;width:0}
+    #ka-transport-kalkulator .ka-checkmark{
+      position:absolute;left:12px;height:16px;width:16px;
+      background:#fff;border:2px solid #c0c3ca;border-radius:4px;transition:all .2s
+    }
+    #ka-transport-kalkulator input[type="radio"]+.ka-checkmark{border-radius:50%}
+    #ka-transport-kalkulator .ka-check-container input:checked~.ka-checkmark{background:#e09900;border-color:#e09900}
+    #ka-transport-kalkulator .ka-checkmark:after{content:"";position:absolute;display:none}
+    #ka-transport-kalkulator .ka-check-container input:checked~.ka-checkmark:after{display:block}
+    #ka-transport-kalkulator .ka-check-container .ka-checkmark:after{
+      left:4px;top:1px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)
+    }
+    #ka-transport-kalkulator .ka-check-container input[type="radio"]+.ka-checkmark:after{
+      top:3px;left:3px;width:6px;height:6px;border-radius:50%;background:#fff;border:none
+    }
+    #ka-transport-kalkulator .ka-check-container.ka-schnellservice{
+      padding:12px 12px 12px 38px;background:#fff8ec;border-color:#f0c75e;margin-top:4px
+    }
+    #ka-transport-kalkulator .ka-check-container.ka-schnellservice:hover{border-color:#e09900}
+    #ka-transport-kalkulator .ka-check-container.ka-schnellservice small{display:inline;font-size:12px;color:#8a7340;margin-left:4px}
+    #ka-transport-kalkulator .ka-check-container.ka-schnellservice.ka-disabled{
+      opacity:.5;pointer-events:none;background:#f5f5f3 !important;border-color:#ddd !important
+    }
+    #ka-transport-kalkulator .ka-service-note{color:#c0392b;text-align:center;padding:8px;display:none;font-size:13px}
+    #ka-transport-kalkulator .ka-advanced-toggle{margin:12px 0 16px;border:none;background:none;cursor:pointer}
+    #ka-transport-kalkulator .ka-advanced-toggle summary{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:'Oswald',Arial,sans-serif;font-size:12px;letter-spacing:.08em;
+      text-transform:uppercase;color:#8a8f96;cursor:pointer;padding:8px 0;list-style:none
+    }
+    #ka-transport-kalkulator .ka-advanced-toggle summary::-webkit-details-marker{display:none}
+    #ka-transport-kalkulator .ka-advanced-toggle summary::before{
+      content:'\25B6';width:18px;height:18px;border-radius:4px;background:#f0f0ee;
+      display:grid;place-items:center;font-size:10px;line-height:1;transition:transform .2s
+    }
+    #ka-transport-kalkulator .ka-advanced-toggle[open] summary::before{transform:rotate(90deg)}
+    #ka-transport-kalkulator .ka-advanced-inner{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:12px}
+    #ka-transport-kalkulator .ka-advanced-inner .ka-form-group{margin-bottom:0}
+    #ka-transport-kalkulator .ka-advanced-inner label{font-size:12px;margin-bottom:4px}
+    #ka-transport-kalkulator .ka-advanced-inner select{padding:8px 10px;font-size:13px}
+    #ka-transport-kalkulator .ka-navigation-buttons{display:flex;gap:10px;margin-top:20px}
+    #ka-transport-kalkulator .ka-navigation-buttons button{flex:1;min-width:0}
+    #ka-transport-kalkulator .ka-berechnen-btn,
+    #ka-transport-kalkulator .ka-back-btn,
+    #ka-transport-kalkulator .ka-next-btn,
+    #ka-transport-kalkulator .ka-reset-btn,
+    #ka-transport-kalkulator .ka-email-btn{
+      padding:12px 16px;border:none;border-radius:8px;font-size:14px;
+      font-family:'Oswald',Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;
+      cursor:pointer;transition:all .2s;color:#fff;width:100%;text-align:center
+    }
+    #ka-transport-kalkulator .ka-back-btn{background:#6c757d !important}
+    #ka-transport-kalkulator .ka-back-btn:hover{background:#5a6268 !important}
+    #ka-transport-kalkulator .ka-next-btn{background:#1a1f36 !important}
+    #ka-transport-kalkulator .ka-next-btn:hover{background:#0d1020 !important}
+    #ka-transport-kalkulator .ka-reset-btn{background:#e8e8e6 !important;color:#666 !important}
+    #ka-transport-kalkulator .ka-reset-btn:hover{background:#ddd !important}
+    #ka-transport-kalkulator .ka-email-btn{background:#e09900 !important}
+    #ka-transport-kalkulator .ka-email-btn:hover{background:#c98800 !important}
+    #ka-transport-kalkulator .ka-preis-details{
+      background:#fafaf8;padding:20px;border-radius:10px;margin-top:20px;border:1px solid #eceae5
+    }
+    #ka-transport-kalkulator .ka-detail-grid{display:grid;grid-template-columns:1fr;gap:0}
+    #ka-transport-kalkulator .ka-detail-item{
+      display:flex;justify-content:space-between;gap:12px;
+      padding:10px 0;border-bottom:1px solid #eceae5;font-size:13px;color:#4a5060
+    }
+    #ka-transport-kalkulator .ka-detail-item span:last-child{font-weight:600;color:#1a1f36;text-align:right;white-space:nowrap}
+    #ka-transport-kalkulator .ka-detail-item.ka-total,
+    #ka-transport-kalkulator .ka-detail-item.ka-vat-price{border-bottom:none !important}
+    #ka-transport-kalkulator .ka-detail-item.ka-total{
+      font-size:16px;font-weight:700;color:#1a1f36;padding-top:14px;border-top:2px solid #1a1f36;margin-top:4px
+    }
+    #ka-transport-kalkulator .ka-detail-item.ka-total span:last-child{color:#e09900;font-size:18px}
+    #ka-transport-kalkulator .ka-detail-item.ka-vat-price{font-size:14px;font-weight:600}
+    #ka-transport-kalkulator .ka-detail-item.ka-vat-price span:last-child{color:#e09900}
+    #ka-transport-kalkulator .ka-map{height:260px;width:100%;margin-top:16px;border-radius:10px;border:1px solid #eceae5;overflow:hidden}
+    #ka-transport-kalkulator .ka-additional-info{margin-top:12px;font-size:13px;font-weight:600;color:#1a1f36}
+    #ka-transport-kalkulator .ka-additional-info ul{list-style:none;padding:12px 0;display:flex;gap:20px;justify-content:center;margin:0}
+    #ka-transport-kalkulator .ka-additional-info li::before{content:"\2713";color:#22a721;margin-right:6px;font-weight:800}
+    #ka-transport-kalkulator .ka-region-display{display:none}
+    #ka-transport-kalkulator .ka-error-message{
+      color:#c0392b;padding:12px;margin-top:16px;display:none;text-align:center;font-size:13px;
+      background:#fef5f5;border-radius:8px;border:1px solid rgba(192,57,43,.15)
+    }
+    #ka-transport-kalkulator .ka-success-message{
+      color:#1a7a1a;padding:12px;margin-top:16px;display:none;text-align:center;font-size:13px;
+      background:#f2fdf2;border-radius:8px;border:1px solid rgba(34,167,33,.15)
+    }
+    #ka-transport-kalkulator .ka-error-border{border-color:#c0392b !important;background:#fef9f9 !important}
+    #ka-transport-kalkulator .ka-error-text{color:#c0392b;font-size:11px;margin-top:4px;display:none}
+    #ka-transport-kalkulator .ka-check-grid.ka-error-border{border:1.5px solid #c0392b;border-radius:10px;padding:4px}
+    #ka-transport-kalkulator .ka-date-note{display:block;margin-top:4px;color:#8a8f96;font-size:11px}
+    #ka-transport-kalkulator .ka-agb-checkbox{
+      background:#fafaf8;border:1.5px solid #eceae5;border-radius:10px;padding:10px 14px;margin:16px 0
+    }
+    #ka-transport-kalkulator .ka-agb-checkbox .ka-check-container{
+      padding:8px 8px 8px 38px;line-height:1.5;margin-bottom:0;border:none;background:transparent
+    }
+    #ka-transport-kalkulator a{color:#e09900;text-decoration:underline;text-underline-offset:2px;transition:color .2s}
+    #ka-transport-kalkulator a:hover{color:#1a1f36}
+    .ka-section-label{
+      font-family:'Oswald',Arial,sans-serif;font-size:11px;letter-spacing:.1em;
+      text-transform:uppercase;color:#8a8f96;margin:0 0 8px;display:block
+    }
+    @media(max-width:768px){
+      #ka-transport-kalkulator{padding:18px 16px}
+      #ka-transport-kalkulator h2{font-size:16px}
+      #ka-transport-kalkulator .ka-form-grid{grid-template-columns:1fr;gap:12px}
+      #ka-transport-kalkulator .ka-check-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+      #ka-transport-kalkulator .ka-check-container{padding:10px 10px 10px 32px;font-size:12px}
+      #ka-transport-kalkulator .ka-checkmark{left:8px;height:14px;width:14px}
+      #ka-transport-kalkulator .ka-progress-bar{flex-wrap:wrap;gap:4px}
+      #ka-transport-kalkulator .ka-progress-step{padding:6px 12px;font-size:10px}
+      #ka-transport-kalkulator .ka-advanced-inner{grid-template-columns:1fr 1fr;gap:10px}
+      #ka-transport-kalkulator .ka-detail-item{flex-direction:row;font-size:12px}
+      #ka-transport-kalkulator .ka-check-container.ka-schnellservice small{display:none}
+      #ka-transport-kalkulator .ka-check-container.ka-schnellservice::after{
+        content:"innerhalb 4 Werktage";font-size:11px;color:#8a7340;margin-left:4px
+      }
+    }
+    @media(max-width:480px){
+      #ka-transport-kalkulator .ka-check-grid.ka-instrument-grid{grid-template-columns:1fr 1fr 1fr}
+      #ka-transport-kalkulator .ka-advanced-inner{grid-template-columns:1fr 1fr}
+    }
+  </style>
+
+  <h2>Klaviertransport-Preisrechner</h2>
+
+  <div class="ka-progress-bar">
+    <div class="ka-progress-step ka-active" data-step-indicator="1">1. Angaben</div>
+    <div class="ka-progress-step" data-step-indicator="2">2. Kosten</div>
+    <div class="ka-progress-step" data-step-indicator="3">3. Anfrage</div>
+  </div>
+
+  <div class="ka-form-step ka-active" data-step="1">
+    <span class="ka-section-label">Instrument</span>
+    <div class="ka-form-group" style="margin-bottom:16px">
+      <div class="ka-check-grid ka-instrument-grid" data-role="instrument-grid">
+        <label class="ka-check-container">
+          <input type="radio" name="ka_instrument" value="Klavier">
+          <span class="ka-checkmark"></span>Klavier
+        </label>
+        <label class="ka-check-container">
+          <input type="radio" name="ka_instrument" value="Flügel">
+          <span class="ka-checkmark"></span>Flügel bis 190cm
+        </label>
+        <label class="ka-check-container">
+          <input type="radio" name="ka_instrument" value="Digital">
+          <span class="ka-checkmark"></span>Digitalpiano
+        </label>
+      </div>
+    </div>
+
+    <span class="ka-section-label">Adressen</span>
+    <div class="ka-form-grid" style="margin-bottom:16px">
+      <div class="ka-form-group">
+        <label for="ka-from-address">Abholadresse *</label>
+        <input type="text" id="ka-from-address" class="ka-from-address" placeholder="Adresse eingeben" autocomplete="off">
+        <div class="ka-error-text"></div>
+      </div>
+      <div class="ka-form-group">
+        <label for="ka-to-address">Lieferadresse *</label>
+        <input type="text" id="ka-to-address" class="ka-to-address" placeholder="Adresse eingeben" autocomplete="off">
+        <div class="ka-error-text"></div>
+      </div>
+    </div>
+
+    <span class="ka-section-label">Stockwerke</span>
+    <div class="ka-form-grid" style="margin-bottom:4px">
+      <div class="ka-form-group">
+        <label for="ka-from-floor">Abholung</label>
+        <select id="ka-from-floor">
+          <option value="0">EG</option><option value="0">Lift vorhanden</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+          <option value="13">13</option><option value="14">14</option><option value="15">15</option>
+        </select>
+      </div>
+      <div class="ka-form-group">
+        <label for="ka-to-floor">Lieferung</label>
+        <select id="ka-to-floor">
+          <option value="0">EG</option><option value="0">Lift vorhanden</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+          <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+          <option value="13">13</option><option value="14">14</option><option value="15">15</option>
+        </select>
+      </div>
+    </div>
+
+    <details class="ka-advanced-toggle">
+      <summary>Erweiterte Optionen</summary>
+      <div class="ka-advanced-inner">
+        <div class="ka-form-group"><label for="ka-extra-stairs-from">Treppe vor EG (Abholung)</label><select id="ka-extra-stairs-from"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-extra-stairs-to">Treppe vor EG (Lieferung)</label><select id="ka-extra-stairs-to"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-mezzanine-from">Mezzanin (Abholung)</label><select id="ka-mezzanine-from"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-mezzanine-to">Mezzanin (Lieferung)</label><select id="ka-mezzanine-to"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-high-parterre-from">Hochparterre (Abholung)</label><select id="ka-high-parterre-from"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-high-parterre-to">Hochparterre (Lieferung)</label><select id="ka-high-parterre-to"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-wendeltreppe-from">Wendeltreppe (Abholung)</label><select id="ka-wendeltreppe-from"><option value="0">Nein</option><option value="1">Ja</option></select></div>
+        <div class="ka-form-group"><label for="ka-wendeltreppe-to">Wendeltreppe (Lieferung)</label><select id="ka-wendeltreppe-to"><option value="0">Nein</option><option value="1">Ja</option></select></div>
+      </div>
+    </details>
+
+    <div class="ka-form-group">
+      <label class="ka-check-container ka-schnellservice" data-role="schnellservice-container">
+        <input type="checkbox" id="ka-schnellservice">
+        <span class="ka-checkmark"></span>
+        Schnellservice (+30%) <small>(innerhalb 4 Werktage)</small>
+      </label>
+      <div class="ka-service-note" data-role="service-note"></div>
+    </div>
+
+    <div class="ka-navigation-buttons">
+      <button type="button" class="ka-reset-btn" data-action="reset">Zurücksetzen</button>
+      <button type="button" class="ka-next-btn" data-action="validate-step-1">Weiter</button>
+    </div>
+  </div>
+
+  <div class="ka-form-step" data-step="2">
+    <div class="ka-preis-details">
+      <h3>Ihre Kosten</h3>
+      <div class="ka-detail-grid">
+        <div class="ka-detail-item" style="display:none"><span>Transportregion:</span><span class="ka-region-display" data-role="region-display">-</span></div>
+        <div class="ka-detail-item"><span>Grundpreis:</span><span data-role="base-price">0€</span></div>
+        <div class="ka-detail-item"><span>Stockwerke (Abholung):</span><span data-role="from-floor-price">-</span></div>
+        <div class="ka-detail-item"><span>Stockwerke (Lieferung):</span><span data-role="to-floor-price">-</span></div>
+        <div class="ka-detail-item"><span>Distanz:</span><span data-role="distance-price">0 km × 1€ = 0€</span></div>
+        <div class="ka-detail-item"><span>Treppe vor EG (Abholung):</span><span data-role="stairs-from-price">0€</span></div>
+        <div class="ka-detail-item"><span>Treppe vor EG (Lieferung):</span><span data-role="stairs-to-price">0€</span></div>
+        <div class="ka-detail-item"><span>Mezzanin (Abholung):</span><span data-role="mezzanine-from-price">0€</span></div>
+        <div class="ka-detail-item"><span>Mezzanin (Lieferung):</span><span data-role="mezzanine-to-price">0€</span></div>
+        <div class="ka-detail-item"><span>Hochparterre (Abholung):</span><span data-role="parterre-from-price">0€</span></div>
+        <div class="ka-detail-item"><span>Hochparterre (Lieferung):</span><span data-role="parterre-to-price">0€</span></div>
+        <div class="ka-detail-item ka-total"><span>Gesamtpreis (ohne MwSt.):</span><span data-role="total-price">0€</span></div>
+        <div class="ka-detail-item ka-vat-price"><span>Gesamtpreis (inkl. 20% MwSt.):</span><span data-role="total-price-vat">0€</span></div>
+      </div>
+    </div>
+    <div class="ka-map" data-role="map"></div>
+    <div class="ka-additional-info"><ul><li>Unverbindlich</li><li>Inkl. Verpackung</li></ul></div>
+    <div class="ka-navigation-buttons">
+      <button type="button" class="ka-back-btn" data-action="prev-step" data-target-step="1">Zurück</button>
+      <button type="button" class="ka-reset-btn" data-action="reset">Zurücksetzen</button>
+      <button type="button" class="ka-next-btn" data-action="next-step" data-target-step="3">Weiter zur Anfrage</button>
+    </div>
+  </div>
+
+  <div class="ka-form-step" data-step="3">
+    <div class="ka-form-grid">
+      <div class="ka-form-group"><label for="ka-name">Name *</label><input type="text" id="ka-name" class="ka-name"><div class="ka-error-text"></div></div>
+      <div class="ka-form-group"><label for="ka-email">E-Mail *</label><input type="email" id="ka-email" class="ka-email"><div class="ka-error-text"></div></div>
+      <div class="ka-form-group"><label for="ka-phone">Telefon *</label><input type="tel" id="ka-phone" class="ka-phone"><div class="ka-error-text"></div></div>
+      <div class="ka-form-group"><label for="ka-desired-date">Transportdatum</label><input type="date" id="ka-desired-date"><div class="ka-error-text"></div><small class="ka-date-note" data-role="date-note">Samstags finden keine Transporte statt</small></div>
+    </div>
+    <div class="ka-form-group" style="margin-bottom:0">
+      <label for="ka-additional-notes">Anmerkungen (optional)</label>
+      <textarea id="ka-additional-notes" rows="3" placeholder="z.B. enge Treppe, Zeitfenster..."></textarea>
+    </div>
+    <div class="ka-agb-checkbox" data-role="agb-container">
+      <label class="ka-check-container">
+        <input type="checkbox" id="ka-agb-checkbox">
+        <span class="ka-checkmark"></span>
+        Ich stimme den <a href="https://stagging.klavierart.at/agb/" target="_blank" rel="noopener">AGB</a> und dem <a href="https://stagging.klavierart.at/datenschutz/" target="_blank" rel="noopener">Datenschutz</a> zu.*
+      </label>
+    </div>
+    <div class="ka-navigation-buttons">
+      <button type="button" class="ka-back-btn" data-action="prev-step" data-target-step="2">Zurück</button>
+      <button type="button" class="ka-email-btn" data-action="send-email">Anfrage senden</button>
+    </div>
+    <div class="ka-error-message" data-role="error-message"></div>
+    <div class="ka-success-message" data-role="success-message"></div>
+  </div>
+
+  <script nowprocket>
+    (function() {
+      var EMAILJS_PUBLIC_KEY = 'yCj0cp9CD-b8n32OK';
+      var EMAILJS_SERVICE_ID = 'service_gndib2k';
+      var EMAILJS_TEMPLATE_ID = 'template_iowpn0v';
+      var GOOGLE_MAPS_API_KEY = 'AIzaSyDn2s_vZG-diNqLDuMXEVjsDX6uWCmCTwk';
+      var DEUTSCH_WAGRAM_COORDS = { lat: 48.2991, lng: 16.5665 };
+
+      var pricing = {
+        Klavier: { basis: 175, proStockwerk: 32 },
+        'Flügel': { basis: 348, proStockwerk: 59 },
+        Digital: { basis: 132, proStockwerk: 22 }
+      };
+
+      var root = document.getElementById('ka-transport-kalkulator');
+      if (!root) return;
+
+      var state = {
+        instrument: '',
+        fromAddress: '',
+        toAddress: '',
+        fromFloor: 0,
+        toFloor: 0,
+        extraStairsFrom: 0,
+        extraStairsTo: 0,
+        mezzanineFrom: 0,
+        mezzanineTo: 0,
+        highParterreFrom: 0,
+        highParterreTo: 0,
+        wendeltreppeFrom: 0,
+        wendeltreppeTo: 0,
+        schnellservice: false,
+        distance: 0,
+        region: '',
+        fromCoords: null,
+        toCoords: null,
+        totalPrice: 0,
+        currentStep: 1
+      };
+
+      var map = null;
+      var directionsService = null;
+      var directionsRenderer = null;
+      var fromAutocomplete = null;
+      var toAutocomplete = null;
+      var fromMarker = null;
+      var toMarker = null;
+
+      function q(sel) { return root.querySelector(sel); }
+      function qAll(sel) { return root.querySelectorAll(sel); }
+      function qData(role) { return root.querySelector('[data-role="' + role + '"]'); }
+
+      function resetForm() {
+        state.instrument = '';
+        state.fromAddress = '';
+        state.toAddress = '';
+        state.fromFloor = 0;
+        state.toFloor = 0;
+        state.extraStairsFrom = 0;
+        state.extraStairsTo = 0;
+        state.mezzanineFrom = 0;
+        state.mezzanineTo = 0;
+        state.highParterreFrom = 0;
+        state.highParterreTo = 0;
+        state.wendeltreppeFrom = 0;
+        state.wendeltreppeTo = 0;
+        state.schnellservice = false;
+        state.distance = 0;
+        state.region = '';
+        state.fromCoords = null;
+        state.toCoords = null;
+        state.totalPrice = 0;
+        state.currentStep = 1;
+
+        var radios = qAll('input[name="ka_instrument"]');
+        radios.forEach(function(r) { r.checked = false; });
+        q('#ka-from-address').value = '';
+        q('#ka-to-address').value = '';
+        q('#ka-from-floor').selectedIndex = 0;
+        q('#ka-to-floor').selectedIndex = 0;
+        q('#ka-extra-stairs-from').selectedIndex = 0;
+        q('#ka-extra-stairs-to').selectedIndex = 0;
+        q('#ka-mezzanine-from').selectedIndex = 0;
+        q('#ka-mezzanine-to').selectedIndex = 0;
+        q('#ka-high-parterre-from').selectedIndex = 0;
+        q('#ka-high-parterre-to').selectedIndex = 0;
+        q('#ka-wendeltreppe-from').selectedIndex = 0;
+        q('#ka-wendeltreppe-to').selectedIndex = 0;
+        q('#ka-schnellservice').checked = false;
+
+        var nameField = q('#ka-name');
+        if (nameField) nameField.value = '';
+        var emailField = q('#ka-email');
+        if (emailField) emailField.value = '';
+        var phoneField = q('#ka-phone');
+        if (phoneField) phoneField.value = '';
+        var dateField = q('#ka-desired-date');
+        if (dateField) dateField.value = '';
+        var notesField = q('#ka-additional-notes');
+        if (notesField) notesField.value = '';
+        var agbField = q('#ka-agb-checkbox');
+        if (agbField) agbField.checked = false;
+
+        clearErrors();
+        hideMessages();
+        goToStep(1);
+      }
+
+      function clearErrors() {
+        qAll('.ka-error-border').forEach(function(el) {
+          el.classList.remove('ka-error-border');
+        });
+        qAll('.ka-error-text').forEach(function(el) {
+          el.style.display = 'none';
+          el.textContent = '';
+        });
+      }
+
+      function hideMessages() {
+        var err = qData('error-message');
+        if (err) { err.style.display = 'none'; err.textContent = ''; }
+        var suc = qData('success-message');
+        if (suc) { suc.style.display = 'none'; suc.textContent = ''; }
+      }
+
+      function showError(msg) {
+        var el = qData('error-message');
+        if (el) { el.textContent = msg; el.style.display = 'block'; }
+      }
+
+      function showSuccess(msg) {
+        var el = qData('success-message');
+        if (el) { el.textContent = msg; el.style.display = 'block'; }
+      }
+
+      function setFieldError(input, msg) {
+        input.classList.add('ka-error-border');
+        var errText = input.parentElement.querySelector('.ka-error-text');
+        if (errText) {
+          errText.textContent = msg;
+          errText.style.display = 'block';
+        }
+      }
+
+      function getBasisPrice(instrument, fromFloor, toFloor) {
+        if (!pricing[instrument]) return 0;
+        if (fromFloor === 0 && toFloor === 0) {
+          if (instrument === 'Klavier') return 230;
+          if (instrument === 'Flügel') return 400;
+          if (instrument === 'Digital') return 200;
+        }
+        return pricing[instrument].basis;
+      }
+
+      function getFloorPrice(instrument, floors) {
+        if (!pricing[instrument] || floors <= 0) return 0;
+        return floors * pricing[instrument].proStockwerk;
+      }
+
+      function updatePrice() {
+        var instrument = state.instrument;
+        if (!instrument) return;
+
+        var fromFloor = parseInt(q('#ka-from-floor').value) || 0;
+        var toFloor = parseInt(q('#ka-to-floor').value) || 0;
+        var extraStairsFrom = parseInt(q('#ka-extra-stairs-from').value) || 0;
+        var extraStairsTo = parseInt(q('#ka-extra-stairs-to').value) || 0;
+        var mezzanineFrom = parseInt(q('#ka-mezzanine-from').value) || 0;
+        var mezzanineTo = parseInt(q('#ka-mezzanine-to').value) || 0;
+        var highParterreFrom = parseInt(q('#ka-high-parterre-from').value) || 0;
+        var highParterreTo = parseInt(q('#ka-high-parterre-to').value) || 0;
+        var schnellservice = q('#ka-schnellservice').checked;
+        var distance = state.distance || 0;
+
+        state.fromFloor = fromFloor;
+        state.toFloor = toFloor;
+        state.extraStairsFrom = extraStairsFrom;
+        state.extraStairsTo = extraStairsTo;
+        state.mezzanineFrom = mezzanineFrom;
+        state.mezzanineTo = mezzanineTo;
+        state.highParterreFrom = highParterreFrom;
+        state.highParterreTo = highParterreTo;
+        state.schnellservice = schnellservice;
+
+        var basisPrice = getBasisPrice(instrument, fromFloor, toFloor);
+        var fromFloorPrice = getFloorPrice(instrument, fromFloor);
+        var toFloorPrice = getFloorPrice(instrument, toFloor);
+        var distancePrice = distance * 1;
+
+        var subtotal = basisPrice + fromFloorPrice + toFloorPrice + distancePrice
+          + extraStairsFrom + extraStairsTo
+          + mezzanineFrom + mezzanineTo
+          + highParterreFrom + highParterreTo;
+
+        if (schnellservice) {
+          subtotal = Math.round(subtotal * 1.3);
+        }
+
+        state.totalPrice = subtotal;
+
+        updateDisplay(basisPrice, fromFloorPrice, toFloorPrice, distancePrice,
+          extraStairsFrom, extraStairsTo, mezzanineFrom, mezzanineTo,
+          highParterreFrom, highParterreTo, subtotal, distance);
+      }
+
+      function updateDisplay(basisPrice, fromFloorPrice, toFloorPrice, distancePrice,
+        extraStairsFrom, extraStairsTo, mezzanineFrom, mezzanineTo,
+        highParterreFrom, highParterreTo, total, distance) {
+
+        var bp = qData('base-price');
+        if (bp) bp.textContent = basisPrice + '€';
+
+        var ffp = qData('from-floor-price');
+        if (ffp) ffp.textContent = fromFloorPrice > 0 ? fromFloorPrice + '€' : '-';
+
+        var tfp = qData('to-floor-price');
+        if (tfp) tfp.textContent = toFloorPrice > 0 ? toFloorPrice + '€' : '-';
+
+        var dp = qData('distance-price');
+        if (dp) dp.textContent = distance + ' km × 1€ = ' + distancePrice + '€';
+
+        var sfp = qData('stairs-from-price');
+        if (sfp) sfp.textContent = extraStairsFrom > 0 ? extraStairsFrom + '€' : '0€';
+
+        var stp = qData('stairs-to-price');
+        if (stp) stp.textContent = extraStairsTo > 0 ? extraStairsTo + '€' : '0€';
+
+        var mfp = qData('mezzanine-from-price');
+        if (mfp) mfp.textContent = mezzanineFrom > 0 ? mezzanineFrom + '€' : '0€';
+
+        var mtp = qData('mezzanine-to-price');
+        if (mtp) mtp.textContent = mezzanineTo > 0 ? mezzanineTo + '€' : '0€';
+
+        var pfp = qData('parterre-from-price');
+        if (pfp) pfp.textContent = highParterreFrom > 0 ? highParterreFrom + '€' : '0€';
+
+        var ptp = qData('parterre-to-price');
+        if (ptp) ptp.textContent = highParterreTo > 0 ? highParterreTo + '€' : '0€';
+
+        var tp = qData('total-price');
+        if (tp) tp.textContent = total + '€';
+
+        var vatTotal = Math.round(total * 1.2);
+        var tpv = qData('total-price-vat');
+        if (tpv) tpv.textContent = vatTotal + '€';
+
+        var rd = qData('region-display');
+        if (rd) rd.textContent = state.region || '-';
+      }
+
+      function goToStep(step) {
+        state.currentStep = step;
+        qAll('.ka-form-step').forEach(function(el) {
+          el.classList.remove('ka-active');
+        });
+        var targetStep = root.querySelector('.ka-form-step[data-step="' + step + '"]');
+        if (targetStep) targetStep.classList.add('ka-active');
+
+        qAll('.ka-progress-step').forEach(function(el) {
+          var ind = parseInt(el.getAttribute('data-step-indicator'));
+          el.classList.remove('ka-active', 'ka-completed');
+          if (ind === step) {
+            el.classList.add('ka-active');
+          } else if (ind < step) {
+            el.classList.add('ka-completed');
+          }
+        });
+      }
+
+      function validateRequiredFields(step) {
+        clearErrors();
+        var valid = true;
+
+        if (step === 1) {
+          var instrumentChecked = root.querySelector('input[name="ka_instrument"]:checked');
+          if (!instrumentChecked) {
+            var grid = qData('instrument-grid');
+            if (grid) grid.classList.add('ka-error-border');
+            valid = false;
+          } else {
+            state.instrument = instrumentChecked.value;
+          }
+
+          var fromAddr = q('#ka-from-address');
+          if (!fromAddr.value.trim()) {
+            setFieldError(fromAddr, 'Bitte Abholadresse eingeben');
+            valid = false;
+          }
+
+          var toAddr = q('#ka-to-address');
+          if (!toAddr.value.trim()) {
+            setFieldError(toAddr, 'Bitte Lieferadresse eingeben');
+            valid = false;
+          }
+        }
+
+        if (step === 3) {
+          var name = q('#ka-name');
+          if (!name.value.trim()) {
+            setFieldError(name, 'Bitte Name eingeben');
+            valid = false;
+          }
+
+          var email = q('#ka-email');
+          if (!email.value.trim()) {
+            setFieldError(email, 'Bitte E-Mail eingeben');
+            valid = false;
+          } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+            setFieldError(email, 'Bitte gültige E-Mail eingeben');
+            valid = false;
+          }
+
+          var phone = q('#ka-phone');
+          if (!phone.value.trim()) {
+            setFieldError(phone, 'Bitte Telefonnummer eingeben');
+            valid = false;
+          }
+
+          var agb = q('#ka-agb-checkbox');
+          if (!agb.checked) {
+            var agbContainer = qData('agb-container');
+            if (agbContainer) agbContainer.classList.add('ka-error-border');
+            valid = false;
+          }
+        }
+
+        return valid;
+      }
+
+      function determineRegion(distanceKm) {
+        if (distanceKm <= 30) return 'Zone 1 (bis 30 km)';
+        if (distanceKm <= 60) return 'Zone 2 (bis 60 km)';
+        if (distanceKm <= 100) return 'Zone 3 (bis 100 km)';
+        return 'Zone 4 (über 100 km)';
+      }
+
+      function getDistance(from, to, callback) {
+        if (!from || !to) { callback(0); return; }
+        var service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix({
+          origins: [from],
+          destinations: [to],
+          travelMode: google.maps.TravelMode.DRIVING,
+          unitSystem: google.maps.UnitSystem.METRIC
+        }, function(response, status) {
+          if (status === 'OK' && response.rows[0] && response.rows[0].elements[0] &&
+              response.rows[0].elements[0].status === 'OK') {
+            var distMeters = response.rows[0].elements[0].distance.value;
+            var distKm = Math.round(distMeters / 1000);
+            callback(distKm);
+          } else {
+            callback(0);
+          }
+        });
+      }
+
+      function getDistanceFromDeutschWagram(destination, callback) {
+        getDistance(
+          new google.maps.LatLng(DEUTSCH_WAGRAM_COORDS.lat, DEUTSCH_WAGRAM_COORDS.lng),
+          destination,
+          callback
+        );
+      }
+
+      function showRoute() {
+        if (!state.fromCoords || !state.toCoords || !directionsService || !directionsRenderer) return;
+
+        directionsService.route({
+          origin: state.fromCoords,
+          destination: state.toCoords,
+          travelMode: google.maps.TravelMode.DRIVING
+        }, function(result, status) {
+          if (status === 'OK') {
+            directionsRenderer.setDirections(result);
+          }
+        });
+      }
+
+      function getPlaceDetails(autocomplete, type) {
+        var place = autocomplete.getPlace();
+        if (!place || !place.geometry) return;
+
+        var coords = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        };
+
+        if (type === 'from') {
+          state.fromAddress = place.formatted_address || q('#ka-from-address').value;
+          state.fromCoords = coords;
+        } else {
+          state.toAddress = place.formatted_address || q('#ka-to-address').value;
+          state.toCoords = coords;
+        }
+
+        if (state.fromCoords && state.toCoords) {
+          getDistance(
+            new google.maps.LatLng(state.fromCoords.lat, state.fromCoords.lng),
+            new google.maps.LatLng(state.toCoords.lat, state.toCoords.lng),
+            function(distKm) {
+              state.distance = distKm;
+              state.region = determineRegion(distKm);
+              updatePrice();
+            }
+          );
+        }
+      }
+
+      function handlePlaceChange(type) {
+        var autocomplete = (type === 'from') ? fromAutocomplete : toAutocomplete;
+        if (autocomplete) getPlaceDetails(autocomplete, type);
+      }
+
+      function initKlavierArtAutocomplete() {
+        var fromInput = q('#ka-from-address');
+        var toInput = q('#ka-to-address');
+
+        if (!fromInput || !toInput || typeof google === 'undefined') return;
+
+        var options = {
+          componentRestrictions: { country: 'at' },
+          fields: ['formatted_address', 'geometry']
+        };
+
+        fromAutocomplete = new google.maps.places.Autocomplete(fromInput, options);
+        toAutocomplete = new google.maps.places.Autocomplete(toInput, options);
+
+        fromAutocomplete.addListener('place_changed', function() {
+          handlePlaceChange('from');
+        });
+        toAutocomplete.addListener('place_changed', function() {
+          handlePlaceChange('to');
+        });
+      }
+
+      function initMap() {
+        var mapEl = qData('map');
+        if (!mapEl || typeof google === 'undefined') return;
+
+        map = new google.maps.Map(mapEl, {
+          center: DEUTSCH_WAGRAM_COORDS,
+          zoom: 10,
+          disableDefaultUI: true,
+          zoomControl: true
+        });
+
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer({
+          map: map,
+          suppressMarkers: false,
+          polylineOptions: { strokeColor: '#e09900', strokeWeight: 4 }
+        });
+
+        initKlavierArtAutocomplete();
+      }
+
+      function checkSchnellserviceDate() {
+        var dateInput = q('#ka-desired-date');
+        var container = qData('schnellservice-container');
+        var note = qData('service-note');
+
+        if (!dateInput || !container) return;
+
+        var dateVal = dateInput.value;
+        if (!dateVal) {
+          container.classList.remove('ka-disabled');
+          if (note) note.style.display = 'none';
+          return;
+        }
+
+        var selected = new Date(dateVal);
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+        var diff = Math.ceil((selected - today) / (1000 * 60 * 60 * 24));
+
+        if (diff <= 4 && diff >= 0) {
+          q('#ka-schnellservice').checked = true;
+          state.schnellservice = true;
+          container.classList.add('ka-disabled');
+          if (note) {
+            note.textContent = 'Schnellservice wird automatisch aktiviert für Termine innerhalb von 4 Werktagen.';
+            note.style.display = 'block';
+          }
+        } else {
+          container.classList.remove('ka-disabled');
+          if (note) note.style.display = 'none';
+        }
+      }
+
+      function checkSaturdayDate() {
+        var dateInput = q('#ka-desired-date');
+        var note = qData('date-note');
+        if (!dateInput || !note) return;
+
+        var dateVal = dateInput.value;
+        if (!dateVal) {
+          note.textContent = 'Samstags finden keine Transporte statt';
+          note.style.color = '#8a8f96';
+          return;
+        }
+
+        var day = new Date(dateVal).getDay();
+        if (day === 6) {
+          note.textContent = 'Achtung: Samstags finden keine Transporte statt!';
+          note.style.color = '#c0392b';
+        } else {
+          note.textContent = 'Samstags finden keine Transporte statt';
+          note.style.color = '#8a8f96';
+        }
+      }
+
+      function sendEmail() {
+        if (!validateRequiredFields(3)) return;
+
+        hideMessages();
+
+        var btn = root.querySelector('[data-action="send-email"]');
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'Wird gesendet...';
+        }
+
+        var fromFloorLabel = q('#ka-from-floor').options[q('#ka-from-floor').selectedIndex].text;
+        var toFloorLabel = q('#ka-to-floor').options[q('#ka-to-floor').selectedIndex].text;
+
+        var wendeltreppeFrom = parseInt(q('#ka-wendeltreppe-from').value) || 0;
+        var wendeltreppeTo = parseInt(q('#ka-wendeltreppe-to').value) || 0;
+        var wendeltreppeText = '';
+        if (wendeltreppeFrom === 1 && wendeltreppeTo === 1) {
+          wendeltreppeText = 'Abholung & Lieferung';
+        } else if (wendeltreppeFrom === 1) {
+          wendeltreppeText = 'Abholung';
+        } else if (wendeltreppeTo === 1) {
+          wendeltreppeText = 'Lieferung';
+        } else {
+          wendeltreppeText = 'Nein';
+        }
+
+        var vatTotal = Math.round(state.totalPrice * 1.2);
+
+        var templateParams = {
+          instrument: state.instrument,
+          from_address: state.fromAddress || q('#ka-from-address').value,
+          to_address: state.toAddress || q('#ka-to-address').value,
+          from_floor: fromFloorLabel,
+          to_floor: toFloorLabel,
+          extra_stairs_from: state.extraStairsFrom > 0 ? 'Ja (+' + state.extraStairsFrom + '€)' : 'Nein',
+          extra_stairs_to: state.extraStairsTo > 0 ? 'Ja (+' + state.extraStairsTo + '€)' : 'Nein',
+          mezzanine_from: state.mezzanineFrom > 0 ? 'Ja (+' + state.mezzanineFrom + '€)' : 'Nein',
+          mezzanine_to: state.mezzanineTo > 0 ? 'Ja (+' + state.mezzanineTo + '€)' : 'Nein',
+          high_parterre_from: state.highParterreFrom > 0 ? 'Ja (+' + state.highParterreFrom + '€)' : 'Nein',
+          high_parterre_to: state.highParterreTo > 0 ? 'Ja (+' + state.highParterreTo + '€)' : 'Nein',
+          wendeltreppe: wendeltreppeText,
+          schnellservice: state.schnellservice ? 'Ja (+30%)' : 'Nein',
+          distance: state.distance + ' km',
+          region: state.region || '-',
+          total_price: state.totalPrice + '€',
+          total_price_vat: vatTotal + '€',
+          name: q('#ka-name').value.trim(),
+          email: q('#ka-email').value.trim(),
+          phone: q('#ka-phone').value.trim(),
+          desired_date: q('#ka-desired-date').value || 'Nicht angegeben',
+          additional_notes: q('#ka-additional-notes').value.trim() || 'Keine'
+        };
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+          .then(function() {
+            showSuccess('Ihre Anfrage wurde erfolgreich gesendet!');
+            if (btn) {
+              btn.textContent = 'Gesendet!';
+            }
+            setTimeout(function() {
+              window.location.href = 'https://stagging.klavierart.at/anfrage-erfolgreich/';
+            }, 1500);
+          })
+          .catch(function(error) {
+            showError('Fehler beim Senden. Bitte versuchen Sie es erneut.');
+            console.error('EmailJS Error:', error);
+            if (btn) {
+              btn.disabled = false;
+              btn.textContent = 'Anfrage senden';
+            }
+          });
+      }
+
+      function bindEvents() {
+        root.addEventListener('click', function(e) {
+          var target = e.target.closest('[data-action]');
+          if (!target) return;
+          var action = target.getAttribute('data-action');
+
+          if (action === 'reset') {
+            resetForm();
+          } else if (action === 'validate-step-1') {
+            if (validateRequiredFields(1)) {
+              updatePrice();
+              goToStep(2);
+              if (state.fromCoords && state.toCoords) {
+                setTimeout(function() {
+                  if (map) {
+                    google.maps.event.trigger(map, 'resize');
+                    showRoute();
+                  }
+                }, 200);
+              }
+            }
+          } else if (action === 'next-step') {
+            var targetStep = parseInt(target.getAttribute('data-target-step'));
+            if (targetStep) goToStep(targetStep);
+          } else if (action === 'prev-step') {
+            var prevStep = parseInt(target.getAttribute('data-target-step'));
+            if (prevStep) goToStep(prevStep);
+          } else if (action === 'send-email') {
+            sendEmail();
+          }
+        });
+
+        root.addEventListener('change', function(e) {
+          var tag = e.target.tagName;
+          var id = e.target.id;
+
+          if (e.target.name === 'ka_instrument') {
+            state.instrument = e.target.value;
+            updatePrice();
+          }
+
+          if (id === 'ka-from-floor' || id === 'ka-to-floor' ||
+              id === 'ka-extra-stairs-from' || id === 'ka-extra-stairs-to' ||
+              id === 'ka-mezzanine-from' || id === 'ka-mezzanine-to' ||
+              id === 'ka-high-parterre-from' || id === 'ka-high-parterre-to' ||
+              id === 'ka-wendeltreppe-from' || id === 'ka-wendeltreppe-to') {
+            updatePrice();
+          }
+
+          if (id === 'ka-schnellservice') {
+            state.schnellservice = e.target.checked;
+            updatePrice();
+          }
+
+          if (id === 'ka-desired-date') {
+            checkSchnellserviceDate();
+            checkSaturdayDate();
+          }
+        });
+      }
+
+      function loadGoogleMaps() {
+        if (typeof google !== 'undefined' && google.maps) {
+          initMap();
+          return;
+        }
+        var script = document.createElement('script');
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=' + GOOGLE_MAPS_API_KEY + '&libraries=places&callback=initKAMap';
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+      }
+
+      window.initKAMap = function() {
+        initMap();
+      };
+
+      function loadEmailJS() {
+        if (typeof emailjs !== 'undefined') {
+          emailjs.init(EMAILJS_PUBLIC_KEY);
+          return;
+        }
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
+        script.onload = function() {
+          emailjs.init(EMAILJS_PUBLIC_KEY);
+        };
+        document.head.appendChild(script);
+      }
+
+      function init() {
+        bindEvents();
+        loadGoogleMaps();
+        loadEmailJS();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</div>
+</div>
+</div>
