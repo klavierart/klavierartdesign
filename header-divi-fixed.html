@@ -29,7 +29,6 @@
   --mk-container:1600px;
   --mk-header-h:94px;
   --mk-sticky-gap:14px;
-  --mk-bar-h:64px;
 }
 #mk-global-header-system,#mk-global-header-system *{box-sizing:border-box}
 #mk-global-header-system img{display:block;max-width:100%}
@@ -52,16 +51,16 @@
 #mk-global-header-system .btn-light:hover{background:var(--mk-gold-hover);color:#fff !important;border-color:transparent}
 
 /* ── SITE HEADER ── */
-/* Sits right below the sticky bar: 10px bar-offset + 64px bar-height + 8px gap */
+/* Default top position set by JS based on actual bar height */
 #mk-global-header-system .mk-site-header{
   position:fixed;inset:auto 0 auto 0;
-  top:calc(10px + var(--mk-bar-h) + 8px);
+  top:0;
   z-index:1300;
   pointer-events:none;
   transition:top .32s cubic-bezier(.22,.8,.24,1)
 }
 /* When scrolled: bar goes to bottom, header docks to top */
-#mk-global-header-system .mk-site-header.is-docked{top:0}
+#mk-global-header-system .mk-site-header.is-docked{top:0 !important}
 
 /* FIX 2: Added border-radius; FIX 3: 85% opacity when scrolled (not 40%) */
 #mk-global-header-system .header-shell{
@@ -394,11 +393,23 @@
   var mClose   = document.getElementById('mkMobileClose');
   var mPanel   = document.getElementById('mkMobilePanel');
 
-  /* ── Body padding: bar + gap + header ── */
-  var headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--mk-header-h')) || 94;
-  var barH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--mk-bar-h')) || 64;
-  /* 10px bar-offset + barH + 8px gap + headerH + 8px bottom gap */
-  document.body.style.paddingTop = (10 + barH + 8 + headerH + 8) + 'px';
+  /* ── Measure real bar height & position header below it ── */
+  var BAR_TOP = 10; /* bar offset from viewport top */
+  var GAP = 10;     /* gap between bar and header */
+
+  function positionElements(){
+    var realBarH = bar ? bar.offsetHeight : 0;
+    var realHeaderH = header ? header.offsetHeight : 94;
+
+    /* Place header right below the bar */
+    if(header && !header.classList.contains('is-docked')){
+      header.style.top = (BAR_TOP + realBarH + GAP) + 'px';
+    }
+
+    /* Body padding = bar area + header area + bottom breathing room */
+    document.body.style.paddingTop = (BAR_TOP + realBarH + GAP + realHeaderH + 10) + 'px';
+  }
+  positionElements();
 
   /* ── Active nav state ── */
   var currentPath = window.location.pathname.replace(/\/$/,'') || '/';
@@ -433,6 +444,11 @@
     var s = window.scrollY > SCROLL_THRESHOLD;
     header.classList.toggle('is-scrolled', s);
     header.classList.toggle('is-docked', s);
+    /* When not docked, keep header below the bar */
+    if(!s){
+      var realBarH = bar ? bar.offsetHeight : 0;
+      header.style.top = (BAR_TOP + realBarH + GAP) + 'px';
+    }
   }
 
   /* ── FIX 5: Simplified sticky bar — pure class toggle, no setTimeout races ── */
@@ -477,20 +493,11 @@
   window.addEventListener('scroll', onScroll, {passive:true});
   window.addEventListener('resize', onScroll, {passive:true});
 
-  /* ── Recalculate body padding on resize (mobile header is shorter) ── */
+  /* ── Recalculate on resize ── */
   var resizeTimer;
   window.addEventListener('resize', function(){
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function(){
-      var h = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--mk-header-h')) || 94;
-      var b = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--mk-bar-h')) || 64;
-      if(window.innerWidth <= 767){
-        /* Mobile: no bar, header at top:0 */
-        document.body.style.paddingTop = h + 'px';
-      } else {
-        document.body.style.paddingTop = (10 + b + 8 + h + 8) + 'px';
-      }
-    }, 150);
+    resizeTimer = setTimeout(positionElements, 150);
   });
 })();
 </script>
