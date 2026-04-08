@@ -498,11 +498,11 @@
         }
       }
 
-      function getBasisPrice(instrument, fromFloor, toFloor, hasWendeltreppe) {
+      function getBasisPrice(instrument, fromFloor, toFloor) {
         if (!pricing[instrument]) return 0;
         var totalFloors = fromFloor + toFloor;
         if (instrument === 'Klavier') {
-          if (totalFloors <= 1 && !hasWendeltreppe) return 250;
+          if (totalFloors <= 1) return 250;
           return 200;
         }
         if (fromFloor === 0 && toFloor === 0) {
@@ -544,17 +544,22 @@
 
         var wendeltreppeFrom = q('#ka-wendeltreppe-from').value === '1';
         var wendeltreppeTo = q('#ka-wendeltreppe-to').value === '1';
-        var hasWendeltreppe = (wendeltreppeFrom || wendeltreppeTo);
 
-        var basisPrice = getBasisPrice(instrument, fromFloor, toFloor, hasWendeltreppe);
+        var basisPrice = getBasisPrice(instrument, fromFloor, toFloor);
+        var isPackage = (instrument === 'Klavier' && basisPrice === 250);
         var fromFloorPrice, toFloorPrice;
 
-        if (instrument === 'Klavier' && basisPrice === 250) {
-          fromFloorPrice = 0;
-          toFloorPrice = 0;
+        if (isPackage) {
+          fromFloorPrice = wendeltreppeFrom && fromFloor > 0 ? fromFloor * 50 : 0;
+          toFloorPrice = wendeltreppeTo && toFloor > 0 ? toFloor * 50 : 0;
         } else {
-          fromFloorPrice = getFloorPrice(instrument, fromFloor);
-          toFloorPrice = getFloorPrice(instrument, toFloor);
+          if (instrument === 'Klavier') {
+            fromFloorPrice = fromFloor * (wendeltreppeFrom ? 50 : 32);
+            toFloorPrice = toFloor * (wendeltreppeTo ? 50 : 32);
+          } else {
+            fromFloorPrice = getFloorPrice(instrument, fromFloor);
+            toFloorPrice = getFloorPrice(instrument, toFloor);
+          }
         }
 
         var distancePrice = Math.round(distance * 1.1);
@@ -587,10 +592,18 @@
         var toFloor = state.toFloor || 0;
 
         var ffp = qData('from-floor-price');
-        if (ffp) ffp.textContent = fromFloor > 0 && isPackage ? 'inkl. im Preis' : (fromFloorPrice > 0 ? fromFloorPrice + '€' : '-');
+        if (ffp) {
+          if (fromFloor > 0 && isPackage && fromFloorPrice === 0) ffp.textContent = 'inkl. im Preis';
+          else if (fromFloorPrice > 0) ffp.textContent = fromFloorPrice + '€';
+          else ffp.textContent = '-';
+        }
 
         var tfp = qData('to-floor-price');
-        if (tfp) tfp.textContent = toFloor > 0 && isPackage ? 'inkl. im Preis' : (toFloorPrice > 0 ? toFloorPrice + '€' : '-');
+        if (tfp) {
+          if (toFloor > 0 && isPackage && toFloorPrice === 0) tfp.textContent = 'inkl. im Preis';
+          else if (toFloorPrice > 0) tfp.textContent = toFloorPrice + '€';
+          else tfp.textContent = '-';
+        }
 
         var dp = qData('distance-price');
         if (dp) dp.textContent = distance + ' km × 1,10€ = ' + distancePrice + '€';
