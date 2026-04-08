@@ -1002,6 +1002,7 @@
           altInput: true,
           altFormat: 'd.m.Y',
           minDate: 'today',
+          maxDate: null,
           disable: [function(date) { return date.getDay() === 0 || date.getDay() === 6; }],
           onChange: function(selectedDates, dateStr) {
             checkSchnellserviceDate();
@@ -1082,29 +1083,54 @@
 
         var vatTotal = Math.round(state.totalPrice * 1.2);
 
+        var fromAddr = q('#ka-from-address').value || state.fromAddress || '-';
+        var toAddr = q('#ka-to-address').value || state.toAddress || '-';
+        var dateVal = datePicker ? datePicker.input.value : (q('#ka-desired-date').value || '');
+        var dateDisplay = dateVal || 'Nicht angegeben';
+        var notesVal = q('#ka-additional-notes').value.trim() || 'Keine';
+
+        var preisDetails = 'Instrument: ' + state.instrument + '\n'
+          + 'Abholadresse: ' + fromAddr + '\n'
+          + 'Lieferadresse: ' + toAddr + '\n'
+          + 'Stockwerk Abholung: ' + fromFloorLabel + '\n'
+          + 'Stockwerk Lieferung: ' + toFloorLabel + '\n'
+          + 'Treppe vor EG (Abholung): ' + (state.extraStairsFrom > 0 ? 'Ja (+' + state.extraStairsFrom + '\u20ac)' : 'Nein') + '\n'
+          + 'Treppe vor EG (Lieferung): ' + (state.extraStairsTo > 0 ? 'Ja (+' + state.extraStairsTo + '\u20ac)' : 'Nein') + '\n'
+          + 'Mezzanin/Hochparterre (Abholung): ' + (state.mezzanineFrom > 0 ? 'Ja (+' + state.mezzanineFrom + '\u20ac)' : 'Nein') + '\n'
+          + 'Mezzanin/Hochparterre (Lieferung): ' + (state.mezzanineTo > 0 ? 'Ja (+' + state.mezzanineTo + '\u20ac)' : 'Nein') + '\n'
+          + 'Wendeltreppe: ' + wendeltreppeText + '\n'
+          + 'Schnellservice: ' + (state.schnellservice ? 'Ja (+30%)' : 'Nein') + '\n'
+          + 'Distanz: ' + state.distance + ' km\n'
+          + 'Gesamtpreis (ohne MwSt.): ' + state.totalPrice + '\u20ac\n'
+          + 'Gesamtpreis (inkl. 20% MwSt.): ' + vatTotal + '\u20ac\n'
+          + 'Gew\u00fcnschtes Datum: ' + dateDisplay + '\n'
+          + 'Anmerkungen: ' + notesVal;
+
         var templateParams = {
           instrument: state.instrument,
-          from_address: state.fromAddress || q('#ka-from-address').value,
-          to_address: state.toAddress || q('#ka-to-address').value,
+          from_address: fromAddr,
+          to_address: toAddr,
           from_floor: fromFloorLabel,
           to_floor: toFloorLabel,
-          extra_stairs_from: state.extraStairsFrom > 0 ? 'Ja (+' + state.extraStairsFrom + '€)' : 'Nein',
-          extra_stairs_to: state.extraStairsTo > 0 ? 'Ja (+' + state.extraStairsTo + '€)' : 'Nein',
-          mezzanine_from: state.mezzanineFrom > 0 ? 'Ja (+' + state.mezzanineFrom + '€)' : 'Nein',
-          mezzanine_to: state.mezzanineTo > 0 ? 'Ja (+' + state.mezzanineTo + '€)' : 'Nein',
-          high_parterre_from: state.highParterreFrom > 0 ? 'Ja (+' + state.highParterreFrom + '€)' : 'Nein',
-          high_parterre_to: state.highParterreTo > 0 ? 'Ja (+' + state.highParterreTo + '€)' : 'Nein',
+          extra_stairs_from: state.extraStairsFrom > 0 ? 'Ja (+' + state.extraStairsFrom + '\u20ac)' : 'Nein',
+          extra_stairs_to: state.extraStairsTo > 0 ? 'Ja (+' + state.extraStairsTo + '\u20ac)' : 'Nein',
+          mezzanine_from: state.mezzanineFrom > 0 ? 'Ja (+' + state.mezzanineFrom + '\u20ac)' : 'Nein',
+          mezzanine_to: state.mezzanineTo > 0 ? 'Ja (+' + state.mezzanineTo + '\u20ac)' : 'Nein',
+          high_parterre_from: state.highParterreFrom > 0 ? 'Ja (+' + state.highParterreFrom + '\u20ac)' : 'Nein',
+          high_parterre_to: state.highParterreTo > 0 ? 'Ja (+' + state.highParterreTo + '\u20ac)' : 'Nein',
           wendeltreppe: wendeltreppeText,
           schnellservice: state.schnellservice ? 'Ja (+30%)' : 'Nein',
           distance: state.distance + ' km',
           region: state.region || '-',
-          total_price: state.totalPrice + '€',
-          total_price_vat: vatTotal + '€',
+          total_price: state.totalPrice + '\u20ac',
+          total_price_vat: vatTotal + '\u20ac',
           name: q('#ka-name').value.trim(),
           email: q('#ka-email').value.trim(),
           phone: q('#ka-phone').value.trim(),
-          desired_date: q('#ka-desired-date').value || 'Nicht angegeben',
-          additional_notes: q('#ka-additional-notes').value.trim() || 'Keine'
+          desired_date: dateDisplay,
+          additional_notes: notesVal,
+          preisDetails: preisDetails,
+          message: preisDetails
         };
 
         emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
@@ -1153,7 +1179,10 @@
             if (targetStep) goToStep(targetStep);
           } else if (action === 'prev-step') {
             var prevStep = parseInt(target.getAttribute('data-target-step'));
-            if (prevStep) goToStep(prevStep);
+            if (prevStep) {
+              if (prevStep === 2) updatePrice();
+              goToStep(prevStep);
+            }
           } else if (action === 'send-email') {
             sendEmail();
           }
