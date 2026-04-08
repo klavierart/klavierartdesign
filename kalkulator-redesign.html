@@ -979,24 +979,11 @@
 
       function checkWeekendDate() {
         var dateInput = q('#ka-desired-date');
-        var note = qData('date-note');
-        if (!dateInput || !note) return;
+        if (!dateInput || !dateInput.value) return;
 
-        var dateVal = dateInput.value;
-        if (!dateVal) {
-          note.textContent = 'Wochenende (Sa/So) ist nicht verf\u00fcgbar';
-          note.style.color = '#8a8f96';
-          return;
-        }
-
-        var day = new Date(dateVal).getDay();
+        var day = new Date(dateInput.value).getDay();
         if (day === 0 || day === 6) {
           dateInput.value = '';
-          note.textContent = 'Wochenende ist nicht m\u00f6glich. Bitte w\u00e4hlen Sie einen Werktag (Mo\u2013Fr).';
-          note.style.color = '#c0392b';
-        } else {
-          note.textContent = 'Wochenende (Sa/So) ist nicht verf\u00fcgbar';
-          note.style.color = '#8a8f96';
         }
       }
 
