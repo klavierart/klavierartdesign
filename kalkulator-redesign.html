@@ -274,12 +274,12 @@
     <details class="ka-advanced-toggle">
       <summary>Erweiterte Optionen</summary>
       <div class="ka-advanced-inner">
-        <div class="ka-form-group"><label for="ka-extra-stairs-from">Treppe vor EG (Abholung)</label><select id="ka-extra-stairs-from"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
-        <div class="ka-form-group"><label for="ka-extra-stairs-to">Treppe vor EG (Lieferung)</label><select id="ka-extra-stairs-to"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
-        <div class="ka-form-group"><label for="ka-mezzanine-from">Mezzanin (Abholung)</label><select id="ka-mezzanine-from"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
-        <div class="ka-form-group"><label for="ka-mezzanine-to">Mezzanin (Lieferung)</label><select id="ka-mezzanine-to"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
-        <div class="ka-form-group"><label for="ka-high-parterre-from">Hochparterre (Abholung)</label><select id="ka-high-parterre-from"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
-        <div class="ka-form-group"><label for="ka-high-parterre-to">Hochparterre (Lieferung)</label><select id="ka-high-parterre-to"><option value="0">Nein</option><option value="29">Ja (+29€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-extra-stairs-from">Treppe vor EG (Abholung)</label><select id="ka-extra-stairs-from"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-extra-stairs-to">Treppe vor EG (Lieferung)</label><select id="ka-extra-stairs-to"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-mezzanine-from">Mezzanin (Abholung)</label><select id="ka-mezzanine-from"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-mezzanine-to">Mezzanin (Lieferung)</label><select id="ka-mezzanine-to"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-high-parterre-from">Hochparterre (Abholung)</label><select id="ka-high-parterre-from"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-high-parterre-to">Hochparterre (Lieferung)</label><select id="ka-high-parterre-to"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
         <div class="ka-form-group"><label for="ka-wendeltreppe-from">Wendeltreppe (Abholung)</label><select id="ka-wendeltreppe-from"><option value="0">Nein</option><option value="1">Ja</option></select></div>
         <div class="ka-form-group"><label for="ka-wendeltreppe-to">Wendeltreppe (Lieferung)</label><select id="ka-wendeltreppe-to"><option value="0">Nein</option><option value="1">Ja</option></select></div>
       </div>
@@ -308,7 +308,7 @@
         <div class="ka-detail-item"><span>Grundpreis:</span><span data-role="base-price">0€</span></div>
         <div class="ka-detail-item"><span>Stockwerke (Abholung):</span><span data-role="from-floor-price">-</span></div>
         <div class="ka-detail-item"><span>Stockwerke (Lieferung):</span><span data-role="to-floor-price">-</span></div>
-        <div class="ka-detail-item"><span>Distanz:</span><span data-role="distance-price">0 km × 1€ = 0€</span></div>
+        <div class="ka-detail-item"><span>Distanz:</span><span data-role="distance-price">0 km × 1,10€ = 0€</span></div>
         <div class="ka-detail-item"><span>Treppe vor EG (Abholung):</span><span data-role="stairs-from-price">0€</span></div>
         <div class="ka-detail-item"><span>Treppe vor EG (Lieferung):</span><span data-role="stairs-to-price">0€</span></div>
         <div class="ka-detail-item"><span>Mezzanin (Abholung):</span><span data-role="mezzanine-from-price">0€</span></div>
@@ -363,7 +363,7 @@
       var DEUTSCH_WAGRAM_COORDS = { lat: 48.2991, lng: 16.5665 };
 
       var pricing = {
-        Klavier: { basis: 175, proStockwerk: 32 },
+        Klavier: { basis: 200, proStockwerk: 32 },
         'Flügel': { basis: 348, proStockwerk: 59 },
         Digital: { basis: 132, proStockwerk: 22 }
       };
@@ -498,10 +498,14 @@
         }
       }
 
-      function getBasisPrice(instrument, fromFloor, toFloor) {
+      function getBasisPrice(instrument, fromFloor, toFloor, hasExtras) {
         if (!pricing[instrument]) return 0;
+        var totalFloors = fromFloor + toFloor;
+        if (instrument === 'Klavier') {
+          if (totalFloors <= 1 && !hasExtras) return 250;
+          return 200;
+        }
         if (fromFloor === 0 && toFloor === 0) {
-          if (instrument === 'Klavier') return 230;
           if (instrument === 'Flügel') return 400;
           if (instrument === 'Digital') return 200;
         }
@@ -538,10 +542,25 @@
         state.highParterreTo = highParterreTo;
         state.schnellservice = schnellservice;
 
-        var basisPrice = getBasisPrice(instrument, fromFloor, toFloor);
-        var fromFloorPrice = getFloorPrice(instrument, fromFloor);
-        var toFloorPrice = getFloorPrice(instrument, toFloor);
-        var distancePrice = distance * 1;
+        var wendeltreppeFrom = q('#ka-wendeltreppe-from').value === '1';
+        var wendeltreppeTo = q('#ka-wendeltreppe-to').value === '1';
+        var hasExtras = (extraStairsFrom > 0 || extraStairsTo > 0
+          || mezzanineFrom > 0 || mezzanineTo > 0
+          || highParterreFrom > 0 || highParterreTo > 0
+          || wendeltreppeFrom || wendeltreppeTo);
+
+        var basisPrice = getBasisPrice(instrument, fromFloor, toFloor, hasExtras);
+        var fromFloorPrice, toFloorPrice;
+
+        if (instrument === 'Klavier' && basisPrice === 250) {
+          fromFloorPrice = 0;
+          toFloorPrice = 0;
+        } else {
+          fromFloorPrice = getFloorPrice(instrument, fromFloor);
+          toFloorPrice = getFloorPrice(instrument, toFloor);
+        }
+
+        var distancePrice = Math.round(distance * 1.1);
 
         var subtotal = basisPrice + fromFloorPrice + toFloorPrice + distancePrice
           + extraStairsFrom + extraStairsTo
@@ -573,7 +592,7 @@
         if (tfp) tfp.textContent = toFloorPrice > 0 ? toFloorPrice + '€' : '-';
 
         var dp = qData('distance-price');
-        if (dp) dp.textContent = distance + ' km × 1€ = ' + distancePrice + '€';
+        if (dp) dp.textContent = distance + ' km × 1,10€ = ' + distancePrice + '€';
 
         var sfp = qData('stairs-from-price');
         if (sfp) sfp.textContent = extraStairsFrom > 0 ? extraStairsFrom + '€' : '0€';
