@@ -375,6 +375,7 @@
       var EMAILJS_PUBLIC_KEY = 'yCj0cp9CD-b8n32OK';
       var EMAILJS_SERVICE_ID = 'service_gndib2k';
       var EMAILJS_TEMPLATE_ID = 'template_iowpn0v';
+      var EMAILJS_CUSTOMER_TEMPLATE_ID = 'template_jch8t3y';
       var GOOGLE_MAPS_API_KEY = 'AIzaSyDn2s_vZG-diNqLDuMXEVjsDX6uWCmCTwk';
       var DEUTSCH_WAGRAM_COORDS = { lat: 48.2991, lng: 16.5665 };
 
@@ -1095,9 +1096,9 @@
         var dateDisplay = dateVal || 'Nicht angegeben';
         var notesVal = q('#ka-additional-notes').value.trim() || 'Keine';
 
-        var preisDetails = 'Instrument: ' + state.instrument + '\n'
-          + 'Abholadresse: ' + fromAddr + '\n'
-          + 'Lieferadresse: ' + toAddr + '\n'
+        var schnellserviceText = state.schnellservice ? '<h3 style="color:red;">\u26a0\ufe0f Schnellservice wurde ausgew\u00e4hlt (+30%)</h3>' : '';
+
+        var preisDetails = 'Grundpreis: ' + state.totalPrice + '\u20ac (Details)\n'
           + 'Stockwerk Abholung: ' + fromFloorLabel + '\n'
           + 'Stockwerk Lieferung: ' + toFloorLabel + '\n'
           + 'Treppe vor EG (Abholung): ' + (state.extraStairsFrom > 0 ? 'Ja (+' + state.extraStairsFrom + '\u20ac)' : 'Nein') + '\n'
@@ -1106,42 +1107,39 @@
           + 'Mezzanin/Hochparterre (Lieferung): ' + (state.mezzanineTo > 0 ? 'Ja (+' + state.mezzanineTo + '\u20ac)' : 'Nein') + '\n'
           + 'Wendeltreppe: ' + wendeltreppeText + '\n'
           + 'Schnellservice: ' + (state.schnellservice ? 'Ja (+30%)' : 'Nein') + '\n'
-          + 'Distanz: ' + state.distance + ' km\n'
+          + 'Distanz: ' + state.distance + ' km \u00d7 1,10\u20ac = ' + Math.round(state.distance * 1.1) + '\u20ac\n'
+          + '---\n'
           + 'Gesamtpreis (ohne MwSt.): ' + state.totalPrice + '\u20ac\n'
           + 'Gesamtpreis (inkl. 20% MwSt.): ' + vatTotal + '\u20ac\n'
-          + 'Gew\u00fcnschtes Datum: ' + dateDisplay + '\n'
-          + 'Anmerkungen: ' + notesVal;
+          + '---\n'
+          + 'AGB & Datenschutz: Akzeptiert';
+
+        var customerName = q('#ka-name').value.trim();
+        var customerEmail = q('#ka-email').value.trim();
+        var customerPhone = q('#ka-phone').value.trim();
 
         var templateParams = {
+          schnellserviceText: schnellserviceText,
           instrument: state.instrument,
-          from_address: fromAddr,
-          to_address: toAddr,
-          from_floor: fromFloorLabel,
-          to_floor: toFloorLabel,
-          extra_stairs_from: state.extraStairsFrom > 0 ? 'Ja (+' + state.extraStairsFrom + '\u20ac)' : 'Nein',
-          extra_stairs_to: state.extraStairsTo > 0 ? 'Ja (+' + state.extraStairsTo + '\u20ac)' : 'Nein',
-          mezzanine_from: state.mezzanineFrom > 0 ? 'Ja (+' + state.mezzanineFrom + '\u20ac)' : 'Nein',
-          mezzanine_to: state.mezzanineTo > 0 ? 'Ja (+' + state.mezzanineTo + '\u20ac)' : 'Nein',
-          high_parterre_from: state.highParterreFrom > 0 ? 'Ja (+' + state.highParterreFrom + '\u20ac)' : 'Nein',
-          high_parterre_to: state.highParterreTo > 0 ? 'Ja (+' + state.highParterreTo + '\u20ac)' : 'Nein',
-          wendeltreppe: wendeltreppeText,
-          schnellservice: state.schnellservice ? 'Ja (+30%)' : 'Nein',
-          distance: state.distance + ' km',
-          region: state.region || '-',
-          total_price: state.totalPrice + '\u20ac',
-          total_price_vat: vatTotal + '\u20ac',
-          name: q('#ka-name').value.trim(),
-          email: q('#ka-email').value.trim(),
-          phone: q('#ka-phone').value.trim(),
-          desired_date: dateDisplay,
-          additional_notes: notesVal,
+          fromAddress: fromAddr,
+          toAddress: toAddr,
+          totalPrice: state.totalPrice + '\u20ac',
+          distance: state.distance,
+          name: customerName,
+          email: customerEmail,
+          phone: customerPhone,
+          desiredDate: dateDisplay,
+          additionalNotes: notesVal,
           preisDetails: preisDetails,
-          message: preisDetails
+          reply_to: customerEmail
         };
 
         emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
           .then(function() {
-            showSuccess('Ihre Anfrage wurde erfolgreich gesendet!');
+            return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_CUSTOMER_TEMPLATE_ID, templateParams);
+          })
+          .then(function() {
+            showSuccess('Ihre Anfrage wurde erfolgreich gesendet! Best\u00e4tigung per E-Mail.');
             if (btn) {
               btn.textContent = 'Gesendet!';
             }
