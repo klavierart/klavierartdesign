@@ -324,6 +324,7 @@
         <div class="ka-detail-item"><span>Mezzanin / Hochparterre (Lieferung):</span><span data-role="mezzanine-to-price">0€</span></div>
         <div class="ka-detail-item" style="display:none"><span>Hochparterre (Abholung):</span><span data-role="parterre-from-price">0€</span></div>
         <div class="ka-detail-item" style="display:none"><span>Hochparterre (Lieferung):</span><span data-role="parterre-to-price">0€</span></div>
+        <div class="ka-detail-item" data-role="schnellservice-row" style="display:none"><span>Schnellservice (+30%):</span><span data-role="schnellservice-price">0€</span></div>
         <div class="ka-detail-item ka-total"><span>Gesamtpreis (ohne MwSt.):</span><span data-role="total-price">0€</span></div>
         <div class="ka-detail-item ka-vat-price"><span>Gesamtpreis (inkl. 20% MwSt.):</span><span data-role="total-price-vat">0€</span></div>
       </div>
@@ -578,20 +579,22 @@
           + mezzanineFrom + mezzanineTo
           + highParterreFrom + highParterreTo;
 
+        var schnellserviceAmount = 0;
         if (schnellservice) {
-          subtotal = Math.round(subtotal * 1.3);
+          schnellserviceAmount = Math.round(subtotal * 0.3);
+          subtotal = subtotal + schnellserviceAmount;
         }
 
         state.totalPrice = subtotal;
 
         updateDisplay(basisPrice, fromFloorPrice, toFloorPrice, distancePrice,
           extraStairsFrom, extraStairsTo, mezzanineFrom, mezzanineTo,
-          highParterreFrom, highParterreTo, subtotal, distance);
+          highParterreFrom, highParterreTo, subtotal, distance, schnellservice, schnellserviceAmount);
       }
 
       function updateDisplay(basisPrice, fromFloorPrice, toFloorPrice, distancePrice,
         extraStairsFrom, extraStairsTo, mezzanineFrom, mezzanineTo,
-        highParterreFrom, highParterreTo, total, distance) {
+        highParterreFrom, highParterreTo, total, distance, schnellservice, schnellserviceAmount) {
 
         var bp = qData('base-price');
         if (bp) bp.textContent = basisPrice + '€';
@@ -635,12 +638,23 @@
         var ptp = qData('parterre-to-price');
         if (ptp) ptp.textContent = highParterreTo > 0 ? highParterreTo + '€' : '0€';
 
+        var ssRow = qData('schnellservice-row');
+        var ssPrice = qData('schnellservice-price');
+        if (ssRow && ssPrice) {
+          if (schnellservice) {
+            ssRow.style.display = 'flex';
+            ssPrice.textContent = '+' + schnellserviceAmount + '\u20ac';
+          } else {
+            ssRow.style.display = 'none';
+          }
+        }
+
         var tp = qData('total-price');
-        if (tp) tp.textContent = total + '€';
+        if (tp) tp.textContent = total + '\u20ac';
 
         var vatTotal = Math.round(total * 1.2);
         var tpv = qData('total-price-vat');
-        if (tpv) tpv.textContent = vatTotal + '€';
+        if (tpv) tpv.textContent = vatTotal + '\u20ac';
 
         var rd = qData('region-display');
         if (rd) rd.textContent = state.region || '-';
