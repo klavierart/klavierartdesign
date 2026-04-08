@@ -11,14 +11,19 @@
     #ka-transport-kalkulator,
     #ka-transport-kalkulator *{box-sizing:border-box}
     #ka-transport-kalkulator{
-      max-width:860px;margin:0 auto;background:#fff;border-radius:12px;
-      box-shadow:0 2px 24px rgba(0,0,0,.07);padding:28px 32px;
+      max-width:860px;margin:0 auto;
+      background:linear-gradient(168deg,#fffcf6 0%,#f7f4ee 40%,#f0ece4 100%);
+      border-radius:14px;
+      box-shadow:0 2px 8px rgba(0,0,0,.04),0 12px 40px rgba(120,90,30,.08);
+      border:1px solid rgba(224,153,0,.12);
+      padding:28px 32px;
       font-family:'Plus Jakarta Sans',Arial,sans-serif;font-size:15px;font-weight:500;
       position:relative;z-index:1;color:#1a1f36
     }
     #ka-transport-kalkulator h2{
-      font-family:'Oswald',Arial,sans-serif;font-size:20px;text-align:center;
-      margin:0 0 24px;text-transform:uppercase;letter-spacing:.04em;color:#1a1f36
+      font-family:'Oswald',Arial,sans-serif;font-size:22px;text-align:center;
+      margin:0 0 24px;text-transform:uppercase;letter-spacing:.06em;color:#1a1f36;
+      background:linear-gradient(90deg,#1a1f36,#3a2e1a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
     }
     #ka-transport-kalkulator h3{
       font-family:'Oswald',Arial,sans-serif;font-size:15px;text-transform:uppercase;
@@ -29,7 +34,7 @@
     }
     #ka-transport-kalkulator .ka-progress-step{
       display:flex;align-items:center;gap:8px;padding:8px 18px;
-      border-radius:999px;background:#f0f0ee;color:#8a8f96;
+      border-radius:999px;background:rgba(26,31,54,.06);color:#8a8f96;
       font-family:'Oswald',Arial,sans-serif;font-size:12px;letter-spacing:.06em;
       text-transform:uppercase;white-space:nowrap;transition:all .25s;
       border:1px solid transparent;margin:0 4px
@@ -52,8 +57,8 @@
     #ka-transport-kalkulator input[type="number"],
     #ka-transport-kalkulator select,
     #ka-transport-kalkulator textarea{
-      width:100%;padding:10px 12px;border:1.5px solid #d8dae0;border-radius:8px;
-      font-size:15px;font-weight:500;font-family:inherit;background:#fafaf8;color:#1a1f36;
+      width:100%;padding:10px 12px;border:1.5px solid rgba(26,31,54,.12);border-radius:8px;
+      font-size:15px;font-weight:500;font-family:inherit;background:rgba(255,255,255,.85);color:#1a1f36;
       outline:none;transition:border-color .2s,box-shadow .2s
     }
     #ka-transport-kalkulator input:focus,
@@ -72,8 +77,8 @@
     #ka-transport-kalkulator .ka-instrument-grid{gap:10px;margin-bottom:4px}
     #ka-transport-kalkulator .ka-check-container{
       position:relative;cursor:pointer;user-select:none;
-      border:1.5px solid #d8dae0;border-radius:10px;padding:14px 14px 14px 38px;
-      background:#fafaf8;font-size:15px;font-weight:700;color:#1a1f36;
+      border:1.5px solid rgba(26,31,54,.12);border-radius:10px;padding:14px 14px 14px 38px;
+      background:rgba(255,255,255,.75);font-size:15px;font-weight:700;color:#1a1f36;
       display:flex;align-items:center;transition:all .2s;margin-bottom:0
     }
     #ka-transport-kalkulator .ka-check-container:hover{border-color:#e09900;background:#fffbf2}
@@ -137,7 +142,7 @@
     #ka-transport-kalkulator .ka-email-btn{background:#e09900 !important}
     #ka-transport-kalkulator .ka-email-btn:hover{background:#c98800 !important}
     #ka-transport-kalkulator .ka-preis-details{
-      background:#fafaf8;padding:20px;border-radius:10px;margin-top:20px;border:1px solid #eceae5
+      background:rgba(255,255,255,.6);padding:20px;border-radius:10px;margin-top:20px;border:1px solid rgba(224,153,0,.12);backdrop-filter:blur(4px)
     }
     #ka-transport-kalkulator .ka-detail-grid{display:grid;grid-template-columns:1fr;gap:0}
     #ka-transport-kalkulator .ka-detail-item{
@@ -171,7 +176,7 @@
     #ka-transport-kalkulator .ka-check-grid.ka-error-border{border:1.5px solid #c0392b;border-radius:10px;padding:4px}
     #ka-transport-kalkulator .ka-date-note{display:block;margin-top:4px;color:#8a8f96;font-size:11px}
     #ka-transport-kalkulator .ka-agb-checkbox{
-      background:#fafaf8;border:1.5px solid #eceae5;border-radius:10px;padding:10px 14px;margin:16px 0
+      background:rgba(255,255,255,.5);border:1.5px solid rgba(224,153,0,.12);border-radius:10px;padding:10px 14px;margin:16px 0
     }
     #ka-transport-kalkulator .ka-agb-checkbox .ka-check-container{
       padding:8px 8px 8px 38px;line-height:1.5;margin-bottom:0;border:none;background:transparent
@@ -180,7 +185,7 @@
     #ka-transport-kalkulator a:hover{color:#1a1f36}
     .ka-section-label{
       font-family:'Oswald',Arial,sans-serif;font-size:11px;letter-spacing:.1em;
-      text-transform:uppercase;color:#8a8f96;margin:0 0 8px;display:block
+      text-transform:uppercase;color:#b08d3e;margin:0 0 8px;display:block
     }
     @media(max-width:768px){
       #ka-transport-kalkulator{padding:18px 16px}
@@ -271,17 +276,18 @@
       </div>
     </div>
 
-    <span class="ka-section-label">Zugangssituation (bitte prüfen)</span>
+    <span class="ka-section-label">Zugangssituation (bitte pr&#252;fen)</span>
     <div class="ka-form-grid" style="margin-bottom:16px">
-        <div class="ka-form-group"><label for="ka-extra-stairs-from">Treppe vor EG (Abholung)</label><select id="ka-extra-stairs-from"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
-        <div class="ka-form-group"><label for="ka-extra-stairs-to">Treppe vor EG (Lieferung)</label><select id="ka-extra-stairs-to"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
-        <div class="ka-form-group"><label for="ka-mezzanine-from">Mezzanin (Abholung)</label><select id="ka-mezzanine-from"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
-        <div class="ka-form-group"><label for="ka-mezzanine-to">Mezzanin (Lieferung)</label><select id="ka-mezzanine-to"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
-        <div class="ka-form-group"><label for="ka-high-parterre-from">Hochparterre (Abholung)</label><select id="ka-high-parterre-from"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
-        <div class="ka-form-group"><label for="ka-high-parterre-to">Hochparterre (Lieferung)</label><select id="ka-high-parterre-to"><option value="0">Nein</option><option value="32">Ja (+32€)</option></select></div>
+        <div class="ka-form-group"><label for="ka-extra-stairs-from">Treppe vor EG (Abholung)</label><select id="ka-extra-stairs-from"><option value="0">Nein</option><option value="32">Ja (+32&#8364;)</option></select></div>
+        <div class="ka-form-group"><label for="ka-extra-stairs-to">Treppe vor EG (Lieferung)</label><select id="ka-extra-stairs-to"><option value="0">Nein</option><option value="32">Ja (+32&#8364;)</option></select></div>
+        <div class="ka-form-group"><label for="ka-mezzanine-from">Mezzanin / Hochparterre (Abholung)</label><select id="ka-mezzanine-from"><option value="0">Nein</option><option value="32">Ja (+32&#8364;)</option></select></div>
+        <div class="ka-form-group"><label for="ka-mezzanine-to">Mezzanin / Hochparterre (Lieferung)</label><select id="ka-mezzanine-to"><option value="0">Nein</option><option value="32">Ja (+32&#8364;)</option></select></div>
         <div class="ka-form-group"><label for="ka-wendeltreppe-from">Wendeltreppe (Abholung)</label><select id="ka-wendeltreppe-from"><option value="0">Nein</option><option value="1">Ja</option></select></div>
         <div class="ka-form-group"><label for="ka-wendeltreppe-to">Wendeltreppe (Lieferung)</label><select id="ka-wendeltreppe-to"><option value="0">Nein</option><option value="1">Ja</option></select></div>
     </div>
+    <!-- Hidden: Hochparterre synced with Mezzanin via JS -->
+    <select id="ka-high-parterre-from" style="display:none"><option value="0">Nein</option><option value="32">Ja</option></select>
+    <select id="ka-high-parterre-to" style="display:none"><option value="0">Nein</option><option value="32">Ja</option></select>
 
     <div class="ka-form-group">
       <label class="ka-check-container ka-schnellservice" data-role="schnellservice-container">
@@ -309,10 +315,10 @@
         <div class="ka-detail-item"><span>Distanz:</span><span data-role="distance-price">0 km × 1,10€ = 0€</span></div>
         <div class="ka-detail-item"><span>Treppe vor EG (Abholung):</span><span data-role="stairs-from-price">0€</span></div>
         <div class="ka-detail-item"><span>Treppe vor EG (Lieferung):</span><span data-role="stairs-to-price">0€</span></div>
-        <div class="ka-detail-item"><span>Mezzanin (Abholung):</span><span data-role="mezzanine-from-price">0€</span></div>
-        <div class="ka-detail-item"><span>Mezzanin (Lieferung):</span><span data-role="mezzanine-to-price">0€</span></div>
-        <div class="ka-detail-item"><span>Hochparterre (Abholung):</span><span data-role="parterre-from-price">0€</span></div>
-        <div class="ka-detail-item"><span>Hochparterre (Lieferung):</span><span data-role="parterre-to-price">0€</span></div>
+        <div class="ka-detail-item"><span>Mezzanin / Hochparterre (Abholung):</span><span data-role="mezzanine-from-price">0€</span></div>
+        <div class="ka-detail-item"><span>Mezzanin / Hochparterre (Lieferung):</span><span data-role="mezzanine-to-price">0€</span></div>
+        <div class="ka-detail-item" style="display:none"><span>Hochparterre (Abholung):</span><span data-role="parterre-from-price">0€</span></div>
+        <div class="ka-detail-item" style="display:none"><span>Hochparterre (Lieferung):</span><span data-role="parterre-to-price">0€</span></div>
         <div class="ka-detail-item ka-total"><span>Gesamtpreis (ohne MwSt.):</span><span data-role="total-price">0€</span></div>
         <div class="ka-detail-item ka-vat-price"><span>Gesamtpreis (inkl. 20% MwSt.):</span><span data-role="total-price-vat">0€</span></div>
       </div>
@@ -1009,6 +1015,13 @@
           if (e.target.name === 'ka_instrument') {
             state.instrument = e.target.value;
             updatePrice();
+          }
+
+          if (id === 'ka-mezzanine-from') {
+            q('#ka-high-parterre-from').value = e.target.value;
+          }
+          if (id === 'ka-mezzanine-to') {
+            q('#ka-high-parterre-to').value = e.target.value;
           }
 
           if (id === 'ka-from-floor' || id === 'ka-to-floor' ||
