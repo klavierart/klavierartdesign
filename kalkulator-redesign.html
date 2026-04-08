@@ -138,10 +138,10 @@
       font-family:'Oswald',Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;
       cursor:pointer;transition:all .2s;color:#fff;width:100%;text-align:center
     }
-    #ka-transport-kalkulator .ka-back-btn{background:#6c757d !important}
-    #ka-transport-kalkulator .ka-back-btn:hover{background:#5a6268 !important}
-    #ka-transport-kalkulator .ka-next-btn{background:#1a1f36 !important}
-    #ka-transport-kalkulator .ka-next-btn:hover{background:#0d1020 !important}
+    #ka-transport-kalkulator .ka-back-btn{background:#1a1f36 !important}
+    #ka-transport-kalkulator .ka-back-btn:hover{background:#2d2d4a !important}
+    #ka-transport-kalkulator .ka-next-btn{background:#e09900 !important;color:#111 !important}
+    #ka-transport-kalkulator .ka-next-btn:hover{background:#c98800 !important}
     #ka-transport-kalkulator .ka-reset-btn{background:#c0392b !important;color:#fff !important}
     #ka-transport-kalkulator .ka-reset-btn:hover{background:#a93226 !important}
     #ka-transport-kalkulator .ka-email-btn{background:#e09900 !important}
@@ -337,7 +337,7 @@
     <div class="ka-map" data-role="map"></div>
     <div class="ka-additional-info"><ul><li>Unverbindlich</li><li>Inkl. Verpackung</li></ul></div>
     <div class="ka-navigation-buttons">
-      <button type="button" class="ka-reset-btn" data-action="prev-step" data-target-step="1">Zur&#252;ck</button>
+      <button type="button" class="ka-back-btn" data-action="prev-step" data-target-step="1">Zur&#252;ck</button>
       <button type="button" class="ka-reset-btn" data-action="reset">Zur&#252;cksetzen</button>
       <button type="button" class="ka-next-btn" data-action="next-step" data-target-step="3">Weiter zur Anfrage</button>
     </div>
@@ -363,8 +363,8 @@
       <div class="ka-error-text" data-role="agb-error"></div>
     </div>
     <div class="ka-navigation-buttons">
-      <button type="button" class="ka-reset-btn" data-action="prev-step" data-target-step="2">Zur&#252;ck</button>
-      <button type="button" class="ka-email-btn" data-action="send-email">Anfrage senden</button>
+      <button type="button" class="ka-back-btn" data-action="prev-step" data-target-step="2">Zur&#252;ck</button>
+      <button type="button" class="ka-next-btn" data-action="send-email">Anfrage senden</button>
     </div>
     <div class="ka-error-message" data-role="error-message"></div>
     <div class="ka-success-message" data-role="success-message"></div>
@@ -899,7 +899,6 @@
         if (!fromInput || !toInput || typeof google === 'undefined') return;
 
         var options = {
-          componentRestrictions: { country: 'at' },
           fields: ['formatted_address', 'geometry', 'address_components']
         };
 
@@ -1058,6 +1057,7 @@
       function sendEmail() {
         if (!validateRequiredFields(3)) return;
 
+        updatePrice();
         hideMessages();
 
         var btn = root.querySelector('[data-action="send-email"]');
@@ -1084,8 +1084,8 @@
 
         var vatTotal = Math.round(state.totalPrice * 1.2);
 
-        var fromAddr = q('#ka-from-address').value || state.fromAddress || '-';
-        var toAddr = q('#ka-to-address').value || state.toAddress || '-';
+        var fromAddr = state.fromAddress || q('#ka-from-address').value || '-';
+        var toAddr = state.toAddress || q('#ka-to-address').value || '-';
         var dateVal = '';
         if (datePicker && datePicker.selectedDates && datePicker.selectedDates.length > 0) {
           var d = datePicker.selectedDates[0];
@@ -1134,26 +1134,30 @@
           reply_to: customerEmail
         };
 
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+        var mail1 = emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+        var mail2 = emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_CUSTOMER_TEMPLATE_ID, templateParams);
+
+        Promise.all([mail1, mail2])
           .then(function() {
-            return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_CUSTOMER_TEMPLATE_ID, templateParams);
-          })
-          .then(function() {
-            showSuccess('Ihre Anfrage wurde erfolgreich gesendet! Best\u00e4tigung per E-Mail.');
-            if (btn) {
-              btn.textContent = 'Gesendet!';
-            }
+            showSuccess('Ihre Anfrage wurde erfolgreich gesendet!');
+            if (btn) btn.textContent = 'Gesendet!';
             setTimeout(function() {
               window.location.href = 'https://stagging.klavierart.at/anfrage-erfolgreich/';
             }, 1500);
           })
           .catch(function(error) {
-            showError('Fehler beim Senden. Bitte versuchen Sie es erneut.');
             console.error('EmailJS Error:', error);
-            if (btn) {
-              btn.disabled = false;
-              btn.textContent = 'Anfrage senden';
-            }
+            if (error && error.text) console.error('EmailJS Detail:', error.text);
+            mail1.then(function() {
+              showSuccess('Anfrage gesendet. Best\u00e4tigungs-E-Mail konnte nicht zugestellt werden.');
+              if (btn) btn.textContent = 'Gesendet!';
+              setTimeout(function() {
+                window.location.href = 'https://stagging.klavierart.at/anfrage-erfolgreich/';
+              }, 1500);
+            }).catch(function() {
+              showError('Fehler beim Senden. Bitte versuchen Sie es erneut.');
+              if (btn) { btn.disabled = false; btn.textContent = 'Anfrage senden'; }
+            });
           });
       }
 
