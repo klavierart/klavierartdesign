@@ -400,6 +400,9 @@
         region: '',
         fromCoords: null,
         toCoords: null,
+        fromAustrian: true,
+        toAustrian: true,
+        bothAustrian: true,
         totalPrice: 0,
         currentStep: 1
       };
@@ -730,6 +733,28 @@
             valid = false;
           }
 
+          var schnellActive = q('#ka-schnellservice').checked;
+          var dateInput = q('#ka-desired-date');
+          if (schnellActive) {
+            if (!dateInput.value) {
+              setFieldError(dateInput, 'Bei Schnellservice ist ein Transportdatum erforderlich (innerhalb von 4 Werktagen)');
+              valid = false;
+            } else {
+              var selDate = new Date(dateInput.value);
+              var today = new Date();
+              today.setHours(0, 0, 0, 0);
+              var diffDays = Math.ceil((selDate - today) / (1000 * 60 * 60 * 24));
+              if (selDate.getDay() === 6) {
+                dateInput.value = '';
+                setFieldError(dateInput, 'Samstag ist nicht m\u00f6glich. Bitte w\u00e4hlen Sie einen Werktag.');
+                valid = false;
+              } else if (diffDays < 0 || diffDays > 4) {
+                setFieldError(dateInput, 'Schnellservice: Bitte w\u00e4hlen Sie ein Datum innerhalb der n\u00e4chsten 4 Werktage');
+                valid = false;
+              }
+            }
+          }
+
           var agb = q('#ka-agb-checkbox');
           if (!agb.checked) {
             var agbContainer = qData('agb-container');
@@ -792,6 +817,35 @@
         });
       }
 
+      function isAustrianAddress(place) {
+        if (!place || !place.address_components) return true;
+        for (var i = 0; i < place.address_components.length; i++) {
+          var comp = place.address_components[i];
+          if (comp.types.indexOf('country') !== -1) {
+            return comp.short_name === 'AT';
+          }
+        }
+        return true;
+      }
+
+      function checkSchnellserviceTerritory() {
+        var container = qData('schnellservice-container');
+        var note = qData('service-note');
+        if (!container) return;
+        if (!state.bothAustrian) {
+          q('#ka-schnellservice').checked = false;
+          state.schnellservice = false;
+          container.classList.add('ka-disabled');
+          if (note) {
+            note.textContent = 'Schnellservice ist nur innerhalb \u00d6sterreichs verf\u00fcgbar.';
+            note.style.display = 'block';
+          }
+        } else {
+          container.classList.remove('ka-disabled');
+          if (note) note.style.display = 'none';
+        }
+      }
+
       function getPlaceDetails(autocomplete, type) {
         var place = autocomplete.getPlace();
         if (!place || !place.geometry) return;
@@ -801,13 +855,20 @@
           lng: place.geometry.location.lng()
         };
 
+        var isAT = isAustrianAddress(place);
+
         if (type === 'from') {
           state.fromAddress = place.formatted_address || q('#ka-from-address').value;
           state.fromCoords = coords;
+          state.fromAustrian = isAT;
         } else {
           state.toAddress = place.formatted_address || q('#ka-to-address').value;
           state.toCoords = coords;
+          state.toAustrian = isAT;
         }
+
+        state.bothAustrian = (state.fromAustrian !== false) && (state.toAustrian !== false);
+        checkSchnellserviceTerritory();
 
         if (state.fromCoords && state.toCoords) {
           getDistance(
@@ -835,7 +896,7 @@
 
         var options = {
           componentRestrictions: { country: 'at' },
-          fields: ['formatted_address', 'geometry']
+          fields: ['formatted_address', 'geometry', 'address_components']
         };
 
         fromAutocomplete = new google.maps.places.Autocomplete(fromInput, options);
@@ -917,7 +978,8 @@
 
         var day = new Date(dateVal).getDay();
         if (day === 6) {
-          note.textContent = 'Achtung: Samstags finden keine Transporte statt!';
+          dateInput.value = '';
+          note.textContent = 'Samstag ist nicht m\u00f6glich. Bitte w\u00e4hlen Sie einen Werktag (Mo\u2013Fr).';
           note.style.color = '#c0392b';
         } else {
           note.textContent = 'Samstags finden keine Transporte statt';
