@@ -1,5 +1,10 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
 <style nowprocket>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+#ka-transport-kalkulator .flatpickr-input{background:rgba(255,255,255,.85) !important}
+#ka-transport-kalkulator .flatpickr-day.flatpickr-disabled{color:#ddd !important;cursor:not-allowed !important}
 .krc2-wrap { width: 100%; max-width: 1600px; margin-inline: auto; padding: 15px; display: flow-root; }
 .krc2-wrap > :first-child { margin-top: 0 !important }
 .krc2-wrap > :last-child  { margin-bottom: 0 !important }
@@ -342,7 +347,7 @@
       <div class="ka-form-group"><label for="ka-name">Name *</label><input type="text" id="ka-name" class="ka-name"><div class="ka-error-text"></div></div>
       <div class="ka-form-group"><label for="ka-email">E-Mail *</label><input type="email" id="ka-email" class="ka-email"><div class="ka-error-text"></div></div>
       <div class="ka-form-group"><label for="ka-phone">Telefon *</label><input type="tel" id="ka-phone" class="ka-phone"><div class="ka-error-text"></div></div>
-      <div class="ka-form-group"><label for="ka-desired-date" data-role="date-label">Transportdatum</label><input type="date" id="ka-desired-date"><div class="ka-error-text"></div><small class="ka-date-note" data-role="date-note">Wochenende (Sa/So) ist nicht verf&#252;gbar</small></div>
+      <div class="ka-form-group"><label for="ka-desired-date" data-role="date-label">Transportdatum</label><input type="text" id="ka-desired-date" placeholder="Datum w&#228;hlen" readonly><div class="ka-error-text"></div><small class="ka-date-note" data-role="date-note">Wochenende (Sa/So) ist nicht verf&#252;gbar</small></div>
     </div>
     <div class="ka-form-group" style="margin-bottom:0">
       <label for="ka-additional-notes">Anmerkungen (optional)</label>
@@ -463,8 +468,7 @@
         if (emailField) emailField.value = '';
         var phoneField = q('#ka-phone');
         if (phoneField) phoneField.value = '';
-        var dateField = q('#ka-desired-date');
-        if (dateField) dateField.value = '';
+        if (datePicker) datePicker.clear();
         releaseDatePicker();
         var notesField = q('#ka-additional-notes');
         if (notesField) notesField.value = '';
@@ -977,15 +981,7 @@
         }
       }
 
-      function checkWeekendDate() {
-        var dateInput = q('#ka-desired-date');
-        if (!dateInput || !dateInput.value) return;
-
-        var day = new Date(dateInput.value).getDay();
-        if (day === 0 || day === 6) {
-          dateInput.value = '';
-        }
-      }
+      var datePicker = null;
 
       function getNextWorkday(date) {
         var d = new Date(date);
@@ -996,18 +992,26 @@
         return d;
       }
 
-      function formatDate(d) {
-        var y = d.getFullYear();
-        var m = ('0' + (d.getMonth() + 1)).slice(-2);
-        var day = ('0' + d.getDate()).slice(-2);
-        return y + '-' + m + '-' + day;
+      function initDatePicker() {
+        var dateInput = q('#ka-desired-date');
+        if (!dateInput || typeof flatpickr === 'undefined') return;
+
+        datePicker = flatpickr(dateInput, {
+          locale: 'de',
+          dateFormat: 'Y-m-d',
+          altInput: true,
+          altFormat: 'd.m.Y',
+          minDate: 'today',
+          disable: [function(date) { return date.getDay() === 0 || date.getDay() === 6; }],
+          onChange: function(selectedDates, dateStr) {
+            checkSchnellserviceDate();
+          }
+        });
       }
 
       function restrictDatePicker() {
-        var dateInput = q('#ka-desired-date');
         var label = qData('date-label');
         var note = qData('date-note');
-        if (!dateInput) return;
 
         var today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -1021,8 +1025,10 @@
           }
         }
 
-        dateInput.min = formatDate(minDate);
-        dateInput.max = formatDate(current);
+        if (datePicker) {
+          datePicker.set('minDate', minDate);
+          datePicker.set('maxDate', current);
+        }
 
         if (label) label.textContent = 'Transportdatum (innerhalb 4 Werktage, Mo\u2013Fr) *';
         if (note) {
@@ -1032,17 +1038,17 @@
       }
 
       function releaseDatePicker() {
-        var dateInput = q('#ka-desired-date');
         var label = qData('date-label');
         var note = qData('date-note');
-        if (!dateInput) return;
 
-        dateInput.min = '';
-        dateInput.max = '';
+        if (datePicker) {
+          datePicker.set('minDate', 'today');
+          datePicker.set('maxDate', null);
+        }
 
         if (label) label.textContent = 'Transportdatum';
         if (note) {
-          note.textContent = 'Wochenende (Sa/So) ist nicht verf\u00fcgbar';
+          note.textContent = 'Nur Werktage (Mo\u2013Fr) w\u00e4hlbar';
           note.style.color = '#8a8f96';
         }
       }
@@ -1199,7 +1205,6 @@
           }
 
           if (id === 'ka-desired-date') {
-            checkWeekendDate();
             checkSchnellserviceDate();
           }
         });
@@ -1247,6 +1252,7 @@
 
       function init() {
         bindEvents();
+        initDatePicker();
         loadGoogleMaps();
         loadEmailJS();
       }
