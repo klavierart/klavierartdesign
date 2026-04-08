@@ -239,6 +239,7 @@
           <span class="ka-checkmark"></span>Digitalpiano
         </label>
       </div>
+      <div class="ka-error-text" data-role="instrument-error"></div>
     </div>
 
     <span class="ka-section-label">Adressen</span>
@@ -330,8 +331,7 @@
     <div class="ka-map" data-role="map"></div>
     <div class="ka-additional-info"><ul><li>Unverbindlich</li><li>Inkl. Verpackung</li></ul></div>
     <div class="ka-navigation-buttons">
-      <button type="button" class="ka-back-btn" data-action="prev-step" data-target-step="1">Zurück</button>
-      <button type="button" class="ka-reset-btn" data-action="reset">Zurücksetzen</button>
+      <button type="button" class="ka-reset-btn" data-action="reset">Zur&#252;cksetzen</button>
       <button type="button" class="ka-next-btn" data-action="next-step" data-target-step="3">Weiter zur Anfrage</button>
     </div>
   </div>
@@ -353,9 +353,10 @@
         <span class="ka-checkmark"></span>
         Ich stimme den <a href="https://stagging.klavierart.at/agb/" target="_blank" rel="noopener">AGB</a> und dem <a href="https://stagging.klavierart.at/datenschutz/" target="_blank" rel="noopener">Datenschutz</a> zu.*
       </label>
+      <div class="ka-error-text" data-role="agb-error"></div>
     </div>
     <div class="ka-navigation-buttons">
-      <button type="button" class="ka-back-btn" data-action="prev-step" data-target-step="2">Zurück</button>
+      <button type="button" class="ka-reset-btn" data-action="prev-step" data-target-step="2">Zur&#252;ck</button>
       <button type="button" class="ka-email-btn" data-action="send-email">Anfrage senden</button>
     </div>
     <div class="ka-error-message" data-role="error-message"></div>
@@ -673,6 +674,8 @@
           if (!instrumentChecked) {
             var grid = qData('instrument-grid');
             if (grid) grid.classList.add('ka-error-border');
+            var instrErr = qData('instrument-error');
+            if (instrErr) { instrErr.textContent = 'Bitte w\u00e4hlen Sie ein Instrument aus'; instrErr.style.display = 'block'; }
             valid = false;
           } else {
             state.instrument = instrumentChecked.value;
@@ -680,13 +683,13 @@
 
           var fromAddr = q('#ka-from-address');
           if (!fromAddr.value.trim()) {
-            setFieldError(fromAddr, 'Bitte Abholadresse eingeben');
+            setFieldError(fromAddr, 'Bitte geben Sie eine Abholadresse ein');
             valid = false;
           }
 
           var toAddr = q('#ka-to-address');
           if (!toAddr.value.trim()) {
-            setFieldError(toAddr, 'Bitte Lieferadresse eingeben');
+            setFieldError(toAddr, 'Bitte geben Sie eine Lieferadresse ein');
             valid = false;
           }
         }
@@ -694,22 +697,22 @@
         if (step === 3) {
           var name = q('#ka-name');
           if (!name.value.trim()) {
-            setFieldError(name, 'Bitte Name eingeben');
+            setFieldError(name, 'Bitte geben Sie Ihren Namen ein');
             valid = false;
           }
 
           var email = q('#ka-email');
           if (!email.value.trim()) {
-            setFieldError(email, 'Bitte E-Mail eingeben');
+            setFieldError(email, 'Bitte geben Sie Ihre E-Mail-Adresse ein');
             valid = false;
           } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
-            setFieldError(email, 'Bitte gültige E-Mail eingeben');
+            setFieldError(email, 'Bitte geben Sie eine g\u00fcltige E-Mail-Adresse ein');
             valid = false;
           }
 
           var phone = q('#ka-phone');
           if (!phone.value.trim()) {
-            setFieldError(phone, 'Bitte Telefonnummer eingeben');
+            setFieldError(phone, 'Bitte geben Sie Ihre Telefonnummer ein');
             valid = false;
           }
 
@@ -717,6 +720,8 @@
           if (!agb.checked) {
             var agbContainer = qData('agb-container');
             if (agbContainer) agbContainer.classList.add('ka-error-border');
+            var agbErr = qData('agb-error');
+            if (agbErr) { agbErr.textContent = 'Bitte stimmen Sie den AGB und dem Datenschutz zu'; agbErr.style.display = 'block'; }
             valid = false;
           }
         }
@@ -1018,7 +1023,18 @@
 
           if (e.target.name === 'ka_instrument') {
             state.instrument = e.target.value;
+            var grid = qData('instrument-grid');
+            if (grid) grid.classList.remove('ka-error-border');
+            var instrErr = qData('instrument-error');
+            if (instrErr) { instrErr.style.display = 'none'; instrErr.textContent = ''; }
             updatePrice();
+          }
+
+          if (id === 'ka-agb-checkbox') {
+            var agbC = qData('agb-container');
+            if (agbC) agbC.classList.remove('ka-error-border');
+            var agbE = qData('agb-error');
+            if (agbE) { agbE.style.display = 'none'; agbE.textContent = ''; }
           }
 
           if (id === 'ka-mezzanine-from') {
@@ -1044,6 +1060,17 @@
           if (id === 'ka-desired-date') {
             checkSchnellserviceDate();
             checkSaturdayDate();
+          }
+        });
+
+        root.addEventListener('input', function(e) {
+          var el = e.target;
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            if (el.value.trim()) {
+              el.classList.remove('ka-error-border');
+              var errText = el.parentNode.querySelector('.ka-error-text');
+              if (errText) { errText.style.display = 'none'; errText.textContent = ''; }
+            }
           }
         });
       }
