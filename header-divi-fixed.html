@@ -1,0 +1,487 @@
+<!--
+  MK Klavier Art — Global Header System (FIXED)
+  ================================================
+  FIXES APPLIED:
+  1. Removed --top-bar-h dependency — header always starts at top:14px, docks to top:0
+  2. Added border-radius to .header-shell (was missing)
+  3. Fixed scroll transparency: 85% instead of 40% (readable over dark hero)
+  4. Fixed z-index: header > sticky bar (was inverted)
+  5. Simplified sticky bar animation (removed setTimeout race condition)
+  6. Added body padding-top via JS to prevent hero jump
+  7. Removed Divi wrapper reset (use Integration tab instead of Code Module)
+  8. Scroll threshold: 40px instead of 8px (less twitchy)
+
+  RECOMMENDED PLACEMENT:
+  Divi → Theme Options → Integration → Add code to the <body>
+  (NOT in a Divi Code Module — avoids wrapper issues entirely)
+-->
+
+<div id="mk-global-header-system">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Variables ── */
+:root{
+  --mk-gold:#e09900;
+  --mk-gold-hover:#d21f3c;
+  --mk-text:#111315;
+  --mk-radius:8px;
+  --mk-container:1600px;
+  --mk-header-h:94px;
+  --mk-sticky-gap:14px;
+}
+#mk-global-header-system,#mk-global-header-system *{box-sizing:border-box}
+#mk-global-header-system img{display:block;max-width:100%}
+#mk-global-header-system a{color:inherit;text-decoration:none}
+#mk-global-header-system button{font:inherit;cursor:pointer}
+
+/* ── BUTTONS ── */
+#mk-global-header-system .btn{
+  font-family:'Oswald',Arial,sans-serif;letter-spacing:.06em;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:46px;padding:11px 20px;border:1px solid transparent;
+  border-radius:var(--mk-radius);text-transform:uppercase;font-size:14px;
+  transition:background .2s,color .2s,border-color .2s,transform .2s,box-shadow .2s;
+  white-space:nowrap
+}
+#mk-global-header-system .btn:hover{transform:translateY(-1px)}
+#mk-global-header-system .btn-primary{background:var(--mk-gold);color:#111315 !important;box-shadow:0 8px 24px rgba(224,153,0,.28)}
+#mk-global-header-system .btn-primary:hover{background:var(--mk-gold-hover);color:#fff !important;box-shadow:0 10px 28px rgba(210,31,60,.28)}
+#mk-global-header-system .btn-light{background:#fff;color:#111315 !important;border-color:rgba(17,19,21,.16)}
+#mk-global-header-system .btn-light:hover{background:var(--mk-gold-hover);color:#fff !important;border-color:transparent}
+
+/* ── SITE HEADER ── */
+/* FIX 1: Starts floating 14px from top, docks to 0 — only 14px shift, not 72px */
+#mk-global-header-system .mk-site-header{
+  position:fixed;inset:auto 0 auto 0;
+  top:14px;
+  z-index:1300;
+  pointer-events:none;
+  transition:top .28s cubic-bezier(.22,.8,.24,1)
+}
+#mk-global-header-system .mk-site-header.is-docked{top:0}
+
+/* FIX 2: Added border-radius; FIX 3: 85% opacity when scrolled (not 40%) */
+#mk-global-header-system .header-shell{
+  pointer-events:auto;
+  min-height:var(--mk-header-h);
+  width:min(calc(100% - 32px), var(--mk-container));
+  margin-inline:auto;
+  background:rgba(244,242,238,.96);
+  border:1px solid rgba(17,19,21,.10);
+  box-shadow:0 8px 32px rgba(17,19,21,.08);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-radius:var(--mk-radius);
+  transition:background .40s ease, box-shadow .40s ease, border-color .40s ease, border-radius .28s ease
+}
+#mk-global-header-system .mk-site-header.is-docked .header-shell{
+  border-radius:0;
+  width:100%
+}
+/* FIX 3: 85% opacity when scrolled — still readable over dark hero */
+#mk-global-header-system .mk-site-header.is-scrolled .header-shell{
+  background:rgba(244,242,238,.85) !important;
+  box-shadow:0 4px 16px rgba(17,19,21,.06) !important;
+  border-color:rgba(17,19,21,.08) !important
+}
+
+#mk-global-header-system .header-inner{
+  width:min(calc(100% - 28px), 100%);
+  margin-inline:auto;
+  min-height:var(--mk-header-h);
+  display:flex;align-items:center;justify-content:space-between;gap:16px
+}
+#mk-global-header-system .logo{display:inline-flex;align-items:center}
+#mk-global-header-system .logo img{height:66px;width:auto}
+
+/* Nav trigger button */
+#mk-global-header-system .nav-trigger{
+  background:none;border:none;outline:none;
+  cursor:pointer;-webkit-appearance:none;appearance:none;
+  padding:10px 14px
+}
+#mk-global-header-system .nav-item:hover .nav-trigger svg,
+#mk-global-header-system .nav-item:focus-within .nav-trigger svg{
+  transform:rotate(180deg)
+}
+
+/* Nav links */
+#mk-global-header-system .nav{display:flex;align-items:center;gap:2px}
+#mk-global-header-system .nav-link{
+  font-family:'Inter',Arial,sans-serif;
+  font-size:15px;font-weight:600;letter-spacing:-.01em;
+  display:inline-flex;align-items:center;
+  min-height:44px;padding:10px 14px;
+  color:rgba(17,19,21,.80);
+  border-radius:var(--mk-radius);
+  position:relative;
+  transition:color .18s, background .18s
+}
+/* Gold underline indicator */
+#mk-global-header-system .nav-link::after{
+  content:'';
+  position:absolute;bottom:5px;left:14px;right:14px;height:2px;
+  background:var(--mk-gold);border-radius:2px;
+  transform:scaleX(0);transform-origin:center;
+  transition:transform .24s cubic-bezier(.22,.8,.24,1)
+}
+#mk-global-header-system .nav-link:hover{color:var(--mk-text);background:rgba(17,19,21,.05)}
+#mk-global-header-system .nav-link:hover::after{transform:scaleX(1)}
+/* Active state */
+#mk-global-header-system .nav-link.is-active{color:var(--mk-text);background:rgba(224,153,0,.08)}
+#mk-global-header-system .nav-link.is-active::after{transform:scaleX(1)}
+
+/* ── DROPDOWN ── */
+#mk-global-header-system .nav-item{position:relative}
+#mk-global-header-system .nav-dropdown{
+  position:absolute;left:0;
+  top:100%;
+  padding-top:6px;
+  min-width:280px;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(6px);
+  transform-origin:top left;
+  transition:opacity .20s ease, transform .26s cubic-bezier(.22,.8,.24,1), visibility 0s linear .20s;
+  z-index:50
+}
+#mk-global-header-system .nav-dropdown-inner{
+  background:rgba(248,246,242,.98);
+  border:1px solid rgba(17,19,21,.09);
+  box-shadow:0 16px 40px rgba(17,19,21,.14);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-radius:var(--mk-radius);
+  padding:6px;
+  display:grid;gap:2px
+}
+#mk-global-header-system .nav-item:hover .nav-dropdown,
+#mk-global-header-system .nav-item:focus-within .nav-dropdown{
+  opacity:1;visibility:visible;pointer-events:auto;
+  transform:translateY(0);
+  transition:opacity .18s ease, transform .24s cubic-bezier(.22,.8,.24,1), visibility 0s linear 0s
+}
+
+/* Dropdown links */
+#mk-global-header-system .nav-dropdown-link{
+  font-family:'Inter',Arial,sans-serif;
+  font-size:14px;font-weight:500;letter-spacing:-.01em;
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  color:rgba(17,19,21,.80);
+  border-radius:calc(var(--mk-radius) - 1px);
+  opacity:0;transform:translateY(4px);
+  transition:background .16s ease, color .16s ease, opacity .22s ease, transform .24s cubic-bezier(.22,.8,.24,1)
+}
+#mk-global-header-system .nav-item:hover .nav-dropdown-link,
+#mk-global-header-system .nav-item:focus-within .nav-dropdown-link{opacity:1;transform:translateY(0)}
+#mk-global-header-system .nav-item:hover .nav-dropdown-link:nth-child(1){transition-delay:0ms}
+#mk-global-header-system .nav-item:hover .nav-dropdown-link:nth-child(2){transition-delay:40ms}
+#mk-global-header-system .nav-item:hover .nav-dropdown-link:nth-child(3){transition-delay:80ms}
+#mk-global-header-system .nav-item:hover .nav-dropdown-link:nth-child(4){transition-delay:120ms}
+#mk-global-header-system .nav-item:hover .nav-dropdown-link:nth-child(5){transition-delay:160ms}
+#mk-global-header-system .nav-dropdown-link:hover{background:rgba(17,19,21,.06);color:var(--mk-text)}
+#mk-global-header-system .nav-dropdown-link.is-active{
+  background:rgba(224,153,0,.10);color:var(--mk-text);font-weight:600;
+  border-left:2px solid var(--mk-gold);padding-left:12px
+}
+
+/* ── MOBILE ── */
+#mk-global-header-system .header-actions{display:flex;align-items:center;gap:10px}
+#mk-global-header-system .mobile-toggle{
+  display:none;width:46px;height:46px;
+  border:1px solid rgba(17,19,21,.14);background:#fff;color:#111315;
+  align-items:center;justify-content:center;border-radius:var(--mk-radius)
+}
+#mk-global-header-system .mobile-toggle svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+#mk-global-header-system .mobile-panel{
+  position:fixed;inset:0 0 0 auto;width:min(88vw,360px);
+  background:#f7f5f0;z-index:1500;padding:18px;
+  box-shadow:-16px 0 48px rgba(17,19,21,.18);
+  display:none;flex-direction:column;gap:14px;
+  overflow-y:auto
+}
+#mk-global-header-system .mobile-panel.open{display:flex}
+#mk-global-header-system .mobile-panel-head{display:flex;align-items:center;justify-content:space-between}
+#mk-global-header-system .mobile-nav{display:grid;gap:8px}
+#mk-global-header-system .mobile-nav a{
+  font-family:'Inter',Arial,sans-serif;font-size:15px;font-weight:600;
+  display:flex;align-items:center;min-height:46px;padding:0 14px;
+  background:#fff;border:1px solid rgba(17,19,21,.09);border-radius:var(--mk-radius)
+}
+#mk-global-header-system .mobile-nav-group-label{
+  font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:800;
+  letter-spacing:.10em;text-transform:uppercase;color:rgba(17,19,21,.44);
+  padding:8px 14px 2px
+}
+#mk-global-header-system .mobile-nav-indent{padding-left:26px !important}
+
+/* ── STICKY CONTACT BAR ── */
+/* FIX 4: z-index 1200 (LOWER than header 1300) */
+#mk-global-header-system .sticky-contact-bar{
+  position:fixed;left:50%;z-index:1200;
+  transform:translateX(-50%);
+  opacity:1;visibility:visible;pointer-events:auto;
+  transition:opacity .30s ease, transform .36s cubic-bezier(.22,.8,.24,1), visibility 0s linear 0s
+}
+#mk-global-header-system .sticky-contact-bar.is-top{
+  top:var(--mk-header-h);
+  padding-top:24px;
+  bottom:auto;
+  width:min(calc(100% - 16px), var(--mk-container))
+}
+#mk-global-header-system .sticky-contact-bar.is-bottom{
+  top:auto;bottom:var(--mk-sticky-gap);
+  width:min(calc(100% - 16px), 820px)
+}
+#mk-global-header-system .sticky-contact-bar.is-hidden{
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .24s ease, visibility 0s linear .24s
+}
+/* FIX 5: Simple CSS transition instead of JS setTimeout animation */
+#mk-global-header-system .sticky-contact-inner{
+  display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px;
+  padding:8px;
+  background:rgba(14,16,18,.88);
+  border:none;
+  box-shadow:0 2px 12px rgba(0,0,0,.22);
+  border-radius:var(--mk-radius);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  transition:transform .32s cubic-bezier(.22,.8,.24,1), opacity .28s ease
+}
+#mk-global-header-system .sticky-link{
+  font-family:'Oswald',Arial,sans-serif;letter-spacing:.04em;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:48px;padding:10px 14px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
+  color:#fff;border-radius:calc(var(--mk-radius) - 1px);
+  font-size:14px;
+  transition:background .18s ease, transform .18s ease
+}
+#mk-global-header-system .sticky-link svg{width:17px;height:17px;stroke:currentColor;stroke-width:2.2;fill:none;flex:0 0 17px}
+#mk-global-header-system .sticky-link:hover{background:rgba(255,255,255,.14);transform:translateY(-1px)}
+#mk-global-header-system .sticky-link.is-cta{background:var(--mk-gold);border-color:transparent;color:#111315;font-weight:600}
+#mk-global-header-system .sticky-link.is-cta:hover{background:var(--mk-gold-hover);color:#fff}
+#mk-global-header-system .sticky-link-label-short{display:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  #mk-global-header-system .header-shell{width:min(calc(100% - 20px), var(--mk-container))}
+  #mk-global-header-system .nav,#mk-global-header-system .header-actions .btn{display:none}
+  #mk-global-header-system .mobile-toggle{display:inline-flex}
+  #mk-global-header-system .header-actions{gap:0}
+  #mk-global-header-system .sticky-contact-bar.is-bottom{width:min(calc(100% - 16px), 680px)}
+}
+@media(max-width:767px){
+  :root{--mk-header-h:74px}
+  #mk-global-header-system .header-shell{width:min(calc(100% - 16px), 100%);min-height:74px}
+  #mk-global-header-system .header-inner{min-height:74px}
+  #mk-global-header-system .logo img{height:50px}
+  #mk-global-header-system .mk-site-header{top:0}
+  #mk-global-header-system .mk-site-header.is-docked .header-shell{border-radius:0}
+  #mk-global-header-system .sticky-contact-inner{grid-template-columns:1fr}
+  #mk-global-header-system .sticky-contact-bar.is-top,
+  #mk-global-header-system .sticky-contact-bar.is-bottom{width:min(calc(100% - 16px), 480px)}
+  #mk-global-header-system .sticky-link-label-short{display:inline}
+  #mk-global-header-system .sticky-link-label-full{display:none}
+  #mk-global-header-system .sticky-contact-bar{display:none !important}
+}
+</style>
+
+<!-- HEADER -->
+<header class="mk-site-header" id="mkSiteHeader">
+<div class="header-shell"><div class="header-inner">
+  <a class="logo" href="https://klavierart.at/" aria-label="MK Klavier Art">
+    <img src="https://klavierart.at/wp-content/uploads/Logo-Klavierart-e1773042470964.png" alt="MK Klavier Art Logo" width="260" height="66">
+  </a>
+  <nav class="nav" aria-label="Hauptnavigation">
+    <a class="nav-link" href="https://klavierart.at/">Home</a>
+    <div class="nav-item has-dropdown">
+      <button class="nav-link nav-trigger" type="button" aria-expanded="false" aria-haspopup="true">Klaviertransport <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="width:14px;height:14px;flex:0 0 14px;margin-left:2px;transition:transform .22s ease"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="nav-dropdown" role="menu">
+        <div class="nav-dropdown-inner">
+          <a class="nav-dropdown-link" href="https://klavierart.at/klaviertransport-wien/" role="menuitem">Klaviertransport Wien</a>
+          <a class="nav-dropdown-link" href="https://klavierart.at/klaviertransport-niederosterreich/" role="menuitem">Klaviertransport Niederösterreich</a>
+          <a class="nav-dropdown-link" href="https://klavierart.at/klaviertransport-in-oesterreich/" role="menuitem">Klaviertransport Österreich</a>
+          <a class="nav-dropdown-link" href="https://klavierart.at/klaviertransport-ins-ausland/" role="menuitem">Klaviertransport ins Ausland</a>
+          <a class="nav-dropdown-link" href="https://klavierart.at/klaviertransport-kosten-rechner/" role="menuitem">Kostenrechner</a>
+        </div>
+      </div>
+    </div>
+    <div class="nav-item has-dropdown">
+      <button class="nav-link nav-trigger" type="button" aria-expanded="false" aria-haspopup="true">Weitere Services <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="width:14px;height:14px;flex:0 0 14px;margin-left:2px;transition:transform .22s ease"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="nav-dropdown" role="menu">
+        <div class="nav-dropdown-inner">
+          <a class="nav-dropdown-link" href="https://klavierart.at/klavierstimmen/" role="menuitem">Klavierstimmen</a>
+          <a class="nav-dropdown-link" href="https://klavierart.at/klavier-entsorgen/" role="menuitem">Klavier entsorgen</a>
+        </div>
+      </div>
+    </div>
+    <a class="nav-link" href="https://klavierart.at/klaviertransportunternehmen/">Über uns</a>
+    <a class="nav-link" href="https://klavierart.at/klaviertransport-blog/">Blog</a>
+    <a class="nav-link" href="https://klavierart.at/kontakt-mit-mk-klavier-art-e-u-anfrage/">Kontakt</a>
+  </nav>
+  <div class="header-actions">
+    <a class="btn btn-light" href="tel:+4366499236064">Anrufen</a>
+    <a class="btn btn-primary" href="#kontakt">Jetzt anfragen</a>
+    <button class="mobile-toggle" id="mkMobileToggle" aria-label="Menü öffnen" aria-expanded="false">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</div></div>
+</header>
+
+<!-- MOBILE PANEL -->
+<aside class="mobile-panel" id="mkMobilePanel" aria-label="Mobiles Menü">
+  <div class="mobile-panel-head">
+    <strong style="font-family:'Inter',sans-serif;font-size:16px">Menü</strong>
+    <button class="mobile-toggle" id="mkMobileClose" aria-label="Schließen" style="display:inline-flex">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-nav">
+    <a href="https://klavierart.at/">Home</a>
+    <div class="mobile-nav-group-label">Klaviertransport</div>
+    <a class="mobile-nav-indent" href="https://klavierart.at/klaviertransport-wien/">Wien</a>
+    <a class="mobile-nav-indent" href="https://klavierart.at/klaviertransport-niederosterreich/">Niederösterreich</a>
+    <a class="mobile-nav-indent" href="https://klavierart.at/klaviertransport-in-oesterreich/">Österreich</a>
+    <a class="mobile-nav-indent" href="https://klavierart.at/klaviertransport-ins-ausland/">Ausland</a>
+    <a class="mobile-nav-indent" href="https://klavierart.at/klaviertransport-kosten-rechner/">Kostenrechner</a>
+    <div class="mobile-nav-group-label">Weitere Services</div>
+    <a class="mobile-nav-indent" href="https://klavierart.at/klavierstimmen/">Klavierstimmen</a>
+    <a class="mobile-nav-indent" href="https://klavierart.at/klavier-entsorgen/">Klavier entsorgen</a>
+    <a href="https://klavierart.at/klaviertransportunternehmen/">Über uns</a>
+    <a href="https://klavierart.at/klaviertransport-blog/">Blog</a>
+    <a href="https://klavierart.at/kontakt-mit-mk-klavier-art-e-u-anfrage/">Kontakt</a>
+  </nav>
+</aside>
+
+<!-- STICKY CONTACT BAR -->
+<div class="sticky-contact-bar is-top" id="mkStickyContactBar" aria-label="Schnellkontakt">
+  <div class="sticky-contact-inner">
+    <a class="sticky-link" href="tel:+4366499236064">
+      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span class="sticky-link-label-full">+43 664 99 23 60 64</span>
+      <span class="sticky-link-label-short">Anrufen</span>
+    </a>
+    <a class="sticky-link" href="mailto:info@klavierart.at">
+      <svg viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <span class="sticky-link-label-full">info@klavierart.at</span>
+      <span class="sticky-link-label-short">E-Mail</span>
+    </a>
+    <a class="sticky-link is-cta" href="#kontakt">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      <span>Jetzt anfragen</span>
+    </a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.getElementById('mk-global-header-system');
+  if(!root) return;
+
+  var header   = document.getElementById('mkSiteHeader');
+  var bar      = document.getElementById('mkStickyContactBar');
+  var contact  = document.getElementById('kontakt');
+  var mToggle  = document.getElementById('mkMobileToggle');
+  var mClose   = document.getElementById('mkMobileClose');
+  var mPanel   = document.getElementById('mkMobilePanel');
+
+  /* ── FIX 6: Add body padding to prevent hero jump ── */
+  /* The fixed header is out of flow — we need to push page content down */
+  var headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--mk-header-h')) || 94;
+  document.body.style.paddingTop = (headerH + 14) + 'px'; /* header-h + top offset */
+
+  /* ── Active nav state ── */
+  var currentPath = window.location.pathname.replace(/\/$/,'') || '/';
+  root.querySelectorAll('.nav-link, .nav-dropdown-link').forEach(function(link){
+    try{
+      var lp = new URL(link.href).pathname.replace(/\/$/,'') || '/';
+      if(lp === currentPath){
+        link.classList.add('is-active');
+        var item = link.closest('.nav-item');
+        if(item){ var pl = item.querySelector('.nav-link'); if(pl) pl.classList.add('is-active'); }
+      }
+    }catch(e){}
+  });
+
+  /* ── Mobile ── */
+  function closePanel(){
+    if(mPanel) mPanel.classList.remove('open');
+    if(mToggle) mToggle.setAttribute('aria-expanded','false');
+  }
+  if(mToggle) mToggle.addEventListener('click',function(){
+    if(mPanel) mPanel.classList.add('open');
+    mToggle.setAttribute('aria-expanded','true');
+  });
+  if(mClose) mClose.addEventListener('click',closePanel);
+  if(mPanel) mPanel.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',closePanel); });
+
+  /* ── FIX 8: Scroll threshold at 40px instead of 8px ── */
+  var SCROLL_THRESHOLD = 40;
+
+  function updateHeader(){
+    if(!header) return;
+    var s = window.scrollY > SCROLL_THRESHOLD;
+    header.classList.toggle('is-scrolled', s);
+    header.classList.toggle('is-docked', s);
+  }
+
+  /* ── FIX 5: Simplified sticky bar — pure class toggle, no setTimeout races ── */
+  var lastBarPos = 'top';
+
+  function updateBar(){
+    if(!bar) return;
+    var sy = window.scrollY || 0;
+
+    /* Hide when contact section is in view */
+    if(contact){
+      var rect = contact.getBoundingClientRect();
+      if(rect.top < window.innerHeight - 100){
+        bar.classList.add('is-hidden');
+        return;
+      }
+    }
+    bar.classList.remove('is-hidden');
+
+    var newPos = sy <= SCROLL_THRESHOLD ? 'top' : 'bottom';
+    if(newPos !== lastBarPos){
+      bar.classList.remove('is-top','is-bottom');
+      bar.classList.add('is-' + newPos);
+      lastBarPos = newPos;
+    }
+  }
+
+  /* ── Scroll handler with rAF ── */
+  var ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){ updateHeader(); updateBar(); ticking = false; });
+  }
+
+  /* Init */
+  updateHeader();
+  lastBarPos = (window.scrollY||0) <= SCROLL_THRESHOLD ? 'top' : 'bottom';
+  bar.classList.add('is-' + lastBarPos);
+  updateBar();
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
+
+  /* ── Recalculate body padding on resize (mobile header is shorter) ── */
+  var resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){
+      var h = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--mk-header-h')) || 94;
+      var topOffset = window.innerWidth <= 767 ? 0 : 14;
+      document.body.style.paddingTop = (h + topOffset) + 'px';
+    }, 150);
+  });
+})();
+</script>
+</div>
