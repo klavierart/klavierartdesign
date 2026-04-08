@@ -29,6 +29,7 @@
   --mk-container:1600px;
   --mk-header-h:94px;
   --mk-sticky-gap:14px;
+  --mk-bar-h:64px;
 }
 #mk-global-header-system,#mk-global-header-system *{box-sizing:border-box}
 #mk-global-header-system img{display:block;max-width:100%}
@@ -51,14 +52,15 @@
 #mk-global-header-system .btn-light:hover{background:var(--mk-gold-hover);color:#fff !important;border-color:transparent}
 
 /* ── SITE HEADER ── */
-/* FIX 1: Starts floating 14px from top, docks to 0 — only 14px shift, not 72px */
+/* Sits right below the sticky bar: 10px bar-offset + 64px bar-height + 8px gap */
 #mk-global-header-system .mk-site-header{
   position:fixed;inset:auto 0 auto 0;
-  top:14px;
+  top:calc(10px + var(--mk-bar-h) + 8px);
   z-index:1300;
   pointer-events:none;
-  transition:top .28s cubic-bezier(.22,.8,.24,1)
+  transition:top .32s cubic-bezier(.22,.8,.24,1)
 }
+/* When scrolled: bar goes to bottom, header docks to top */
 #mk-global-header-system .mk-site-header.is-docked{top:0}
 
 /* FIX 2: Added border-radius; FIX 3: 85% opacity when scrolled (not 40%) */
@@ -223,9 +225,9 @@
   opacity:1;visibility:visible;pointer-events:auto;
   transition:opacity .30s ease, transform .36s cubic-bezier(.22,.8,.24,1), visibility 0s linear 0s, top .32s cubic-bezier(.22,.8,.24,1), bottom .32s cubic-bezier(.22,.8,.24,1), width .32s ease
 }
-/* Top position: OVER the header (z-index higher) */
+/* Top position: RIGHT ABOVE the header, not overlapping */
 #mk-global-header-system .sticky-contact-bar.is-top{
-  z-index:1400;
+  z-index:1200;
   top:10px;
   bottom:auto;
   width:min(calc(100% - 32px), var(--mk-container))
@@ -392,10 +394,11 @@
   var mClose   = document.getElementById('mkMobileClose');
   var mPanel   = document.getElementById('mkMobilePanel');
 
-  /* ── FIX 6: Add body padding to prevent hero jump ── */
-  /* The fixed header is out of flow — we need to push page content down */
+  /* ── Body padding: bar + gap + header ── */
   var headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--mk-header-h')) || 94;
-  document.body.style.paddingTop = (headerH + 14) + 'px'; /* header-h + top offset */
+  var barH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--mk-bar-h')) || 64;
+  /* 10px bar-offset + barH + 8px gap + headerH + 8px bottom gap */
+  document.body.style.paddingTop = (10 + barH + 8 + headerH + 8) + 'px';
 
   /* ── Active nav state ── */
   var currentPath = window.location.pathname.replace(/\/$/,'') || '/';
@@ -480,8 +483,13 @@
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function(){
       var h = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--mk-header-h')) || 94;
-      var topOffset = window.innerWidth <= 767 ? 0 : 14;
-      document.body.style.paddingTop = (h + topOffset) + 'px';
+      var b = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--mk-bar-h')) || 64;
+      if(window.innerWidth <= 767){
+        /* Mobile: no bar, header at top:0 */
+        document.body.style.paddingTop = h + 'px';
+      } else {
+        document.body.style.paddingTop = (10 + b + 8 + h + 8) + 'px';
+      }
     }, 150);
   });
 })();
