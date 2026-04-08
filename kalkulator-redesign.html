@@ -585,11 +585,15 @@
         var bp = qData('base-price');
         if (bp) bp.textContent = basisPrice + '€';
 
+        var isPackage = (state.instrument === 'Klavier' && basisPrice === 250);
+        var fromFloor = state.fromFloor || 0;
+        var toFloor = state.toFloor || 0;
+
         var ffp = qData('from-floor-price');
-        if (ffp) ffp.textContent = fromFloorPrice > 0 ? fromFloorPrice + '€' : '-';
+        if (ffp) ffp.textContent = fromFloor > 0 && isPackage ? 'inkl. im Preis' : (fromFloorPrice > 0 ? fromFloorPrice + '€' : '-');
 
         var tfp = qData('to-floor-price');
-        if (tfp) tfp.textContent = toFloorPrice > 0 ? toFloorPrice + '€' : '-';
+        if (tfp) tfp.textContent = toFloor > 0 && isPackage ? 'inkl. im Preis' : (toFloorPrice > 0 ? toFloorPrice + '€' : '-');
 
         var dp = qData('distance-price');
         if (dp) dp.textContent = distance + ' km × 1,10€ = ' + distancePrice + '€';
