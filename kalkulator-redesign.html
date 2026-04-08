@@ -498,11 +498,11 @@
         }
       }
 
-      function getBasisPrice(instrument, fromFloor, toFloor, hasExtras) {
+      function getBasisPrice(instrument, fromFloor, toFloor, hasWendeltreppe) {
         if (!pricing[instrument]) return 0;
         var totalFloors = fromFloor + toFloor;
         if (instrument === 'Klavier') {
-          if (totalFloors <= 1 && !hasExtras) return 250;
+          if (totalFloors <= 1 && !hasWendeltreppe) return 250;
           return 200;
         }
         if (fromFloor === 0 && toFloor === 0) {
@@ -544,12 +544,9 @@
 
         var wendeltreppeFrom = q('#ka-wendeltreppe-from').value === '1';
         var wendeltreppeTo = q('#ka-wendeltreppe-to').value === '1';
-        var hasExtras = (extraStairsFrom > 0 || extraStairsTo > 0
-          || mezzanineFrom > 0 || mezzanineTo > 0
-          || highParterreFrom > 0 || highParterreTo > 0
-          || wendeltreppeFrom || wendeltreppeTo);
+        var hasWendeltreppe = (wendeltreppeFrom || wendeltreppeTo);
 
-        var basisPrice = getBasisPrice(instrument, fromFloor, toFloor, hasExtras);
+        var basisPrice = getBasisPrice(instrument, fromFloor, toFloor, hasWendeltreppe);
         var fromFloorPrice, toFloorPrice;
 
         if (instrument === 'Klavier' && basisPrice === 250) {
