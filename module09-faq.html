@@ -1,0 +1,235 @@
+<!-- ============================================================
+     MODULE 09: FAQ
+     Home Page — klavierart.at
+     ============================================================ -->
+
+
+<!-- ── 1. CSS ──────────────────────────────────────────────── -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+
+  /* ── Design Tokens (CSS Variables) ── */
+  .ka-home-page {
+    --bg:           #e7e7e5;
+    --surface:      #f4f2ee;
+    --surface-2:    #ffffff;
+    --surface-dark: #151819;
+    --text:         #111315;
+    --text-soft:    #4d5358;
+    --text-muted:   #6e7479;
+    --text-on-dark: #f6f7f8;
+    --border:       rgba(17,19,21,.10);
+    --border-dark:  rgba(255,255,255,.10);
+    --gold:         #e09900;
+    --gold-hover:   #d21f3c;
+    --green:        #6fd16e;
+    --shadow-sm:    0 10px 24px rgba(17,19,21,.08);
+    --shadow-md:    0 18px 50px rgba(17,19,21,.12);
+    --shadow-lg:    0 28px 90px rgba(0,0,0,.18);
+    --radius:       6px;
+    --container:    1600px;
+  }
+
+  /* ── Base Reset & Typography ── */
+  .ka-home-page * { box-sizing: border-box; }
+  .ka-home-page {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+  .ka-home-page img,
+  .ka-home-page video { display: block; max-width: 100%; }
+  .ka-home-page a     { color: inherit; text-decoration: none; }
+  .ka-home-page p     { margin: 0 0 14px; color: var(--text-soft); }
+  .ka-home-page h2    { margin: 0 0 12px; font-family: "Oswald", Arial, sans-serif;
+                         font-size: 22px; line-height: 1.15; letter-spacing: .01em; }
+  .ka-home-page h3    { margin: 0 0 10px; font-family: "Oswald", Arial, sans-serif;
+                         font-size: 22px; line-height: 1.18; letter-spacing: .01em; }
+
+  /* ── Layout ── */
+  .ka-home-page .ka-container {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding: 15px;
+    display: flow-root;
+  }
+  .ka-home-page .ka-container > :first-child { margin-top: 0 !important; }
+  .ka-home-page .ka-container > :last-child  { margin-bottom: 0 !important; }
+  .ka-home-page .section { padding: 0; }
+
+  /* ── Section Header ── */
+  .ka-home-page .section-head {
+    max-width: 100%;
+    margin: 0 auto 32px;
+    text-align: center;
+  }
+  .ka-home-page .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.7);
+    color: var(--text-muted);
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 14px;
+    border-radius: var(--radius);
+  }
+  .ka-home-page .section-copy {
+    max-width: 68ch;
+    margin-inline: auto;
+    font-size: 17px;
+    line-height: 1.72;
+  }
+
+  /* ── FAQ Grid ── */
+  .ka-home-page .faq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 16px;
+  }
+  .ka-home-page .faq-item {
+    overflow: hidden;
+    background: rgba(255,255,255,.76);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius);
+  }
+  .ka-home-page .faq-question {
+    width: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    font-family: "Plus Jakarta Sans", Arial, sans-serif;
+  }
+  .ka-home-page .faq-question span:first-child { flex: 1; }
+  .ka-home-page .faq-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(17,19,21,.06);
+    border-radius: var(--radius);
+    flex: 0 0 42px;
+    transition: transform .22s, background-color .22s;
+    pointer-events: none;
+  }
+  .ka-home-page .faq-icon svg         { width: 18px; height: 18px; }
+  .ka-home-page .faq-answer           { max-height: 0; overflow: hidden; transition: max-height .28s ease; }
+  .ka-home-page .faq-answer-inner     { padding: 0 20px 20px; color: var(--text-soft); }
+  .ka-home-page .faq-item.open .faq-icon {
+    transform: rotate(45deg);
+    background: rgba(210,31,60,.10);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .ka-home-page               { font-size: 14px; }
+    .ka-home-page h2,
+    .ka-home-page h3            { font-size: 20px; }
+    .ka-home-page .section-copy { font-size: 15px; }
+    .ka-home-page .ka-container { padding: 15px; }
+    .ka-home-page .faq-grid     { grid-template-columns: 1fr; }
+    .ka-home-page .faq-question { font-size: 17px; padding: 18px; }
+    .ka-home-page .faq-answer-inner { padding: 0 18px 18px; }
+  }
+
+</style>
+
+
+<!-- ── 2. HTML ─────────────────────────────────────────────── -->
+
+<div class="ka-home-page" id="ka-faq-section" style="padding-top:0;padding-bottom:0;background:#e7e7e5">
+<section class="section" id="faq">
+<div class="ka-container">
+<div class="section-head">
+<div class="eyebrow">FAQ</div>
+<h2>H&#228;ufige Fragen</h2>
+</div>
+<div class="faq-grid">
+<article class="faq-item open">
+<button aria-expanded="true" class="faq-question"><span>Was macht MK Klavier Art genau?</span><span class="faq-icon"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span></button>
+<div class="faq-answer" style="max-height:220px"><div class="faq-answer-inner">MK Klavier Art ist spezialisiert auf Klaviertransport, Fl&#252;geltransport, Klavierentsorgung und Klavierstimmung in Wien, Nieder&#246;sterreich, ganz &#214;sterreich und bei Bedarf auch dar&#252;ber hinaus.</div></div>
+</article>
+<article class="faq-item">
+<button aria-expanded="false" class="faq-question"><span>Wie schnell bekomme ich ein Angebot?</span><span class="faq-icon"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span></button>
+<div class="faq-answer"><div class="faq-answer-inner">In vielen F&#228;llen noch am selben Tag, bei vollst&#228;ndigen Angaben oft sehr schnell. Je klarer die Infos, desto sauberer und schneller die Kalkulation.</div></div>
+</article>
+<article class="faq-item">
+<button aria-expanded="false" class="faq-question"><span>Ist mein Instrument w&#228;hrend des Transports versichert?</span><span class="faq-icon"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span></button>
+<div class="faq-answer"><div class="faq-answer-inner">Ja. Transporte werden mit klaren rechtlichen Rahmenbedingungen und Versicherungsschutz durchgef&#252;hrt. Genau das ist einer der Vorteile eines eingetragenen Betriebs.</div></div>
+</article>
+<article class="faq-item">
+<button aria-expanded="false" class="faq-question"><span>Welche Informationen ben&#246;tigen Sie f&#252;r eine Offerte?</span><span class="faq-icon"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span></button>
+<div class="faq-answer"><div class="faq-answer-inner">Abholadresse, Lieferadresse, Stockwerke, Lift ja oder nein, Instrumententyp und nach M&#246;glichkeit Fotos vom Instrument und vom Zugang.</div></div>
+</article>
+<article class="faq-item">
+<button aria-expanded="false" class="faq-question"><span>Was kostet ein Klaviertransport?</span><span class="faq-icon"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span></button>
+<div class="faq-answer"><div class="faq-answer-inner">Die Kosten h&#228;ngen von Etagen, Zugang, Lift und Instrumententyp ab. Mit unserem <a href="https://klavierart.at/klaviertransport-kosten-rechner/" style="color:var(--gold-hover);font-weight:700">Kostenrechner erhalten Sie in 30 Sekunden eine erste Einsch&#228;tzung</a>. Nach Pr&#252;fung der realen Situation erstellt MK Klavier Art einen verbindlichen Fixpreis &#8211; ohne versteckte Zusatzkosten.</div></div>
+</article>
+<article class="faq-item">
+<button aria-expanded="false" class="faq-question"><span>Gibt es einen Fixpreis?</span><span class="faq-icon"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span></button>
+<div class="faq-answer"><div class="faq-answer-inner">Ja, nach Pr&#252;fung der realen Situation. Ziel ist ein klares Angebot ohne versteckte Zusatzkosten oder vage Nachverhandlungen am Transporttag.</div></div>
+</article>
+<article class="faq-item">
+<button aria-expanded="false" class="faq-question"><span>Arbeiten Sie nur in Wien und Nieder&#246;sterreich?</span><span class="faq-icon"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span></button>
+<div class="faq-answer"><div class="faq-answer-inner">Der Schwerpunkt liegt regional, aber &#246;sterreichweite und internationale Transporte geh&#246;ren ebenfalls zum Angebot, wenn die Planung dazu passt.</div></div>
+</article>
+<article class="faq-item">
+<button aria-expanded="false" class="faq-question"><span>Wie lange dauert ein Klaviertransport und wann kann ich danach wieder spielen?</span><span class="faq-icon"><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg></span></button>
+<div class="faq-answer"><div class="faq-answer-inner">Ein lokaler Transport innerhalb Wiens oder Nieder&#246;sterreichs dauert in der Regel 2 bis 4 Stunden &#8211; inklusive Verpackung, Transport und Aufstellung. Danach sollte das Klavier 1 bis 2 Wochen akklimatisieren, bevor es gestimmt wird: Temperaturschwankungen und ver&#228;nderte Luftfeuchtigkeit beeinflussen die Stimmung erheblich. Eine Stimmung direkt nach dem Transport w&#252;rde kaum halten. MK Klavier Art bietet auf Wunsch <a href="https://klavierart.at/klavierstimmen/" style="color:var(--gold-hover);font-weight:700">Klavierstimmen nach dem Transport</a> an.</div></div>
+</article>
+</div>
+</div>
+</section>
+</div>
+
+
+<!-- ── 3. JavaScript ─────────────────────────────────────── -->
+<script>
+(function() {
+  var root = document.getElementById('ka-faq-section');
+  if (!root) return;
+
+  var buttons = root.querySelectorAll('.faq-question');
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', function() {
+      var item = this.closest('.faq-item');
+      var answer = item.querySelector('.faq-answer');
+      var isOpen = item.classList.contains('open');
+
+      var allItems = root.querySelectorAll('.faq-item');
+      for (var j = 0; j < allItems.length; j++) {
+        allItems[j].classList.remove('open');
+        var q = allItems[j].querySelector('.faq-question');
+        var a = allItems[j].querySelector('.faq-answer');
+        if (q) q.setAttribute('aria-expanded', 'false');
+        if (a) a.style.maxHeight = '0px';
+      }
+
+      if (!isOpen) {
+        item.classList.add('open');
+        this.setAttribute('aria-expanded', 'true');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+      }
+    });
+  }
+})();
+</script>
