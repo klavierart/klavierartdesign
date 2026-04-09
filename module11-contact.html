@@ -1,0 +1,304 @@
+<!-- ============================================================
+     MODULE 11: CONTACT
+     ============================================================ -->
+
+
+<!-- ── 1. CSS ── -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+
+  /* ── Design Tokens ── */
+  .ka-home-page {
+    --bg: #e7e7e5; --surface: #f4f2ee; --surface-2: #ffffff;
+    --surface-dark: #151819; --text: #111315; --text-soft: #4d5358;
+    --text-muted: #6e7479; --text-on-dark: #f6f7f8;
+    --border: rgba(17,19,21,.10); --border-dark: rgba(255,255,255,.10);
+    --gold: #e09900; --gold-hover: #d21f3c; --green: #6fd16e;
+    --shadow-sm: 0 10px 24px rgba(17,19,21,.08);
+    --shadow-md: 0 18px 50px rgba(17,19,21,.12);
+    --shadow-lg: 0 28px 90px rgba(0,0,0,.18);
+    --radius: 6px; --container: 1600px;
+  }
+
+  /* ── Base ── */
+  .ka-home-page * { box-sizing: border-box; }
+  .ka-home-page {
+    margin: 0; font-family: "Plus Jakarta Sans", Arial, sans-serif;
+    font-size: 16px; line-height: 1.6; color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+  .ka-home-page img, .ka-home-page video { display: block; max-width: 100%; }
+  .ka-home-page a     { color: inherit; text-decoration: none; }
+  .ka-home-page p     { margin: 0 0 14px; color: var(--text-soft); }
+  .ka-home-page h2    { margin: 0 0 12px; font-family: "Oswald", Arial, sans-serif;
+                         font-size: 22px; line-height: 1.15; letter-spacing: .01em; }
+  .ka-home-page h3    { margin: 0 0 10px; font-family: "Oswald", Arial, sans-serif;
+                         font-size: 22px; line-height: 1.18; letter-spacing: .01em; }
+  .ka-home-page .ka-container { width: 100%; max-width: var(--container); margin-inline: auto; padding: 15px; display: flow-root; }
+  .ka-home-page .ka-container > :first-child { margin-top: 0 !important; }
+  .ka-home-page .ka-container > :last-child  { margin-bottom: 0 !important; }
+  .ka-home-page .section { padding: 0; }
+
+  /* ── Eyebrow ── */
+  .ka-home-page .eyebrow {
+    display: inline-flex; align-items: center; min-height: 36px;
+    padding: 7px 12px; border: 1px solid var(--border);
+    background: rgba(255,255,255,.7); color: var(--text-muted);
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    font-weight: 700; margin-bottom: 14px; border-radius: var(--radius);
+  }
+
+  /* ── Contact Layout ── */
+  .ka-home-page .contact-layout {
+    display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+    gap: 16px; align-items: stretch;
+  }
+
+  /* ── Form Card ── */
+  .ka-home-page .contact-card          { border-radius: var(--radius); }
+  .ka-home-page .contact-card.form-card{ overflow: hidden; background: #fff; }
+  .ka-home-page .contact-form-shell    { padding: 22px; background: #fff; display: grid; gap: 14px; }
+  .ka-home-page .contact-form-intro    { display: grid; gap: 8px; }
+  .ka-home-page .contact-form-intro h2 { margin: 0; }
+  .ka-home-page .contact-form-intro p  { margin: 0; max-width: 60ch; }
+
+  /* ── Form Fields ── */
+  .ka-home-page .contact-form-shell input[type="text"],
+  .ka-home-page .contact-form-shell input[type="email"],
+  .ka-home-page .contact-form-shell input[type="tel"],
+  .ka-home-page .contact-form-shell textarea,
+  .ka-home-page .contact-form-shell select {
+    width: 100%; padding: 11px 13px;
+    border: 1px solid rgba(17,19,21,.12); border-radius: 6px;
+    background: #f7f5f0; color: var(--text); outline: none;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+    box-sizing: border-box; font-family: inherit;
+  }
+  .ka-home-page .contact-form-shell input:focus,
+  .ka-home-page .contact-form-shell textarea:focus,
+  .ka-home-page .contact-form-shell select:focus {
+    border-color: var(--gold-hover);
+    box-shadow: 0 0 0 2px rgba(210,31,60,.12);
+    background: #fff;
+  }
+  .ka-home-page .contact-form-shell textarea { min-height: 118px; resize: vertical; }
+  .ka-home-page .contact-form-shell label {
+    display: block; margin: 0 0 6px; color: var(--text); font-weight: 600;
+  }
+  .ka-home-page .contact-form-shell .row.cols {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+  .ka-home-page .contact-form-shell .wpcf7-submit,
+  .ka-home-page .contact-form-shell input[type="submit"] {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 48px; padding: 0 22px; background: var(--gold); color: #111315;
+    border: none; border-radius: 5px; font-family: "Oswald", Arial, sans-serif;
+    font-size: 14px; letter-spacing: .05em; text-transform: uppercase;
+    cursor: pointer; transition: background .22s, color .22s, transform .22s;
+    box-shadow: 0 14px 36px rgba(224,153,0,.24);
+  }
+  .ka-home-page .contact-form-shell .wpcf7-submit:hover { background: var(--gold-hover); color: #fff; }
+
+  /* ── AGB & Datenschutz links ── */
+  .ka-home-page .contact-form-shell .legal a {
+    color: var(--gold); text-decoration: underline; text-underline-offset: 3px;
+    transition: color .2s;
+  }
+  .ka-home-page .contact-form-shell .legal a:hover {
+    color: var(--gold-hover);
+  }
+
+  /* ── Side Stack ── */
+  .ka-home-page .contact-side-stack { display: flex; flex-direction: column; gap: 10px; }
+  .ka-home-page .contact-top-badge {
+    align-self: flex-end; display: inline-flex; align-items: center; gap: 8px;
+    min-height: 42px; padding: 10px 14px; background: #fff;
+    border: 1px solid rgba(17,19,21,.08); box-shadow: var(--shadow-sm);
+    border-radius: var(--radius); font-family: "Oswald", Arial, sans-serif;
+    font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--text);
+  }
+  .ka-home-page .contact-top-badge svg { width: 16px; height: 16px; color: #d1a039; }
+  .ka-home-page .contact-side-card {
+    padding: 14px 16px 16px;
+    background: linear-gradient(180deg, #0f1416 0%, #0c1012 100%);
+    border: 1px solid rgba(255,255,255,.08); box-shadow: var(--shadow-md);
+    color: #fff; border-radius: var(--radius);
+  }
+  .ka-home-page .contact-side-card h3 { color: #fff; }
+  .ka-home-page .contact-side-card p  { color: rgba(255,255,255,.80); margin: 0; }
+  .ka-home-page .contact-side-card .eyebrow {
+    background: transparent; border: none; padding: 0; min-height: auto;
+    color: #f0b126; font-size: 12px; letter-spacing: .14em;
+  }
+  .ka-home-page .contact-side-card.contact-side-seo { padding: 16px; }
+  .ka-home-page .contact-side-card.contact-side-seo h3 {
+    margin: 0 0 10px; font-size: 17px; text-transform: uppercase;
+  }
+  .ka-home-page .contact-side-card.contact-side-seo p { margin: 0 0 12px; }
+
+  /* ── Contact Actions ── */
+  .ka-home-page .contact-actions { display: grid; gap: 10px; }
+  .ka-home-page .contact-action {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 48px; padding: 12px 14px; text-decoration: none;
+    border-radius: 5px; font-family: "Oswald", Arial, sans-serif;
+    font-size: 14px; letter-spacing: .05em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,.12);
+    transition: background .22s, color .22s, transform .22s;
+  }
+  .ka-home-page .contact-action:hover        { transform: translateY(-1px); }
+  .ka-home-page .contact-action.phone        { background: #fff; color: #111315; }
+  .ka-home-page .contact-action.phone:hover  { background: #f6f2ea; }
+  .ka-home-page .contact-action.whatsapp     { background: var(--gold); border-color: transparent; color: #111315; }
+  .ka-home-page .contact-action.whatsapp:hover { background: var(--gold-hover); color: #fff; }
+  .ka-home-page .contact-mail {
+    font-family: "Oswald", Arial, sans-serif; font-size: 18px; letter-spacing: .03em;
+  }
+
+  /* ── Benefits List ── */
+  .ka-home-page .contact-benefits { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .ka-home-page .contact-benefits li {
+    display: grid; grid-template-columns: 16px 1fr; gap: 10px;
+    align-items: start; color: rgba(255,255,255,.86); font-size: 14px; line-height: 1.55;
+  }
+  .ka-home-page .contact-benefits svg { width: 16px; height: 16px; color: #f0b126; }
+
+  /* ── SEO Extra ── */
+  .ka-home-page .contact-seo-extra    { display: grid; gap: 12px; }
+  .ka-home-page .contact-seo-extra p  { margin: 0; color: rgba(255,255,255,.82); }
+  .ka-home-page .contact-seo-copy-block {
+    display: grid; gap: 10px; padding: 14px;
+    background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--radius);
+  }
+  .ka-home-page .contact-seo-copy-block strong {
+    display: block; margin: 0; color: #fff; font-family: "Oswald", Arial, sans-serif;
+    font-size: 14px; letter-spacing: .06em; text-transform: uppercase;
+  }
+  .ka-home-page .contact-seo-copy-block p { font-size: 14px; }
+  .ka-home-page .contact-seo-note {
+    padding: 12px 14px; background: rgba(224,153,0,.08);
+    border: 1px solid rgba(224,153,0,.16); border-radius: var(--radius);
+  }
+  .ka-home-page .contact-seo-note p { color: rgba(255,255,255,.88); }
+  .ka-home-page .contact-seo-tags   { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ka-home-page .contact-seo-tag {
+    display: inline-flex; align-items: center; min-height: 30px; padding: 6px 10px;
+    border-radius: 999px; background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.10); font-family: "Oswald", Arial, sans-serif;
+    font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #fff;
+  }
+
+  /* ── Social Buttons ── */
+  .ka-home-page .social-btns { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+  .ka-home-page .social-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 16px; border-radius: 6px;
+    font-family: "Oswald", Arial, sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+    color: #fff !important; text-decoration: none;
+    transition: transform .2s, opacity .2s; min-height: 44px;
+  }
+  .ka-home-page .social-btn:hover { transform: translateY(-2px); opacity: .88; }
+  .ka-home-page .social-btn.fb { background: #1877f2; }
+  .ka-home-page .social-btn.yt { background: #ff0000; }
+  .ka-home-page .social-btn-icon {
+    width: 26px; height: 26px; border-radius: 4px;
+    background: rgba(255,255,255,.20);
+    display: grid; place-items: center;
+    font-size: 14px; font-weight: 900; flex-shrink: 0; color: #fff;
+  }
+
+  /* ── Email link in dark card ── */
+  .ka-home-page .contact-email-link {
+    font-family: "Oswald", Arial, sans-serif;
+    font-size: 18px; letter-spacing: .03em;
+    color: #fff !important; text-decoration: none;
+    transition: opacity .2s;
+  }
+  .ka-home-page .contact-email-link:hover { opacity: .78; }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) { .ka-home-page .contact-layout { grid-template-columns: 1fr; } }
+  @media (max-width: 768px) {
+    .ka-home-page { font-size: 14px; }
+    .ka-home-page .contact-form-shell .row.cols { grid-template-columns: 1fr; }
+  }
+
+</style>
+
+
+<!-- ── 2. HTML ── -->
+
+<div class="ka-home-page" style="padding-top:0;padding-bottom:0;background:#e7e7e5">
+<section class="section" id="kontakt">
+<div class="ka-container">
+<div class="contact-layout">
+<div class="contact-card form-card">
+<div class="contact-form-shell">
+<div class="contact-trust-bar" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+<span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-soft);padding:5px 10px;background:rgba(17,19,21,.06);border:1px solid var(--border);border-radius:4px"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16" style="width:14px;height:14px"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 1.5"/></svg>Antwort in 60 Minuten</span>
+<span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-soft);padding:5px 10px;background:rgba(17,19,21,.06);border:1px solid var(--border);border-radius:4px"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="M8 2C4.7 2 2 4.7 2 8s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6zm-1 8L4.5 7.5l1-1L7 8.5l3.5-3.5 1 1L7 10z"/></svg>Unverbindlich &amp; kostenlos</span>
+<span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-soft);padding:5px 10px;background:rgba(17,19,21,.06);border:1px solid var(--border);border-radius:4px"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 16 16" style="width:14px;height:14px"><path d="M8 1l7 3v5c0 4-3 6.5-7 7-4-.5-7-3-7-7V4l7-3z"/></svg>Kein Aufpreis ohne Absprache</span>
+</div>
+<div class="contact-form-intro">
+<div class="eyebrow">Anfrageformular</div>
+<h2>Fixpreis f&#252;r Ihren Klaviertransport anfragen</h2>
+<p>Senden Sie uns die wichtigsten Eckdaten f&#252;r Ihren Klaviertransport. Je klarer die Anfrage, desto pr&#228;ziser und schneller die Einsch&#228;tzung.</p>
+</div>
+[contact-form-7 id="628f820" title="Contact form Klaviertransport home 2 culoms"]
+</div>
+</div>
+<div class="contact-side-stack">
+<div class="contact-top-badge">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"></path></svg>
+<span>Kein Aufpreis ohne Absprache</span>
+</div>
+<div class="contact-side-card">
+<div class="eyebrow">Direkt erreichbar</div>
+<div class="contact-actions">
+<a class="contact-action phone" href="tel:+4366499236064">+43 664 99 23 60 64</a>
+<a class="contact-action whatsapp ctc_greetings js-chat-trigger" href="https://wa.me/4366499236064" rel="noopener" target="_blank">WhatsApp Anfrage</a>
+</div>
+</div>
+<div class="contact-side-card">
+<div class="eyebrow">Wichtige Details</div>
+<p>In Wien sehen wir oft Altbau, enge Stiegenh&#228;user, Zwischenpodeste und kurze Haltezonen. Fotos machen die Einsch&#228;tzung deutlich pr&#228;ziser und sparen R&#252;ckfragen.</p>
+</div>
+<div class="contact-side-card">
+<div class="eyebrow">Folgen Sie uns</div>
+<div class="social-btns">
+<a class="social-btn fb" href="https://www.facebook.com/people/Klavierart/100083606070719/" target="_blank" rel="noopener"><span class="social-btn-icon">f</span>Facebook</a>
+<a class="social-btn yt" href="https://www.youtube.com/@mkklavierart" target="_blank" rel="noopener"><span class="social-btn-icon">&#9654;</span>YouTube</a>
+</div>
+</div>
+<div class="contact-side-card">
+<div class="eyebrow">E-Mail</div>
+<a class="contact-email-link" href="mailto:info@klavierart.at">info@klavierart.at</a>
+</div>
+<div class="contact-side-card contact-side-seo">
+<h3>Ihr Klaviertransport &#8211; jetzt anfragen</h3>
+<p>Sie erhalten nach kurzer Pr&#252;fung eine klare Einsch&#228;tzung f&#252;r Ihren Klaviertransport in Wien. Auf Basis von Fotos, Etagen, Zugang und Strecke nennen wir Ihnen einen nachvollziehbaren Fixpreis.</p>
+<ul class="contact-benefits">
+<li><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"></path></svg><span>Schnelle R&#252;ckmeldung per Telefon oder WhatsApp</span></li>
+<li><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg><span>Erfahrung mit Altbau, Stiegenhaus und engen Zug&#228;ngen</span></li>
+<li><svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14.5a3.5 3.5 0 0 1 0 7H6"></path></svg><span>Fixpreis f&#252;r Transporte innerhalb Wien</span></li>
+</ul>
+<div class="contact-seo-extra">
+<p>MK Klavier Art ist Ihr WKO-gepr&#252;fter Meisterbetrieb f&#252;r Klaviertransport, Klavierentsorgung und Klavierstimmung &#8211; in Wien, Nieder&#246;sterreich und ganz &#214;sterreich. Mit &#252;ber 25 Jahren Erfahrung und einem eingespielten Team begleiten wir jedes Instrument von der ersten Anfrage bis zur sicheren Aufstellung.</p>
+<div class="contact-seo-copy-block">
+<strong>Pers&#246;nliche Betreuung vom ersten Kontakt an</strong>
+<p>Jede Anfrage wird individuell gepr&#252;ft. Wir kl&#228;ren Zugang, Etagen, Instrument und Termin vorab, damit der Ablauf am Tag selbst ruhig und verl&#228;sslich bleibt. Kein Callcenter, kein Subunternehmer &#8211; ein Team, das t&#228;glich mit Klavieren und Fl&#252;geln arbeitet.</p>
+<p>Ob Umzug, Entsorgung oder Stimmung nach dem Transport: MK Klavier Art bietet alle Leistungen rund ums Klavier aus einer Hand. Fixpreis nach Pr&#252;fung, Angebot in 60 Minuten, 5,0 &#9733;&#9733;&#9733;&#9733;&#9733; bei Google.</p>
+</div>
+<div class="contact-seo-note">
+<p>Stand: M&#228;rz 2026 &#183; MK Klavier Art e.U. &#183; Deutsch-Wagram, Nieder&#246;sterreich</p>
+</div>
+<div class="contact-seo-tags">
+<span class="contact-seo-tag">Klaviertransport</span>
+<span class="contact-seo-tag">Klavier entsorgen</span>
+<span class="contact-seo-tag">Klavierstimmen</span>
+</div>
+</div>
+</div>
+</div></div></div></section></div>
