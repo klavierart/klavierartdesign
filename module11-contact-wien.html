@@ -1,0 +1,188 @@
+<!-- ============================================================
+     WIEN — MODULE 11: CONTACT (v3 — Homepage design)
+     Divi Section bg: #ffffff · padding: 0 top / 28px bottom
+     CF7: id="83fa40f"
+     Kein WhatsApp — Wien Regel
+     ============================================================ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+.kaw11{--gold:#e09900;--red:#d21f3c;--amber:#f0b126;--text:#111315;--soft:#4d5358;--muted:#6e7479;--surface:#f4f2ee;--surface-2:#ffffff;--warm-dark:#1b1814;--border:rgba(17,19,21,.10);--border-warm:rgba(255,240,180,.07);--r:6px;--c:1600px}
+.kaw11,.kaw11 *{box-sizing:border-box;margin:0;padding:0}
+.kaw11 a{text-decoration:none}
+.kaw11 h2{font-family:'Oswald',Arial,sans-serif;font-size:26px;font-weight:700;line-height:1.15;letter-spacing:.01em;text-transform:uppercase;color:var(--text);margin:0 0 10px}
+.kaw11 h3{font-family:'Oswald',Arial,sans-serif;font-size:22px;font-weight:700;line-height:1.18;letter-spacing:.01em;text-transform:uppercase;color:#fff;margin:0 0 10px}
+.kaw11 p{font-family:'Plus Jakarta Sans',Arial,sans-serif;font-size:16px;line-height:1.68;color:var(--soft);margin:0 0 14px}
+.kaw11-con{width:100%;margin-inline:auto}
+
+.kaw11-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+
+/* ── FORM CARD — DARK ── */
+.kaw11-form-card{border-radius:var(--r);overflow:hidden;background:var(--warm-dark);border:1px solid var(--border-warm)}
+.kaw11-form-shell{padding:22px;background:var(--warm-dark);display:grid;gap:14px}
+
+/* Trust bar */
+.kaw11-trust{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+.kaw11-trust-item{display:inline-flex;align-items:center;gap:7px;font-family:'Plus Jakarta Sans',Arial,sans-serif;font-size:13px;font-weight:700;padding:7px 12px;border-radius:5px}
+.kaw11-trust-item.ti-gold{background:rgba(224,153,0,.14);border:1px solid rgba(224,153,0,.30);color:#d4a94a}
+.kaw11-trust-item.ti-gold::before{content:'\25F7';font-size:14px;color:#e09900;line-height:1;flex-shrink:0}
+.kaw11-trust-item.ti-green{background:rgba(34,167,33,.12);border:1px solid rgba(34,167,33,.28);color:#6fd16e}
+.kaw11-trust-item.ti-green::before{content:'\2713';font-size:12px;color:#22a721;font-weight:900;flex-shrink:0}
+.kaw11-trust-item.ti-dark{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+.kaw11-trust-item.ti-dark::before{content:'\2298';font-size:13px;color:rgba(255,255,255,.5);flex-shrink:0}
+.kaw11-form-shell .wpcf7-list-item{margin-right:5px !important;margin-bottom:4px !important}
+
+/* Form intro */
+.kaw11-form-intro{display:grid;gap:8px}
+.kaw11-form-intro h2{color:#fff}
+.kaw11-form-intro p{margin:0;max-width:60ch;color:rgba(255,255,255,.65)}
+.kaw11-eyebrow{display:inline-flex;align-items:center;min-height:32px;padding:5px 12px;border:1px solid var(--border-warm);background:rgba(255,255,255,.04);color:var(--gold);font-family:'Plus Jakarta Sans',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:var(--r);margin-bottom:4px}
+
+/* Form fields — dark theme */
+.kaw11-form-shell label{display:block;margin:0 0 6px;color:rgba(255,255,255,.85);font-weight:600;font-family:'Plus Jakarta Sans',Arial,sans-serif}
+.kaw11-form-shell .block-label,.kaw11-form-shell .wpcf7-list-item-label{color:rgba(255,255,255,.6);font-size:13px}
+.kaw11-form-shell .legal{color:rgba(255,255,255,.55);font-size:13px;line-height:1.5}
+.kaw11-form-shell .legal a{color:var(--gold);text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+.kaw11-form-shell .legal a:hover{color:var(--red)}
+.kaw11-form-shell input[type="text"],
+.kaw11-form-shell input[type="email"],
+.kaw11-form-shell input[type="tel"],
+.kaw11-form-shell input[type="number"],
+.kaw11-form-shell textarea,
+.kaw11-form-shell select{width:100%;padding:11px 13px;border:1px solid rgba(255,255,255,.12);border-radius:6px;background:rgba(255,255,255,.06);color:#fff;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s,background .2s}
+.kaw11-form-shell input::placeholder,.kaw11-form-shell textarea::placeholder{color:rgba(255,255,255,.35)}
+.kaw11-form-shell input:focus,
+.kaw11-form-shell textarea:focus,
+.kaw11-form-shell select:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(224,153,0,.15);background:rgba(255,255,255,.08)}
+.kaw11-form-shell textarea{min-height:118px;resize:vertical}
+.kaw11-form-shell select{appearance:auto}
+.kaw11-form-shell select option{background:var(--warm-dark);color:#fff}
+.kaw11-form-shell .row.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kaw11-form-shell .wpcf7-submit,
+.kaw11-form-shell input[type="submit"]{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;background:var(--gold);color:#111315;border:none;border-radius:5px;font-family:'Oswald',Arial,sans-serif;font-size:14px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:background .22s,color .22s,transform .22s;box-shadow:0 14px 36px rgba(224,153,0,.24)}
+.kaw11-form-shell .wpcf7-submit:hover{background:var(--red);color:#fff}
+.kaw11-form-shell .wpcf7-response-output:empty{display:none !important}
+.kaw11-form-shell .wpcf7-response-output{color:rgba(255,255,255,.8)}
+.kaw11-form-shell .wpcf7-not-valid-tip{color:#ff6b6b;font-size:12px}
+
+/* ── SIDE STACK ── */
+.kaw11-side-stack{display:flex;flex-direction:column;gap:10px}
+.kaw11-top-badge{align-self:flex-end;display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:10px 14px;background:#fff;border:1px solid rgba(17,19,21,.08);border-radius:var(--r);font-family:'Oswald',Arial,sans-serif;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--text)}
+.kaw11-top-badge-icon{width:16px;height:16px;border-radius:3px;background:rgba(240,177,38,.20);display:grid;place-items:center;font-size:10px;color:var(--amber);font-weight:900;flex-shrink:0}
+.kaw11-side-card{padding:14px 16px 16px;background:linear-gradient(180deg,#0f1416 0%,#0c1012 100%);border:1px solid rgba(255,255,255,.08);border-radius:var(--r)}
+.kaw11-side-card *{color:#fff}
+.kaw11-side-card p{color:rgba(255,255,255,.80) !important;margin:0}
+.kaw11-dark-eyebrow{font-family:'Plus Jakarta Sans',Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber) !important;display:block;margin-bottom:10px}
+.kaw11-btn-phone{display:flex;align-items:center;justify-content:center;min-height:48px;padding:12px 14px;background:#fff;color:#111315 !important;border-radius:5px;font-family:'Oswald',Arial,sans-serif;font-size:14px;letter-spacing:.05em;text-transform:uppercase;border:1px solid rgba(255,255,255,.12);transition:background .2s,transform .15s}
+.kaw11-btn-phone:hover{background:#f6f2ea;transform:translateY(-1px)}
+.kaw11-socials{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap}
+.kaw11-social{display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:6px;font-family:'Oswald',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff !important;text-decoration:none;transition:transform .2s,opacity .2s;min-height:44px}
+.kaw11-social:hover{transform:translateY(-2px);opacity:.88}
+.kaw11-social.fb{background:#1877f2}
+.kaw11-social.yt{background:#ff0000}
+.kaw11-social-icon{width:26px;height:26px;border-radius:4px;background:rgba(255,255,255,.20);display:grid;place-items:center;font-size:14px;font-weight:900;flex-shrink:0;color:#fff}
+.kaw11-benefits{list-style:none;display:grid;gap:10px;margin:0;padding:0}
+.kaw11-benefits li{display:grid;grid-template-columns:16px 1fr;gap:10px;align-items:start;font-family:'Plus Jakarta Sans',Arial,sans-serif;font-size:14px;line-height:1.55;color:rgba(255,255,255,.86) !important}
+.kaw11-bi{width:16px;height:16px;display:grid;place-items:center;flex-shrink:0;color:var(--amber) !important;font-size:12px;font-weight:800;margin-top:1px}
+.kaw11-seo-extra{display:grid;gap:12px}
+.kaw11-seo-extra p{margin:0;color:rgba(255,255,255,.82) !important;font-size:14px;line-height:1.7}
+.kaw11-seo-block{display:grid;gap:10px;padding:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r)}
+.kaw11-seo-block strong{display:block;color:#fff !important;font-family:'Oswald',Arial,sans-serif;font-size:14px;letter-spacing:.06em;text-transform:uppercase;line-height:1.35}
+.kaw11-seo-note{padding:12px 14px;background:rgba(224,153,0,.08);border:1px solid rgba(224,153,0,.16);border-radius:var(--r)}
+.kaw11-seo-note p{color:rgba(255,255,255,.88) !important;font-size:13px}
+.kaw11-seo-tags{display:flex;flex-wrap:wrap;gap:8px}
+.kaw11-seo-tag{display:inline-flex;align-items:center;min-height:30px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);font-family:'Oswald',Arial,sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#fff !important}
+.kaw11-email{font-family:'Oswald',Arial,sans-serif;font-size:18px;letter-spacing:.03em;color:#fff !important}
+
+@media(max-width:1024px){.kaw11-layout{grid-template-columns:1fr}}
+@media(max-width:768px){.kaw11 h2{font-size:22px}.kaw11-form-shell .row.cols{grid-template-columns:1fr}}
+</style>
+
+<div class="kaw11" style="padding-top:0;padding-bottom:0;overflow:hidden;background:#ffffff" id="kontakt">
+  <div class="kaw11-con">
+    <div class="kaw11-layout">
+
+      <!-- ── FORM CARD — DARK ── -->
+      <div class="kaw11-form-card">
+        <div class="kaw11-form-shell">
+
+          <div class="kaw11-trust">
+            <span class="kaw11-trust-item ti-gold">Antwort in 60 Minuten</span>
+            <span class="kaw11-trust-item ti-green">Unverbindlich &amp; kostenlos</span>
+            <span class="kaw11-trust-item ti-dark">Kein Aufpreis ohne Absprache</span>
+          </div>
+
+          <div class="kaw11-form-intro">
+            <span class="kaw11-eyebrow">Anfrageformular</span>
+            <h2>Fixpreis f&#252;r Ihren Klaviertransport Wien anfragen</h2>
+            <p>Senden Sie uns die wichtigsten Eckdaten. Je klarer die Anfrage, desto pr&#228;ziser und schneller die Einsch&#228;tzung.</p>
+          </div>
+
+          [contact-form-7 id="83fa40f" title="Contact form Klaviertransport wien 2 culoms"]
+
+        </div>
+      </div>
+
+      <!-- ── SIDE STACK ── -->
+      <div class="kaw11-side-stack">
+
+        <div class="kaw11-top-badge">
+          <span class="kaw11-top-badge-icon">&#10003;</span>
+          <span>Kein Aufpreis ohne Absprache</span>
+        </div>
+
+        <div class="kaw11-side-card">
+          <span class="kaw11-dark-eyebrow">Direkt erreichbar</span>
+          <div style="display:grid;gap:10px">
+            <a class="kaw11-btn-phone" href="tel:+4366499236064">+43 664 99 23 60 64</a>
+          </div>
+        </div>
+
+        <div class="kaw11-side-card">
+          <span class="kaw11-dark-eyebrow">Wichtige Details</span>
+          <p>In Wien sehen wir oft Altbau, enge Stiegenh&#228;user, Zwischenpodeste und kurze Haltezonen. Fotos machen die Einsch&#228;tzung deutlich pr&#228;ziser und sparen R&#252;ckfragen.</p>
+        </div>
+
+        <div class="kaw11-side-card">
+          <span class="kaw11-dark-eyebrow">Folgen Sie uns</span>
+          <div class="kaw11-socials">
+            <a class="kaw11-social fb" href="https://www.facebook.com/people/Klavierart/100083606070719/" target="_blank" rel="noopener"><span class="kaw11-social-icon">f</span>Facebook</a>
+            <a class="kaw11-social yt" href="https://www.youtube.com/@mkklavierart" target="_blank" rel="noopener"><span class="kaw11-social-icon">&#9654;</span>YouTube</a>
+          </div>
+        </div>
+
+        <div class="kaw11-side-card">
+          <span class="kaw11-dark-eyebrow">E-Mail</span>
+          <a class="kaw11-email" href="mailto:info@klavierart.at">info@klavierart.at</a>
+        </div>
+
+        <div class="kaw11-side-card">
+          <h3>Ihr Klaviertransport Wien &#8211; jetzt anfragen</h3>
+          <p style="margin-bottom:14px">Sie erhalten nach kurzer Pr&#252;fung eine klare Einsch&#228;tzung. Auf Basis von Fotos, Etagen, Zugang und Strecke nennen wir Ihnen einen nachvollziehbaren Fixpreis.</p>
+          <ul class="kaw11-benefits">
+            <li><span class="kaw11-bi">&#10003;</span><span>Schnelle R&#252;ckmeldung per Telefon</span></li>
+            <li><span class="kaw11-bi">&#10003;</span><span>Erfahrung mit Altbau, Stiegenhaus und engen Zug&#228;ngen</span></li>
+            <li><span class="kaw11-bi">&#10003;</span><span>Fixpreis f&#252;r Transporte innerhalb Wien</span></li>
+          </ul>
+          <div class="kaw11-seo-extra" style="margin-top:16px">
+            <p>MK Klavier Art ist Ihr WKO-gepr&#252;fter Meisterbetrieb f&#252;r Klaviertransport &#8211; in Wien, Nieder&#246;sterreich und ganz &#214;sterreich. Mit &#252;ber 25 Jahren Erfahrung begleiten wir jedes Instrument von der ersten Anfrage bis zur sicheren Aufstellung.</p>
+            <div class="kaw11-seo-block">
+              <strong>Pers&#246;nliche Betreuung vom ersten Kontakt an</strong>
+              <p>Jede Anfrage wird individuell gepr&#252;ft. Wir kl&#228;ren Zugang, Etagen, Instrument und Termin vorab. Kein Callcenter, kein Subunternehmer &#8211; ein Team, das t&#228;glich mit Klavieren und Fl&#252;geln arbeitet.</p>
+              <p>Ob Umzug, Entsorgung oder Stimmung nach dem Transport: MK Klavier Art bietet alle Leistungen aus einer Hand. Fixpreis nach Pr&#252;fung, Angebot in 60 Minuten, 5,0 &#9733;&#9733;&#9733;&#9733;&#9733; bei Google.</p>
+            </div>
+            <div class="kaw11-seo-note">
+              <p>Stand: April 2026 &#183; MK Klavier Art e.U. &#183; Deutsch-Wagram, Nieder&#246;sterreich</p>
+            </div>
+            <div class="kaw11-seo-tags">
+              <span class="kaw11-seo-tag">Klaviertransport Wien</span>
+              <span class="kaw11-seo-tag">Fl&#252;geltransport Wien</span>
+              <span class="kaw11-seo-tag">Klavierstimmen</span>
+              <span class="kaw11-seo-tag">Klavier entsorgen</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
