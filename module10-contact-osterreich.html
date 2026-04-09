@@ -1,0 +1,184 @@
+<!-- ============================================================
+     MODULE 10: CONTACT — Klaviertransport Österreich
+     Scope: .kao10  |  Container: .kao10-con
+     Divi Section background: #ffffff
+     id="kontakt"
+     CF7: id="b88ba3c"
+     ============================================================ -->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+
+.kao10 {
+  --warm-dark:#1b1814;
+  --warm-dark-2:#231f18;
+  --surface:#ffffff;
+  --text:#111315;
+  --text-soft:#4d5358;
+  --text-muted:#6e7479;
+  --border:rgba(17,19,21,.10);
+  --border-warm:rgba(255,240,180,.07);
+  --gold:#e09900;
+  --gold-light:rgba(224,153,0,.12);
+  --gold-hover:#d21f3c;
+  --accent:#d21f3c;
+  --shadow-sm:0 8px 22px rgba(17,19,21,.07);
+  --shadow-md:0 16px 42px rgba(17,19,21,.10);
+  --radius:7px;
+  --btn-radius:5px;
+  font-family:'Plus Jakarta Sans',Arial,sans-serif;
+  font-size:16px;line-height:1.6;color:var(--text);
+}
+.kao10,.kao10 *{box-sizing:border-box}
+.kao10 a{color:inherit;text-decoration:none}
+.kao10 h2{font-family:'Oswald',Arial,sans-serif;font-size:26px;line-height:1.15;letter-spacing:.01em;font-weight:700;text-transform:uppercase;margin:0 0 6px;color:var(--text)}
+.kao10 h3{font-family:'Oswald',Arial,sans-serif;font-size:18px;line-height:1.2;font-weight:700;text-transform:uppercase;margin:0 0 10px;color:#fff}
+.kao10 p{font-size:15px;line-height:1.65;margin:0 0 12px;color:var(--text-soft)}
+.kao10-con{width:100%;max-width:1600px;margin-inline:auto;padding:15px;display:flow-root}
+.kao10-con > :first-child{margin-top:0 !important}
+.kao10-con > :last-child{margin-bottom:0 !important}
+.kao10 .contact-eyebrow{font-family:'Plus Jakarta Sans',Arial,sans-serif;font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:8px}
+.kao10 .contact-subline{font-size:15px;color:var(--text-soft);margin:0 0 28px;max-width:56ch}
+.kao10 .trust-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.kao10 .trust-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(224,153,0,.08);border:1px solid rgba(224,153,0,.18);font-size:13px;font-weight:700;color:var(--text);font-family:'Plus Jakarta Sans',Arial,sans-serif}
+.kao10 .trust-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex:0 0 6px}
+.kao10 .contact-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:20px;align-items:start}
+
+/* ── Form Panel — DARK ── */
+.kao10 .form-panel{
+  background:var(--warm-dark);
+  border:1px solid var(--border-warm);
+  border-radius:var(--radius);
+  padding:26px;
+  box-shadow:var(--shadow-md);
+}
+.kao10 .form-panel label{display:block;font-weight:600;margin-bottom:5px;color:rgba(255,255,255,.85);font-size:14px}
+.kao10 .form-panel .block-label,.kao10 .form-panel .wpcf7-list-item-label{color:rgba(255,255,255,.6);font-size:13px;line-height:1.5}
+.kao10 .form-panel .legal{color:rgba(255,255,255,.55);font-size:13px;line-height:1.5}
+.kao10 .form-panel .legal a{color:var(--gold);text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+.kao10 .form-panel .legal a:hover{color:var(--gold-hover)}
+.kao10 .form-panel .row{margin-bottom:14px}
+.kao10 .form-panel .row.cols{display:grid!important;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.kao10 .form-panel .row.single{display:block}
+.kao10 .form-panel input[type="text"],.kao10 .form-panel input[type="email"],.kao10 .form-panel input[type="tel"],.kao10 .form-panel textarea,.kao10 .form-panel select{
+  width:100%;padding:11px 13px;
+  border:1px solid rgba(255,255,255,.12);border-radius:var(--btn-radius);
+  outline:none;font-size:15px;background:rgba(255,255,255,.06);
+  transition:border-color .14s ease,box-shadow .14s ease;
+  color:#fff;font-family:'Plus Jakarta Sans',Arial,sans-serif;
+}
+.kao10 .form-panel input::placeholder,.kao10 .form-panel textarea::placeholder{color:rgba(255,255,255,.35)}
+.kao10 .form-panel input:hover,.kao10 .form-panel textarea:hover,.kao10 .form-panel select:hover,
+.kao10 .form-panel input:focus,.kao10 .form-panel textarea:focus,.kao10 .form-panel select:focus{
+  border-color:var(--gold);box-shadow:0 0 0 2px rgba(224,153,0,.15);
+}
+.kao10 .form-panel textarea{min-height:130px;resize:vertical}
+.kao10 .form-panel select{appearance:auto}
+.kao10 .form-panel select option{background:var(--warm-dark);color:#fff}
+.kao10 .form-panel .wpcf7-list-item{display:inline-block;margin:0 12px 6px 0}
+.kao10 .form-panel .submit-wrap{margin-top:10px}
+.kao10 .form-panel .wpcf7-submit{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:46px;padding:0 24px;background:var(--gold);color:#111315;
+  border-radius:var(--btn-radius);border:none;text-transform:uppercase;
+  font-family:'Oswald',Arial,sans-serif;font-size:14px;letter-spacing:.06em;
+  cursor:pointer;min-width:200px;font-weight:700;
+  transition:background-color .22s,color .22s,transform .18s;
+}
+.kao10 .form-panel .wpcf7-submit:hover{background:var(--gold-hover);color:#fff;transform:translateY(-1px)}
+.kao10 .form-panel .hidden-fields-container,.kao10 .form-panel .screen-reader-response{display:none!important}
+.kao10 .form-panel .wpcf7-response-output:empty{display:none!important}
+.kao10 .form-panel .wpcf7-response-output{color:rgba(255,255,255,.8)}
+.kao10 .form-panel .wpcf7-not-valid-tip{color:#ff6b6b;font-size:12px}
+
+/* ── Sidebar ── */
+.kao10 .sidebar{display:grid;gap:12px}
+.kao10 .sblock{background:var(--warm-dark);border:1px solid var(--border-warm);border-radius:var(--radius);padding:18px 20px}
+.kao10 .slabel{display:block;margin-bottom:10px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.16em;color:var(--gold);font-family:'Oswald',Arial,sans-serif}
+.kao10 .btn-phone,.kao10 .btn-email{
+  display:flex;align-items:center;justify-content:center;min-height:42px;
+  padding:0 14px;border-radius:var(--btn-radius);text-decoration:none;
+  font-family:'Oswald',Arial,sans-serif;font-size:14px;letter-spacing:.05em;
+  font-weight:700;text-transform:uppercase;
+  transition:background-color .2s,color .2s,transform .18s;
+}
+.kao10 .btn-phone{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12)}
+.kao10 .btn-phone:hover{background:var(--gold-hover);color:#fff;border-color:var(--gold-hover);transform:translateY(-1px)}
+.kao10 .btn-email{background:var(--gold);color:#111315;border:1px solid transparent;margin-top:8px}
+.kao10 .btn-email:hover{background:var(--gold-hover);color:#fff;transform:translateY(-1px)}
+.kao10 .stext{font-size:14px;line-height:1.6;color:rgba(255,255,255,.65);margin:0}
+.kao10 .stext strong{color:rgba(255,255,255,.9)}
+.kao10 .social-row{display:flex;gap:6px}
+.kao10 .social-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:4px;font-size:12px;font-weight:700;color:rgba(255,255,255,.55);text-decoration:none;font-family:'Plus Jakarta Sans',Arial,sans-serif;transition:background-color .2s,color .2s}
+.kao10 .social-badge:hover{background:rgba(255,255,255,.10);color:#fff}
+.kao10 .sicon{width:14px;height:14px;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:#fff;flex:0 0 14px}
+.kao10 .sicon.fb{background:#1877F2}
+.kao10 .sicon.yt{background:#FF0000}
+.kao10 .email-val{font-size:14px;color:#fff;font-weight:700}
+.kao10 .email-val a{color:#fff}
+.kao10 .cta-items{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.kao10 .cta-item{display:flex;align-items:flex-start;gap:10px;font-size:12px;font-weight:700;color:rgba(255,255,255,.72);text-transform:uppercase;letter-spacing:.04em;font-family:'Plus Jakarta Sans',Arial,sans-serif;line-height:1.4}
+.kao10 .cta-mark{width:5px;height:5px;border-radius:50%;background:var(--gold);flex:0 0 5px;margin-top:5px;box-shadow:0 0 0 3px rgba(224,153,0,.16)}
+
+@media(max-width:1024px){.kao10 h2{font-size:22px}}
+@media(max-width:900px){.kao10 .contact-grid{grid-template-columns:1fr}.kao10 .form-panel .row.cols{grid-template-columns:1fr}}
+@media(max-width:480px){.kao10 p{font-size:14px}.kao10 .form-panel{padding:18px}.kao10 .trust-bar{gap:6px}}
+</style>
+
+<div class="kao10" id="kontakt" style="padding-top:0;padding-bottom:0;background:#ffffff">
+<div class="kao10-con">
+
+<span class="contact-eyebrow">Jetzt anfragen</span>
+<h2>Fixpreis f&#252;r Ihren Klaviertransport in &#214;sterreich</h2>
+<p class="contact-subline">Senden Sie uns die Eckdaten &#8211; wir melden uns in der Regel innerhalb von 60 Minuten mit einem klaren Fixpreis.</p>
+
+<div class="trust-bar">
+<div class="trust-pill"><span class="trust-dot"></span>Antwort in 60 Minuten</div>
+<div class="trust-pill"><span class="trust-dot"></span>Unverbindlich &amp; kostenlos</div>
+<div class="trust-pill"><span class="trust-dot"></span>Kein Aufpreis ohne Absprache</div>
+</div>
+
+<div class="contact-grid">
+
+<div class="form-panel">[contact-form-7 id="b88ba3c" title="Contact form Klaviertransport Österreich 2 culoms"]</div>
+
+<div class="sidebar">
+
+<div class="sblock" style="display:flex;flex-direction:column;gap:8px">
+<span class="slabel">Direkt erreichbar</span>
+<a class="btn-phone" href="tel:+4366499236064">+43 664 99 23 60 64</a>
+<a class="btn-email" href="mailto:info@klavierart.at">&#9993; info@klavierart.at</a>
+</div>
+
+<div class="sblock">
+<span class="slabel">Wichtige Details</span>
+<p class="stext">Start- und Zielort, Strecke, Stockwerke, Lift und Zugang. Fotos machen die Einsch&#228;tzung deutlich pr&#228;ziser.</p>
+</div>
+
+<div class="sblock">
+<span class="slabel">Weiterempfehlen</span>
+<p class="stext">Kennen Sie jemanden, der ein Klavier transportieren m&#246;chte? <strong>Empfehlen Sie uns weiter</strong> &#8211; wir freuen uns &#252;ber jede Empfehlung.</p>
+</div>
+
+<div class="sblock">
+<span class="slabel">Kontakt &amp; Social</span>
+<p class="email-val" style="margin-bottom:10px"><a href="mailto:info@klavierart.at">info@klavierart.at</a></p>
+<div class="social-row">
+<a class="social-badge" href="https://www.facebook.com/people/Klavierart/100083606070719/" target="_blank" rel="noopener"><span class="sicon fb">f</span>Facebook</a>
+<a class="social-badge" href="https://www.youtube.com/@mkklavierart" target="_blank" rel="noopener"><span class="sicon yt">&#9654;</span>YouTube</a>
+</div>
+</div>
+
+<div class="sblock">
+<h3>&#214;sterreichweit &#8211; Fixpreis nach Pr&#252;fung</h3>
+<div class="cta-items">
+<div class="cta-item"><span class="cta-mark"></span><span>Antwort in 60 Minuten &#8211; auch f&#252;r lange Strecken</span></div>
+<div class="cta-item"><span class="cta-mark"></span><span>Wien, N&#214;, Steiermark, Salzburg und alle Bundesl&#228;nder</span></div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
