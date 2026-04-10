@@ -1,0 +1,141 @@
+<!-- ============================================================
+     ksm3 — ABLAUF / 4 SCHRITTE  |  /klavierstimmen/
+     Scope: .ksm3  |  Background: #252422 (dunkel)
+     ============================================================ -->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap');
+
+.ksm3 { box-sizing: border-box; }
+.ksm3 *, .ksm3 *::before, .ksm3 *::after { box-sizing: border-box; }
+
+.ksm3-con { width: 100%; max-width: 1600px; margin-inline: auto; padding: 15px; display: flow-root; }
+.ksm3-con > :first-child { margin-top: 0 !important; }
+.ksm3-con > :last-child  { margin-bottom: 0 !important; }
+
+.ksm3-card {
+  background: #252422; border-radius: 7px; padding: 36px 32px;
+  border: 1px solid rgba(148,163,184,.28); box-shadow: 0 22px 56px rgba(0,0,0,.65);
+}
+
+.ksm3-label {
+  display: block; font-family: 'Oswald', Arial, sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: #e09900; margin-bottom: 10px;
+}
+.ksm3 h2 {
+  font-family: 'Oswald', Arial, sans-serif; font-size: 26px; line-height: 1.15;
+  letter-spacing: .01em; font-weight: 700; text-transform: uppercase;
+  color: #f9fafb !important; -webkit-text-fill-color: #f9fafb !important;
+  background: none !important; -webkit-background-clip: unset !important; background-clip: unset !important;
+  margin: 0 0 12px;
+}
+.ksm3 h3 {
+  font-family: 'Oswald', Arial, sans-serif; font-size: 22px; line-height: 1.18;
+  letter-spacing: .01em; font-weight: 700; text-transform: uppercase;
+  color: #f9fafb !important; -webkit-text-fill-color: #f9fafb !important;
+  background: none !important; -webkit-background-clip: unset !important; background-clip: unset !important;
+  margin: 0 0 10px;
+}
+.ksm3 p {
+  font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 16px; line-height: 1.7;
+  color: #e5e7eb !important; margin: 0 0 14px;
+}
+.ksm3 p:last-child { margin-bottom: 0; }
+.ksm3 strong { font-weight: 700; color: #f9fafb !important; }
+
+.ksm3-head { margin-bottom: 28px; max-width: 72ch; }
+
+.ksm3-grid {
+  display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px; margin-bottom: 28px;
+}
+.ksm3-step {
+  background: rgba(255,255,255,.05); border: 1px solid rgba(148,163,184,.22);
+  border-top: 3px solid #e09900; border-radius: 7px; padding: 22px 18px 20px;
+}
+.ksm3-step-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.ksm3-num {
+  flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: #e09900;
+  color: #111315 !important; font-family: 'Oswald', Arial, sans-serif;
+  font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+}
+.ksm3-step h3 { font-size: 18px; margin: 0; flex: 1; }
+
+.ksm3-cta-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 18px;
+  padding-top: 22px; border-top: 1px solid rgba(148,163,184,.18);
+}
+.ksm3-cta-text {
+  font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 16px; line-height: 1.65;
+  color: #9ca3af !important; flex: 1; min-width: 240px;
+}
+.ksm3-cta-text strong { color: #e5e7eb !important; }
+
+.ksm3-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 13px 24px; border-radius: 5px; border: 1px solid transparent;
+  font-family: 'Oswald', Arial, sans-serif; font-size: 14px; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase; text-decoration: none !important;
+  background: #e09900; color: #111315 !important; white-space: nowrap;
+  box-shadow: 0 12px 32px rgba(224,153,0,.25); transition: background .22s ease, transform .22s ease;
+}
+.ksm3-btn:hover { background: #d21f3c; color: #fff !important; transform: translateY(-1px); }
+
+@media (max-width: 1024px) {
+  .ksm3 h2 { font-size: 22px; } .ksm3 h3 { font-size: 20px; }
+  .ksm3-card { padding: 28px 22px; } .ksm3-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 768px) {
+  .ksm3 h2 { font-size: 20px; } .ksm3 p { font-size: 15px; }
+  .ksm3-card { padding: 22px 16px; }
+  .ksm3-cta-row { flex-direction: column; align-items: flex-start; }
+  .ksm3-btn { width: 100%; text-align: center; }
+}
+@media (max-width: 480px) {
+  .ksm3 h2 { font-size: 20px; } .ksm3 h3 { font-size: 18px; } .ksm3 p { font-size: 14px; }
+  .ksm3-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="ksm3" style="padding-top:0;padding-bottom:0;background:#252422">
+  <div class="ksm3-con">
+    <div class="ksm3-card">
+
+      <div class="ksm3-head">
+        <span class="ksm3-label">Ablauf vom Klavierstimmen</span>
+        <h2>Klavierstimmen in vier Schritten in Wien und Nieder&#246;sterreich</h2>
+        <p>Viele Kunden fragen sich, wie ein <strong>Stimmtermin</strong> abl&#228;uft, wenn sie ihr Klavier oder ihren Fl&#252;gel in Wien oder Nieder&#246;sterreich <strong>klavierstimmen</strong> lassen m&#246;chten, und wie lange das Ganze dauert. Damit Sie gut planen k&#246;nnen, erkl&#228;ren wir unseren Ablauf klar, transparent und ohne Fachjargon.</p>
+      </div>
+
+      <div class="ksm3-grid">
+
+        <article class="ksm3-step">
+          <div class="ksm3-step-top"><div class="ksm3-num">1</div><h3>Anfrage und kurze Abstimmung</h3></div>
+          <p>Sie senden uns eine kurze Anfrage mit Standort und ein paar Eckdaten zum Instrument. Wir melden uns pers&#246;nlich, kl&#228;ren Erwartungen und sagen Ihnen, welcher Stimmservice sinnvoll ist &#8211; professionelles <strong>Klavierstimmen</strong> oder eine zus&#228;tzliche Kontrolle &#8211; dann schlagen wir einen passenden Termin vor.</p>
+        </article>
+
+        <article class="ksm3-step">
+          <div class="ksm3-step-top"><div class="ksm3-num">2</div><h3>Termin und Vorbereitung vor Ort</h3></div>
+          <p>Wir vereinbaren einen fixen Termin und geben Ihnen einfache Hinweise zur Vorbereitung: ruhige Umgebung, ausreichend Licht, freier Zugang zum Instrument. Sie m&#252;ssen nichts zerlegen oder tragen &#8211; wichtig ist nur, dass unser Klavierstimmer gut herankommt.</p>
+        </article>
+
+        <article class="ksm3-step">
+          <div class="ksm3-step-top"><div class="ksm3-num">3</div><h3>Klavierstimmen und Kontrolle</h3></div>
+          <p>Vor Ort pr&#252;ft unser Klavierstimmer zuerst den allgemeinen Zustand. Danach <strong>klavierstimmen</strong> wir Klavier oder Fl&#252;gel Ton f&#252;r Ton und kontrollieren das Ergebnis sauber nach. Je nach Ausgangslage dauert der Einsatz meist 60 bis 90 Minuten. Technische Auff&#228;lligkeiten sprechen wir offen an &#8211; nichts ohne Ihre Zustimmung.</p>
+        </article>
+
+        <article class="ksm3-step">
+          <div class="ksm3-step-top"><div class="ksm3-num">4</div><h3>Abschluss und Empfehlungen</h3></div>
+          <p>Zum Schluss spielen wir gemeinsam einige Passagen an und nehmen bei Bedarf kleine Korrekturen vor. Sie erhalten eine ehrliche Empfehlung, wie oft <strong>Klavierstimmen</strong> sinnvoll ist, und worauf Sie bei Pflege und Standort achten sollten, damit die Stimmung lange stabil bleibt.</p>
+        </article>
+
+      </div>
+
+      <div class="ksm3-cta-row">
+        <p class="ksm3-cta-text">Wenn Sie unsicher sind, ob eine normale <strong>Klavierstimmung</strong> gen&#252;gt oder ob Ihr Instrument zus&#228;tzlich gepr&#252;ft werden sollte, schreiben Sie uns kurz &#8211; wir sagen Ihnen offen, was sinnvoll ist.</p>
+        <a class="ksm3-btn" href="#stimmen-anfrage">Fragen zum Klavierstimmen</a>
+      </div>
+
+    </div>
+  </div>
+</div>
