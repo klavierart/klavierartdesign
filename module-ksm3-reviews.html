@@ -9,34 +9,30 @@
 .ksm3 { box-sizing: border-box; }
 .ksm3 *, .ksm3 *::before, .ksm3 *::after { box-sizing: border-box; }
 
-/* Hide Trustindex auto-rendered reviews outside our shortcode wrapper */
-.ksm3 .ti-widget { display: none !important; }
-.ksm3 .ti-reviews-container { display: none !important; }
-.ksm3 [data-layout-id] { display: none !important; }
-.ksm3-reviews .ti-widget,
-.ksm3-reviews .ti-reviews-container,
-.ksm3-reviews [data-layout-id],
-.ksm3-reviews > * { display: block !important; }
-
-.ksm3-con {
-  width: 100%; max-width: 1600px; margin-inline: auto; padding: 15px; display: flow-root;
-}
+.ksm3-con { width: 100%; max-width: 1600px; margin-inline: auto; padding: 15px; display: flow-root; }
 .ksm3-con > :first-child { margin-top: 0 !important; }
 .ksm3-con > :last-child  { margin-bottom: 0 !important; }
 
+/* ── Force black text everywhere, override Divi ── */
 .ksm3-eyebrow {
   display: block; font-family: 'Plus Jakarta Sans', Arial, sans-serif;
   font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-  color: #6e7479; margin-bottom: 8px; text-align: center;
+  color: #6e7479 !important; -webkit-text-fill-color: #6e7479 !important;
+  background: none !important; -webkit-background-clip: unset !important; background-clip: unset !important;
+  margin-bottom: 8px; text-align: left;
 }
 .ksm3 h2 {
   font-family: 'Oswald', Arial, sans-serif; font-size: 26px; line-height: 1.15;
   letter-spacing: .01em; font-weight: 700; text-transform: uppercase;
-  color: #111315 !important; margin: 0 0 8px; text-align: center;
+  color: #111315 !important; -webkit-text-fill-color: #111315 !important;
+  background: none !important; -webkit-background-clip: unset !important; background-clip: unset !important;
+  margin: 0 0 8px; text-align: left;
 }
 .ksm3-subtitle {
   font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 16px; line-height: 1.65;
-  color: #4d5358 !important; text-align: center; max-width: 60ch; margin: 0 auto 28px;
+  color: #111315 !important; -webkit-text-fill-color: #111315 !important;
+  background: none !important; -webkit-background-clip: unset !important; background-clip: unset !important;
+  text-align: left; max-width: 60ch; margin: 0 0 28px;
 }
 
 .ksm3-stats {
@@ -48,15 +44,30 @@
 }
 .ksm3-stat-val {
   font-family: 'Oswald', Arial, sans-serif; font-size: 32px; font-weight: 700; line-height: 1;
-  text-transform: uppercase; color: #111315 !important; display: block; margin-bottom: 6px;
+  text-transform: uppercase; display: block; margin-bottom: 6px;
+  color: #111315 !important; -webkit-text-fill-color: #111315 !important;
+  background: none !important; -webkit-background-clip: unset !important; background-clip: unset !important;
 }
 .ksm3-stat-lbl {
   font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 13px; font-weight: 600;
-  letter-spacing: .05em; text-transform: uppercase; color: #6e7479 !important; display: block;
+  letter-spacing: .05em; text-transform: uppercase; display: block;
+  color: #6e7479 !important; -webkit-text-fill-color: #6e7479 !important;
+  background: none !important; -webkit-background-clip: unset !important; background-clip: unset !important;
 }
 
-/* Trustindex — clean, no wrapper styling that could conflict */
+/* ── Trustindex — force black text inside widget ── */
 .ksm3-reviews { margin-bottom: 20px; }
+.ksm3-reviews .ti-widget .ti-review-content,
+.ksm3-reviews .ti-widget .ti-name,
+.ksm3-reviews .ti-widget .ti-date,
+.ksm3-reviews .ti-widget .ti-text,
+.ksm3-reviews .ti-widget .ti-based-on,
+.ksm3-reviews .source-Google,
+.ksm3-reviews .ti-widget span,
+.ksm3-reviews .ti-widget div {
+  color: #111315 !important; -webkit-text-fill-color: #111315 !important;
+  background: none !important; -webkit-background-clip: unset !important; background-clip: unset !important;
+}
 
 .ksm3-wko {
   display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -72,13 +83,17 @@
   font-size: 12px; font-weight: 700; letter-spacing: .04em; flex-shrink: 0;
 }
 .ksm3-wko-text {
-  font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 14px; line-height: 1.4; color: #4d5358 !important;
+  font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size: 14px; line-height: 1.4;
+  color: #4d5358 !important; -webkit-text-fill-color: #4d5358 !important;
 }
-.ksm3-wko-text strong { display: block; font-weight: 700; color: #111315 !important; font-size: 15px; }
+.ksm3-wko-text strong {
+  display: block; font-weight: 700; font-size: 15px;
+  color: #111315 !important; -webkit-text-fill-color: #111315 !important;
+}
 .ksm3-wko-arrow {
   font-family: 'Oswald', Arial, sans-serif; font-size: 13px; font-weight: 700;
-  letter-spacing: .06em; text-transform: uppercase; color: #d21f3c !important;
-  margin-left: auto; white-space: nowrap;
+  letter-spacing: .06em; text-transform: uppercase; margin-left: auto; white-space: nowrap;
+  color: #d21f3c !important; -webkit-text-fill-color: #d21f3c !important;
 }
 
 @media (max-width: 1024px) { .ksm3 h2 { font-size: 22px; } .ksm3-stats { grid-template-columns: repeat(2, minmax(0,1fr)); } }
