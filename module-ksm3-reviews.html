@@ -9,6 +9,15 @@
 .ksm3 { box-sizing: border-box; }
 .ksm3 *, .ksm3 *::before, .ksm3 *::after { box-sizing: border-box; }
 
+/* Hide Trustindex auto-rendered reviews outside our shortcode wrapper */
+.ksm3 .ti-widget { display: none !important; }
+.ksm3 .ti-reviews-container { display: none !important; }
+.ksm3 [data-layout-id] { display: none !important; }
+.ksm3-reviews .ti-widget,
+.ksm3-reviews .ti-reviews-container,
+.ksm3-reviews [data-layout-id],
+.ksm3-reviews > * { display: block !important; }
+
 .ksm3-con {
   width: 100%; max-width: 1600px; margin-inline: auto; padding: 15px; display: flow-root;
 }
